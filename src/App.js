@@ -2,7 +2,9 @@ import { use, useEffect } from 'react';
 import './App.css';
 import { useTelegram } from './hooks/useTelegram';
 import Header from "./components/Header/Header";
-import Button from './components/Button/Button';
+//import Button from './components/Button/Button';
+import { Route, Routes } from 'react-router-dom';
+import PlayerCard from './components/PlayerCard/PlayerCard';
 
 function App() {
     const { onToggleButton, tg } = useTelegram();
@@ -16,8 +18,10 @@ function App() {
     return (
         <div className="App">
             <Header></Header>
-            <Button>Проверка</Button>
-            <button onClick={onToggleButton}>toggle</button>
+            <Routes>
+                <Route index element={<PlayerCard />}></Route>
+                <Route path={'ListTeams'} element={<ListTeams />}></Route>
+            </Routes>
         </div>
     );
 }
