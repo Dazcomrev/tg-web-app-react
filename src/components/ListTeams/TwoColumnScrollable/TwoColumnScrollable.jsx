@@ -1,29 +1,29 @@
 ﻿import React from 'react';
 import './TwoColumnScrollable.css';
 
+//TeamId: 3
+
+const TeamItem = ({ team }) => {
+    return (
+        <div className="team-item">
+            <h3>{team.TeamName}</h3>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                <li>Число побед: {team.NumberWins}</li>
+                <li>Число поражений: {team.NumberDefeats}</li>
+                <li>Чатота побед: {team.FrequencyWins * 100}%</li>
+            </ul>
+        </div>
+    );
+};
+
 const TwoColumnScrollable = ({ items }) => {
     return (
-        <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '16px',
-            height: '400px',
-            overflowY: 'auto',
-            border: '1px solid #ccc',
-            padding: '8px',
-        }}>
-            {items.map((item, index) => (
-                <div key={index} style={{
-                    border: '1px solid #999',
-                    padding: '8px',
-                    boxSizing: 'border-box',
-                    background: '#f9f9f9',
-                }}>
-                    {item}
-                </div>
+        <div className="two-column-scrollable">
+            {items.map((team) => (
+                <TeamItem key={team.TeamId} team={team} />
             ))}
         </div>
-    )
-}
+    );
+};
 
 export default TwoColumnScrollable
