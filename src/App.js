@@ -18,8 +18,8 @@ function App() {
 
     return (
         <div className="App">
-            <Header></Header>
             <Routes>
+                <Header />
                 <Route index element={<PlayerCard />}></Route>
                 <Route path={'ListTeams'} element={<ListTeams />}></Route>
             </Routes>
