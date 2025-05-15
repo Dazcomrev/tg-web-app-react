@@ -1,0 +1,11 @@
+﻿.header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.username {
+    margin-left: auto;
+}
