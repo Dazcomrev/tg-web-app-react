@@ -16,6 +16,7 @@ function App() {
     return (
         <div className="App">
             <Header />
+            <dev>ПОЧЕМУ НЕ РАБОТАЕТ Header</dev>
             <button onClick={onToggleButton}>toggle</button>
         </div>
     );
