@@ -8,6 +8,6 @@ const ListTeams = () => {
             ListTeams
         </div>
     )
-Ъ
+}
 
 export default ListTeams
