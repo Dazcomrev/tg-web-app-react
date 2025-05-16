@@ -5,14 +5,14 @@ import './TwoColumnScrollable.css';
 
 const TeamItem = ({ team }) => {
     return (
-        <div className="team-item">
+        <button className="team-item">
             <h3>{team.TeamName}</h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 <li>Число побед: {team.NumberWins}</li>
                 <li>Число поражений: {team.NumberDefeats}</li>
                 <li>Чатота побед: {team.FrequencyWins * 100}%</li>
             </ul>
-        </div>
+        </button>
     );
 };
 
