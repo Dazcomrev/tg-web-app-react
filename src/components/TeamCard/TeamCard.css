@@ -1,8 +1,24 @@
-﻿.button {
+﻿.back {
     padding: 10px 15px;
     background: var(--tg-theme-bg-color);
     color: var(--tg-theme-text-color);
     border: none;
     outline: none;
     cursor: pointer;
+}
+
+.player-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: auto;
+    width: 100%;
+    background: #f9f9f9;
+}
+
+.history-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: auto;
+    width: 100%;
+    background: #f9f9f9;
 }

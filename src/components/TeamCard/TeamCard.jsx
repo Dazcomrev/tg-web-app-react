@@ -1,10 +1,94 @@
 ﻿import React from 'react';
-import './Button.css';
+import './TeamCard.css';
+import { useNavigate } from 'react-router-dom';
+import '../Button/Button.css';
+import Header from '../Header/Header';
+import { useParams } from 'react-router-dom';
 
-const Button = (props) => {
+const PlayerItem = ({ player, teamId }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/TeamCard/${teamId}/PlayerCard/${player.id}`);
+    };
+
     return (
-        <button {...props} className={'button ' + props.className } />
+        <button className="player-item" onClick={handleClick}>
+            <img src={`/images/${player.photo}`} height='150px' alt="photo"></img>
+            <p>{player.fio}</p>
+        </button>
+    );
+};
+
+const HistoryItem = ({ history }) => {
+    
+    return (
+        <div className="history-item">
+            <h4>{history.CompetitionName}</h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                <li>Дата: {history.DateStart}</li>
+                <li>Заняли {history.Place} место</li>
+            </ul>
+        </div>
+    );
+};
+
+const PlayerCard = () => {
+    const { teamId } = useParams();
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/ListTeams`);
+    };
+
+    //const teamCard = getTeamCard(teamId);
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //
+    //НАДО ИЗМЕНИТЬ ХРАНИМЫЕ ДАННЫЕ В PHOTO В БД С ПУТИ НА НАЗВАНИЕ ВМЕСТЕ С ТИПОМ (.jpg)
+    //
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    const teamCard = {
+        name: 'Navi',
+        players: [
+            { id: 1, fio: 'Иванов Иван Иванович', photo: 'Яблоко.jpg' },
+            { id: 2, fio: 'Иванов1 Иван1 Иванович1', photo: 'Дед.jpg' }
+        ],
+        history: [
+            {
+                CompetitionName: 'Тестовое соревнование',
+                DateStart: '14.05.2025',
+                Place: 1
+            },
+            {
+                CompetitionName: 'Тестовое соревнование 1',
+                DateStart: '14.06.2025',
+                Place: 1
+            }
+        ],
+        frequency: '1.00'
+    };
+
+    return (
+        <div>
+            <button className="back" onClick={handleClick}>Список команд</button>
+            <div>
+                <h2 className="team-name">Команда {teamCard.name}</h2>
+                <p>Частота побед: {teamCard.frequency * 100}%</p>
+                <div>
+                    <h3 className="subtitle">Состав команды</h3>
+                    {teamCard.players.map((player) => (
+                        <PlayerItem key={player.id} player={player} teamId={teamId} />
+                    ))}
+                </div>
+                <div>
+                    <h3 className="subtitle">История участия в соревнованиях</h3>
+                    {teamCard.history.map((history, index) => (
+                        <HistoryItem key={index} history={history} />
+                    ))}
+                </div>
+            </div>
+        </div>
     )
 }
 
-export default Button
+export default PlayerCard
