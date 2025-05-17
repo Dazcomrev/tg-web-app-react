@@ -28,7 +28,7 @@ const TeamItem = ({ team }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/TeamCard/${team.TeamId}`); // Переход на страницу /page2
+        navigate(`/TeamCard/${team.TeamId}`); // Переход на страницу
     };
 
     return (

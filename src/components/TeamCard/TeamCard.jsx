@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import './TeamCard.css';
 import { useNavigate } from 'react-router-dom';
 import '../Button/Button.css';
@@ -20,6 +20,13 @@ const PlayerItem = ({ player, teamId }) => {
     );
 };
 
+const NoPlayerItem = ({ players }) => {
+    if (players.length == 0) {
+        return (<p>В команде нет игроков</p>);
+    }
+    return <p></p>;
+};
+
 const HistoryItem = ({ history }) => {
     
     return (
@@ -33,6 +40,13 @@ const HistoryItem = ({ history }) => {
     );
 };
 
+const NoHistoryItem = ({ history }) => {
+    if (history.length == 0) {
+        return (<p>Команда не участвовала в соревнованиях</p>);
+    }
+    return <p></p>;
+};
+
 const PlayerCard = () => {
     const { teamId } = useParams();
     const navigate = useNavigate();
@@ -41,13 +55,7 @@ const PlayerCard = () => {
         navigate(`/ListTeams`);
     };
 
-    //const teamCard = getTeamCard(teamId);
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //
-    //НАДО ИЗМЕНИТЬ ХРАНИМЫЕ ДАННЫЕ В PHOTO В БД С ПУТИ НА НАЗВАНИЕ ВМЕСТЕ С ТИПОМ (.jpg)
-    //
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    const teamCard = {
+    /*const teamCard1 = {
         name: 'Navi',
         players: [
             { id: 1, fio: 'Иванов Иван Иванович', photo: 'Яблоко.jpg' },
@@ -66,7 +74,18 @@ const PlayerCard = () => {
             }
         ],
         frequency: '1.00'
-    };
+    };*/
+
+    const [teamCard, setTeamCard] = useState(null);
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/api/teamCard/${teamId}`)
+            .then(res => res.json())
+            .then(data => setTeamCard(data))
+            .catch(err => console.error(err));
+    }, [teamId]);
+
+    if (!teamCard) return <div>Загрузка...</div>;
 
     return (
         <div>
@@ -79,12 +98,14 @@ const PlayerCard = () => {
                     {teamCard.players.map((player) => (
                         <PlayerItem key={player.id} player={player} teamId={teamId} />
                     ))}
+                    <NoPlayerItem players={teamCard.players}></NoPlayerItem>
                 </div>
                 <div>
                     <h3 className="subtitle">История участия в соревнованиях</h3>
                     {teamCard.history.map((history, index) => (
                         <HistoryItem key={index} history={history} />
                     ))}
+                    <NoHistoryItem history={teamCard.history}></NoHistoryItem>
                 </div>
             </div>
         </div>

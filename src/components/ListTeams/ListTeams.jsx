@@ -1,17 +1,10 @@
-﻿import React from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import './ListTeams.css';
 import TwoColumnScrollable from './TwoColumnScrollable/TwoColumnScrollable';
 
 const ListTeams = () => {
-    /*const data1 = [
-        'Элемент 1',
-        'Элемент 2',
-        'Элемент 3',
-        'Элемент 4',
-        'Элемент 5',
-    ];*/
 
-    const data = [
+    const data1 = [
         {
             TeamId: 1,
             TeamName: 'Navi',
@@ -35,10 +28,22 @@ const ListTeams = () => {
         }
     ];
 
+    const [teams, setTeams] = useState(null);
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/listTeams')
+            .then(res => res.json())
+            .then(data => setTeams(data))
+            .catch(err => console.error('Ошибка загрузки данных:', err));
+
+    }, []);
+
+    if (!teams) return <div>Загрузка...</div>;
+
     return (
         <div>
             <h2>Cписок команд вуза</h2>
-            <TwoColumnScrollable items={data}></TwoColumnScrollable>
+            <TwoColumnScrollable items={teams}></TwoColumnScrollable>
         </div>
     )
 }
