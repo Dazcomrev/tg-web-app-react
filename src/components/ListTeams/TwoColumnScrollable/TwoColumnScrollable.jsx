@@ -27,8 +27,28 @@ const onTeamCard = () => {
 const TeamItem = ({ team }) => {
     const navigate = useNavigate();
 
+    /*const { user } = useTelegram();
+
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAA");
+    console.log(user);
+    console.log("fsfs");
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAA");*/
+
+    /*
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    */
+
     const handleClick = () => {
         navigate(`/TeamCard/${team.TeamId}`); // Переход на страницу
+        /*fetch('http://localhost:5000/api/log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: ${team.TeamName}`}),
+        })
+            .then(res => res.json())
+            .catch(err => console.error(err));*/
     };
 
     return (

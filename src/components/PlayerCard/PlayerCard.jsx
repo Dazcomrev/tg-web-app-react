@@ -66,13 +66,14 @@ const PlayerCard = () => {
     }, [playerId]);
 
     if (!playerCard) return <div>Загрузка...</div>;
-
+    //   /images/
+    //http://localhost:5000/images/
     return (
         <div>
             <button className="back" onClick={handleClick}>Список команд</button>
             <button className="back" onClick={handleClickTeam}>Назад</button>
             <div>
-                <img src={`/images/${playerCard.pathPhoto}`} height='250px' alt="photo"></img>
+                <img src={`http://localhost:5000/images/${playerCard.pathPhoto}`} height='300px' alt="photo"></img>
                 <h2 className="player-name">{playerCard.fio}</h2>
                 <p>Возраст: {playerCard.age}</p>
                 <div>

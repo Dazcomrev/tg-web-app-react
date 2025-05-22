@@ -1,10 +1,16 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './ListTeams.css';
 import TwoColumnScrollable from './TwoColumnScrollable/TwoColumnScrollable';
+import { useNavigate } from 'react-router-dom';
 
 const ListTeams = () => {
+    const navigate = useNavigate();
 
-    const data1 = [
+    const handleClick = () => {
+        navigate(`/EditData`);
+    };
+
+    /*const data1 = [
         {
             TeamId: 1,
             TeamName: 'Navi',
@@ -26,7 +32,7 @@ const ListTeams = () => {
             NumberDefeats: 0,
             FrequencyWins: '0'
         }
-    ];
+    ];*/
 
     const [teams, setTeams] = useState(null);
 
@@ -42,6 +48,7 @@ const ListTeams = () => {
 
     return (
         <div>
+            <button className="back" onClick={handleClick}>Редактирование</button>
             <h2>Cписок команд вуза</h2>
             <TwoColumnScrollable items={teams}></TwoColumnScrollable>
         </div>

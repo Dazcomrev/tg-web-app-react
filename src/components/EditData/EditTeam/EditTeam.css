@@ -1,0 +1,22 @@
+﻿.button {
+    padding: 10px 15px;
+    background: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.two-column-scrollable {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    height: auto;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 8px;
+    box-sizing: border-box;
+}
+input {
+    width: 200px;
+}

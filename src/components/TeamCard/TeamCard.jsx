@@ -8,13 +8,26 @@ import { useParams } from 'react-router-dom';
 const PlayerItem = ({ player, teamId }) => {
     const navigate = useNavigate();
 
+    /*
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    */
+
     const handleClick = () => {
         navigate(`/TeamCard/${teamId}/PlayerCard/${player.id}`);
+        /*fetch('http://localhost:5000/api/log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр игрока', actionDetails: `ID игрока: ${player.id}` }),
+        })
+            .then(res => res.json())
+            .catch(err => console.error(err));*/
     };
 
     return (
         <button className="player-item" onClick={handleClick}>
-            <img src={`/images/${player.photo}`} height='150px' alt="photo"></img>
+            <img src={`http://localhost:5000/images/${player.photo}`} height='150px' alt="photo"></img>
             <p>{player.fio}</p>
         </button>
     );
