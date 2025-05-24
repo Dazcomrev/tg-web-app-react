@@ -15,11 +15,11 @@ const PlayerItem = ({ player, teamId }) => {
     */
 
     const handleClick = () => {
-        navigate(`/TeamCard/${teamId}/PlayerCard/${player.id}`);
+        navigate(`/TeamCard/${teamId}/PlayerCard/${player.PlayerId}`);
         /*fetch('http://localhost:5000/api/log', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр игрока', actionDetails: `ID игрока: ${player.id}` }),
+            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр игрока', actionDetails: `ID игрока: ${player.PlayerId}` }),
         })
             .then(res => res.json())
             .catch(err => console.error(err));*/
@@ -27,8 +27,8 @@ const PlayerItem = ({ player, teamId }) => {
 
     return (
         <button className="player-item" onClick={handleClick}>
-            <img src={`http://localhost:5000/images/${player.photo}`} height='150px' alt="photo"></img>
-            <p>{player.fio}</p>
+            <img src={`http://localhost:5000/images/${player.Photo}`} height='150px' alt="photo"></img>
+            <p>{player.FIO}</p>
         </button>
     );
 };
@@ -71,8 +71,8 @@ const PlayerCard = () => {
     /*const teamCard1 = {
         name: 'Navi',
         players: [
-            { id: 1, fio: 'Иванов Иван Иванович', photo: 'Яблоко.jpg' },
-            { id: 2, fio: 'Иванов1 Иван1 Иванович1', photo: 'Дед.jpg' }
+            { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' },
+            { PlayerId: 2, FIO: 'Иванов1 Иван1 Иванович1', Photo: 'Дед.jpg' }
         ],
         history: [
             {
@@ -109,7 +109,7 @@ const PlayerCard = () => {
                 <div>
                     <h3 className="subtitle">Состав команды</h3>
                     {teamCard.players.map((player) => (
-                        <PlayerItem key={player.id} player={player} teamId={teamId} />
+                        <PlayerItem key={player.PlayerId} player={player} teamId={teamId} />
                     ))}
                     <NoPlayerItem players={teamCard.players}></NoPlayerItem>
                 </div>

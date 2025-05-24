@@ -14,7 +14,6 @@ const HistoryItem = ({ history }) => {
             return "Сейчас в команде";
         }
     }
-
     return (
         <div className="history-item">
             <h4>{history.TeamName}</h4>
@@ -39,8 +38,8 @@ const PlayerCard = () => {
     };
 
     /*const playerCard1 = {
-        fio: 'Иванов Иван Иванович',
-        age: 18,
+        FIO: 'Иванов Иван Иванович',
+        Age: 18,
         pathPhoto: 'Яблоко.jpg',
         history: [
             {
@@ -74,8 +73,8 @@ const PlayerCard = () => {
             <button className="back" onClick={handleClickTeam}>Назад</button>
             <div>
                 <img src={`http://localhost:5000/images/${playerCard.pathPhoto}`} height='300px' alt="photo"></img>
-                <h2 className="player-name">{playerCard.fio}</h2>
-                <p>Возраст: {playerCard.age}</p>
+                <h2 className="player-name">{playerCard.FIO}</h2>
+                <p>Возраст: {playerCard.Age}</p>
                 <div>
                     <h3 className="subtitle">В каких командах находился</h3>
                     {playerCard.history.map((history, index) => (

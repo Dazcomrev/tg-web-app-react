@@ -8,6 +8,12 @@ import { useNavigate } from 'react-router-dom';
         
         СООБЩЕНИЕ ОБ УСПЕШНОСТИ
         */
+/*
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+ */
 
 function AddTeam() {
     const [NameTeam, setNameTeam] = useState('');
@@ -18,7 +24,7 @@ function AddTeam() {
         return /^[A-Za-zА-Яа-яЁё0123456789\s]+$/.test(text);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); // предотвращаем перезагрузку страницы
 
         if (NameTeam == "") {
@@ -32,18 +38,43 @@ function AddTeam() {
             return;
         }
 
-        setError(''); // очистить ошибки
+        
 
-        /*
-
-        НАДО ДОБАВИТЬ СВЯЗБ С server.js
-
-        */
         // Здесь отправляем данные, например на сервер
-        console.log('Отправляем данные:', { NameTeam });
+        //console.log('Отправляем данные:', { NameTeam });
+        const formData = new FormData();
+        formData.append('NameTeam', NameTeam);
 
-        // Можно очистить форму после отправки
-        setNameTeam('');
+        //console.log('formData:', formData);
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/team/addTeam', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+
+            }
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Создана команда ${NameTeam}` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            // Можно очистить форму после отправки
+            setNameTeam('');
+            setError('');
+        } catch (err) {
+            setError(err.message);
+        }
+
+        
     };
 
     return (
@@ -106,17 +137,39 @@ function RemoveTeam({teams}) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [teamToRemove, setTeamToRemove] = useState(null);
 
-    const removeTeam = (team) => {
-        console.log(`Команда ${team.TeamName} с id ${team.TeamId} удалена`);
-        setModalOpen(false);
-        setTeamToRemove(null);
-        /*fetch('http://localhost:5000/api/log', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: ${team.TeamName}`}),
-        })
-            .then(res => res.json())
-            .catch(err => console.error(err));*/
+    const removeTeam = async (team) => {
+        //console.log(`Команда ${team.TeamName} с id ${team.TeamId} удалена`);
+
+        const formData = new FormData();
+        formData.append('TeamId', team.TeamId);
+
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/team/removeTeam', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+
+            }
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Команда ${team.TeamName} с id ${team.TeamId} удалена` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            // Можно очистить форму после отправки
+            setModalOpen(false);
+            setTeamToRemove(null);
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     const openModal = (team) => {
@@ -190,19 +243,42 @@ function EditNameTeam({ teams }) {
         setModalOpen(true);
     };
 
-    const editNameTeam = (team, newName) => {
-        console.log(`Команда ${team.TeamName} теперь называется ${newName}`);
+    const editNameTeam = async (team, newName) => {
+        //console.log(`Команда ${team.TeamName} теперь называется ${newName}`);
         // TODO: здесь отправьте запрос на сервер для обновления имени команды
-        setModalOpen(false);
-        setTeamToEdit(null);
-        setNameTeam('');
-        /*fetch('http://localhost:5000/api/log', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: ${team.TeamName}`}),
-        })
-            .then(res => res.json())
-            .catch(err => console.error(err));*/
+        const formData = new FormData();
+        formData.append('TeamId', team.TeamId);
+        formData.append('NewTeamName', newName);
+
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/team/editNameTeam', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+
+            }
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Название команды ${team.TeamName} изменено на ${newName}` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            // Можно очистить форму после отправки
+            setModalOpen(false);
+            setTeamToEdit(null);
+            setNameTeam('');
+            setError('');
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -268,40 +344,77 @@ function EditNameTeam({ teams }) {
     );
 }
 
-function AddPlayerInTeam({ teams }) {
-    /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
+function AddPlayerInTeam({ teams, allPlayers }) {
+    
     const [error, setError] = React.useState('');
     const [isModalOpen, setModalOpen] = React.useState(false);
     const [teamToEdit, setTeamToEdit] = React.useState(null);
+    const [DateAdd, setDateAdd] = useState('');
     const [PlayerId, setPlayerId] = React.useState("");
+    const [players, setPlayers] = React.useState([]);
     
-
-    const validateText = (text) => /^[A-Za-zА-Яа-яЁё0123456789\s]+$/.test(text);
-
-    const openModal = (team, playerId) => {
+    const openModal = (team) => {
         setTeamToEdit(team);
-        setPlayerId(playerId);
+        setPlayerId('0');
         setError('');
+        let now = new Date();
+        let day = String(now.getDate()).padStart(2, '0');
+        let month = String(now.getMonth() + 1).padStart(2, '0');
+        let year = now.getFullYear();
+        let dateStr = `${year}-${month}-${day}`;
+        setDateAdd(dateStr);
+        const playersInTeamIds = new Set(team.players.map(player => player.PlayerId));
+        const playersNotInTeam = allPlayers
+            .filter(player => !playersInTeamIds.has(player.PlayerId))
+            .map(player => ({ PlayerId: player.PlayerId, FIO: player.FIO || '' }));
+        setPlayers(playersNotInTeam);
         setModalOpen(true);
     };
 
-    const addPlayerInTeam = (team, playerId) => {
-        console.log(`В команду ${team.TeamName} добавлен игрок с id ${playerId}`);
-        // TODO: здесь отправьте запрос на сервер для обновления имени команды
-        setModalOpen(false);
-        setTeamToEdit(null);
-        /*fetch('http://localhost:5000/api/log', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: ${team.TeamName}`}),
-        })
-            .then(res => res.json())
-            .catch(err => console.error(err));*/
+    const addPlayerInTeam = async (team, PlayerId) => {
+        let FIO = '';
+        allPlayers.forEach(player => {
+            if (player.PlayerId == PlayerId) {
+                FIO = player.FIO;
+                return;
+            }
+        });
+        //console.log(`В команду ${team.TeamName} (${team.TeamId}) добавлен игрок ${FIO} с PlayerId ${PlayerId}. Дата: ${DateAdd}`);
+        
+        const formData = new FormData();
+        formData.append('TeamId', team.TeamId);
+        formData.append('PlayerId', PlayerId);
+        formData.append('DateAdd', DateAdd);
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/team/addPlayerInTeam', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+
+            }
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В команду ${team.TeamName} (TeamId = ${team.TeamId}) ${DateAdd} добавлен игрок ${FIO} с PlayerId = ${PlayerId}` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            // Можно очистить форму после отправки
+            setModalOpen(false);
+            setTeamToEdit(null);
+            setPlayerId('');
+            setDateAdd('');
+            setError('');
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     const handlePlayerChange = (e) => {
@@ -311,15 +424,15 @@ function AddPlayerInTeam({ teams }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (PlayerId === '') {
-            setError('Поле текста не должно быть пустым');
+        if (PlayerId === '0' || PlayerId === '') {
+            setError('Необходимо выбрать игрока');
             return;
         }
 
-        /*if (!validateText(PlayerId)) {
-            setError('Поле текста должно содержать только буквы, цифры и пробелы.');
+        if (DateAdd === '') {
+            setError('Необходимо выбрать дату');
             return;
-        }*/
+        }
 
         setError('');
         addPlayerInTeam(teamToEdit, PlayerId);
@@ -332,27 +445,6 @@ function AddPlayerInTeam({ teams }) {
             </button>
         </div>
     );
-
-    /*НАДО СДЕЛАТЬ ФУНКЦИЮ ДЛЯ ВЫБОРА ИГРОКОВ БЕЗ КОМАНДЫ
-    
-    const [players, setPlayers] = React.useState(null);
-
-    useEffect(() => {
-        if (teamToEdit) {
-            //console.log(teamToEdit.TeamId);
-            fetch(`http://localhost:5000/api/teamCard/${teamToEdit.TeamId}`)
-                .then(res => res.json())
-                .then(data => setPlayers(data.players))
-                .catch(err => console.error(err));
-        }
-    }, [teamToEdit]);
-
-    console.log(players);*/
-
-    const players = [
-        { id: 1, fio: 'Иванов2 Иван2 Иванович2'},
-        { id: 2, fio: 'Иванов1 Иван1 Иванович1'}
-    ];
 
     return (
         <div>
@@ -369,14 +461,24 @@ function AddPlayerInTeam({ teams }) {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <p>Выберите участника для команды {teamToEdit?.TeamName}</p>
+                        <label>Игрок: </label>
                         <select value={PlayerId || ''}
                             onChange={(e) => setPlayerId(e.target.value)}>
+                            <option key={0} value={0}>---------</option>
                             {players.map((player) => (
-                                <option key={player.id} value={player.id}>
-                                    {player.fio}
+                                <option key={player.PlayerId} value={player.PlayerId}>
+                                    {player.FIO}
                                 </option>
                             ))}
-                        </select>
+                        </select><br />
+                        <label>Дата добавления в команду: </label>
+                        <label>
+                            <input
+                                type="date"
+                                value={DateAdd}
+                                onChange={(e) => setDateAdd(e.target.value)}
+                            />
+                        </label>
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -390,7 +492,7 @@ function AddPlayerInTeam({ teams }) {
     );
 }
 
-function RemovePlayerInTeam({ teams }) {
+function RemovePlayerInTeam({ teams, allPlayers }) {
     /*
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
@@ -401,29 +503,67 @@ function RemovePlayerInTeam({ teams }) {
     const [isModalOpen, setModalOpen] = React.useState(false);
     const [teamToEdit, setTeamToEdit] = React.useState(null);
     const [PlayerId, setPlayerId] = React.useState("");
+    const [DateLeft, setDateLeft] = useState('');
+    const [players, setPlayers] = React.useState([]);
 
-
-    const validateText = (text) => /^[A-Za-zА-Яа-яЁё0123456789\s]+$/.test(text);
-
-    const openModal = (team, playerId) => {
+    const openModal = (team) => {
         setTeamToEdit(team);
-        setPlayerId(playerId);
+        setPlayerId('');
         setError('');
+        let now = new Date();
+        let day = String(now.getDate()).padStart(2, '0');
+        let month = String(now.getMonth() + 1).padStart(2, '0');
+        let year = now.getFullYear();
+        let dateStr = `${year}-${month}-${day}`;
+        setDateLeft(dateStr);
+        setPlayers(team.players);
         setModalOpen(true);
     };
 
-    const removePlayerFromTeam = (team, playerId) => {
-        console.log(`Из команды ${team.TeamName} удален игрок с id ${playerId}`);
-        // TODO: здесь отправьте запрос на сервер для обновления имени команды
-        setModalOpen(false);
-        setTeamToEdit(null);
-        /*fetch('http://localhost:5000/api/log', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: ${team.TeamName}`}),
-        })
-            .then(res => res.json())
-            .catch(err => console.error(err));*/
+    const removePlayerFromTeam = async (team, PlayerId) => {
+        let FIO = '';
+        allPlayers.forEach(player => {
+            if (player.PlayerId == PlayerId) {
+                FIO = player.FIO;
+                return;
+            }
+        });
+        //console.log(`Из команды ${team.TeamName} (${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId ${PlayerId}`);
+
+        const formData = new FormData();
+        formData.append('TeamId', team.TeamId);
+        formData.append('PlayerId', PlayerId);
+        formData.append('DateLeft', DateLeft);
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/team/removePlayerFromTeam', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+
+            }
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Из команды ${team.TeamName} (TeamId = ${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId = ${PlayerId}` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            // Можно очистить форму после отправки
+            setModalOpen(false);
+            setTeamToEdit(null);
+            setPlayerId('');
+            setDateLeft('');
+            setError('');
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     const handlePlayerChange = (e) => {
@@ -433,15 +573,15 @@ function RemovePlayerInTeam({ teams }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (PlayerId === '') {
-            setError('Поле текста не должно быть пустым');
+        if (PlayerId === '0' || PlayerId === '') {
+            setError('Необходимо выбрать игрока');
             return;
         }
 
-        /*if (!validateText(PlayerId)) {
-            setError('Поле текста должно содержать только буквы, цифры и пробелы.');
+        if (DateLeft === '') {
+            setError('Необходимо выбрать дату');
             return;
-        }*/
+        }
 
         setError('');
         removePlayerFromTeam(teamToEdit, PlayerId);
@@ -454,27 +594,6 @@ function RemovePlayerInTeam({ teams }) {
             </button>
         </div>
     );
-
-    /*НАДО СДЕЛАТЬ ФУНКЦИЮ ДЛЯ ВЫБОРА ИГРОКОВ БЕЗ КОМАНДЫ
-    
-    const [players, setPlayers] = React.useState(null);
-
-    useEffect(() => {
-        if (teamToEdit) {
-            //console.log(teamToEdit.TeamId);
-            fetch(`http://localhost:5000/api/teamCard/${teamToEdit.TeamId}`)
-                .then(res => res.json())
-                .then(data => setPlayers(data.players))
-                .catch(err => console.error(err));
-        }
-    }, [teamToEdit]);
-
-    console.log(players);*/
-
-    const players = [
-        { id: 1, fio: 'Иванов2 Иван2 Иванович2' },
-        { id: 2, fio: 'Иванов1 Иван1 Иванович1' }
-    ];
 
     return (
         <div>
@@ -491,14 +610,24 @@ function RemovePlayerInTeam({ teams }) {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <p>Выберите участника для команды {teamToEdit?.TeamName}</p>
+                        <label>Игрок: </label>
                         <select value={PlayerId || ''}
                             onChange={(e) => setPlayerId(e.target.value)}>
+                            <option key={0} value={0}>---------</option>
                             {players.map((player) => (
-                                <option key={player.id} value={player.id}>
-                                    {player.fio}
+                                <option key={player.PlayerId} value={player.PlayerId}>
+                                    {player.FIO}
                                 </option>
                             ))}
-                        </select>
+                        </select><br />
+                        <label>Дата выхода из команды: </label>
+                        <label>
+                            <input
+                                type="date"
+                                value={DateLeft}
+                                onChange={(e) => setDateLeft(e.target.value)}
+                            />
+                        </label>
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -527,14 +656,40 @@ const EditTeam = () => {
     const [teams, setTeams] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/listTeams')
+        fetch('http://localhost:5000/api/edit/team/getTeams')
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
 
     }, []);
 
-    
+    const [allPlayers, setAllPlayers] = useState(null);
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/edit/team/getAllPlayers')
+            .then(res => res.json())
+            .then(data => setAllPlayers(data))
+            .catch(err => console.error('Ошибка загрузки данных:', err));
+
+    }, []);
+
+    /*const teams = [
+        { TeamId: 1, TeamName: 'Navi', players: [
+                { PlayerId: 1, FIO: 'Иванов2 Иван2 Иванович2'},
+                { PlayerId: 5, FIO: 'Иванов5 Иван5 Иванович5' }]
+        },
+        { TeamId: 2, TeamName: 'DreamTeam', players: [
+                { PlayerId: 3, FIO: 'Иванов23 Иван23 Иванович23' }]
+        },
+        { TeamId: 3, TeamName: 'Eteam', players: []
+        }
+    ];*/
+
+    /*const allPlayers = [
+        { PlayerId: 1, FIO: 'Иванов2 Иван2 Иванович2' },
+        { PlayerId: 3, FIO: 'Иванов23 Иван23 Иванович23' },
+        { PlayerId: 5, FIO: 'Иванов5 Иван5 Иванович5' }
+    ];*/
 
     // Состояние, которое хранит текущий выбранный раздел
     const [activeSection, setActiveSection] = useState('home');
@@ -549,9 +704,9 @@ const EditTeam = () => {
             case 'editNameTeam':
                 return <EditNameTeam teams={teams} />;
             case 'addPlayerInTeam':
-                return <AddPlayerInTeam teams={teams} />;
+                return <AddPlayerInTeam teams={teams} allPlayers={allPlayers} />;
             case 'removePlayerFromTeam':
-                return <RemovePlayerInTeam teams={teams} />;
+                return <RemovePlayerInTeam teams={teams} allPlayers={allPlayers} />;
             default:
                 return <div>Выберите раздел</div>;
         }

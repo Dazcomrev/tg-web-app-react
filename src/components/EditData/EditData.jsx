@@ -4,15 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const EditData = () => {
     const navigate = useNavigate();
-    const [teams, setTeams] = useState(null);
-
-    useEffect(() => {
-        fetch('http://localhost:5000/api/listTeams')
-            .then(res => res.json())
-            .then(data => setTeams(data))
-            .catch(err => console.error('Ошибка загрузки данных:', err));
-
-    }, []);
 
     const handleClick = () => {
         navigate(`/ListTeams`);
@@ -36,8 +27,6 @@ const EditData = () => {
     const editMatchClick = () => {
         navigate(`/EditData/EditMatch`);
     };
-
-    if (!teams) return <div>Загрузка...</div>;
 
     return (
         <div>
