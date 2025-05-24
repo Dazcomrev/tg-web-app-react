@@ -33,7 +33,7 @@ function App() {
                 <Route path={'/TeamCard/:teamId/PlayerCard/:playerId'} element={<PlayerCard />}></Route>
                 <Route path={'/TeamCard/:teamId'} element={<TeamCard />}></Route>
                 <Route path={'/ListTeams'} element={<ListTeams />}></Route>
-                <Route path={'/EditData/EditMatch'} element={<Competition />}></Route>
+                <Route path={'/EditData/EditMatch'} element={<Match />}></Route>
                 <Route path={'/EditData/EditCompetition'} element={<Competition />}></Route>
                 <Route path={'/EditData/EditPlayer'} element={<Player />}></Route>
                 <Route path={'/EditData/EditTeam'} element={<Team />}></Route>

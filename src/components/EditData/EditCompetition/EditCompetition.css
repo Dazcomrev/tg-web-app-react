@@ -6,3 +6,38 @@
     outline: none;
     cursor: pointer;
 }
+
+.competition-item {
+    width: 100%;
+    align-items: center;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* расстояние между чекбоксом и текстом */
+    margin-bottom: 8px;
+    padding-left: 0; /* убираем отступ слева */
+}
+
+    .checkbox-wrapper label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+    }
+
+    .checkbox-wrapper input[type="checkbox"] {
+        margin: 0;
+        padding: 0;
+        /* Можно дополнительно задать размер чекбокса */
+        width: 16px;
+        height: 16px;
+    }
+
+    .checkbox-wrapper input[type="text"] {
+        width: 120px;
+        padding: 4px 6px;
+        font-size: 14px;
+    }

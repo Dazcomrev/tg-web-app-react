@@ -356,7 +356,7 @@ function AddPlayerInTeam({ teams }) {
 
     return (
         <div>
-            <h3>Добавление игрока команды</h3>
+            <h3>Добавление игрока в команду</h3>
             <p>Нажмите на команду, в которую хотите добавить игрока</p>
             <div className="two-column-scrollable">
                 {teams.map((team) => (
@@ -390,7 +390,7 @@ function AddPlayerInTeam({ teams }) {
     );
 }
 
-function DeletePlayerInTeam({ teams }) {
+function RemovePlayerInTeam({ teams }) {
     /*
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
@@ -478,7 +478,7 @@ function DeletePlayerInTeam({ teams }) {
 
     return (
         <div>
-            <h3>Удаление игрока команды</h3>
+            <h3>Удаление игрока из команды</h3>
             <p>Нажмите на команду, из которой хотите удалить игрока</p>
             <div className="two-column-scrollable">
                 {teams.map((team) => (
@@ -551,7 +551,7 @@ const EditTeam = () => {
             case 'addPlayerInTeam':
                 return <AddPlayerInTeam teams={teams} />;
             case 'removePlayerFromTeam':
-                return <DeletePlayerInTeam teams={teams} />;
+                return <RemovePlayerInTeam teams={teams} />;
             default:
                 return <div>Выберите раздел</div>;
         }
@@ -567,8 +567,8 @@ const EditTeam = () => {
             <button className="button" onClick={() => setActiveSection("addTeam")}>Добавление команды</button>
             <button className="button" onClick={() => setActiveSection("removeTeam")}>Удаление команды</button>
             <button className="button" onClick={() => setActiveSection("editNameTeam")}>Изменение названия команды</button>
-            <button className="button" onClick={() => setActiveSection("addPlayerInTeam")}>Добавление игрока команды</button>
-            <button className="button" onClick={() => setActiveSection("removePlayerFromTeam")}>Удаление игрока команды</button>
+            <button className="button" onClick={() => setActiveSection("addPlayerInTeam")}>Добавление игрока в команду</button>
+            <button className="button" onClick={() => setActiveSection("removePlayerFromTeam")}>Удаление игрока из команды</button>
 
             <hr />
 

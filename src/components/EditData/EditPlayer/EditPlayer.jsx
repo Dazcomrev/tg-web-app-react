@@ -226,13 +226,6 @@ function RemovePlayer({ players }) {
         );
     };
 
-    const fio = (player) => {
-        if (!player) {
-            return " ";
-        }
-        return player.fio;
-    }
-
     return (
         <div>
             <form>
@@ -246,7 +239,7 @@ function RemovePlayer({ players }) {
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <h2>Всплывающее окно</h2>
-                <p>Вы уверены что хотите удалить игрока {fio(playerToRemove)}?</p>
+                <p>Вы уверены что хотите удалить игрока {playerToRemove?.fio}?</p>
                 <button onClick={() => removePlayer(playerToRemove)}>Подтвердить</button>
                 <button onClick={() => setModalOpen(false)}>Отмена</button>
             </Modal>
@@ -265,6 +258,7 @@ function EditInfoPlayer({ players }) {
     const [Photo, setPhoto] = useState(null);
     const [OldPhoto, setOldPhoto] = useState(null);
     const [error, setError] = useState('');
+
     const validateText = (text) => {
         // Проверяем, что название команды не содержит лишних символов
         return /^[A-Za-zА-Яа-яЁё\s]+$/.test(text);
@@ -360,7 +354,7 @@ function EditInfoPlayer({ players }) {
         setFirstName(FIO[0]);
         setSecondName(FIO[1]);
         setThirdName(FIO[2]);
-        setAge(player.age);
+        setAge(String(player.age));
         setPhoto(player.photo);
         setOldPhoto(player.photo);
         setModalOpen(true);
@@ -470,7 +464,7 @@ const EditPlayer = () => {
     }, []);*/
 
     const players = [
-        { id: 1, fio: 'Иванов2 Иван2 Иванович2', photo: 'Дед.jpg', age: 18 },
+        { id: 1, fio: 'Иванов Иван2 Иванович2', photo: 'Дед.jpg', age: 18 },
         { id: 2, fio: 'Иванов1 Иван1 Иванович1', photo: 'Яблоко.jpg', age: 21 },
         { id: 3, fio: 'Иванов3 Иван3 Иванович3', photo: '1747892911129-806430307.jpg', age: 19 }
     ];
