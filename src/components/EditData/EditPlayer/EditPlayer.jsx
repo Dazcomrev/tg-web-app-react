@@ -516,7 +516,7 @@ const EditPlayer = () => {
     useEffect(() => {
         fetchPlayers();
     }, []);
-
+    refreshPlayers = { fetchPlayers }
     /*const players = [
         { PlayerId: 1, FIO: 'Иванов Иван2 Иванович2', Photo: 'Дед.jpg', Age: 18 },
         { PlayerId: 2, FIO: 'Иванов1 Иван1 Иванович1', Photo: 'Яблоко.jpg', Age: 21 },

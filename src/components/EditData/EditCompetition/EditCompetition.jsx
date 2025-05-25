@@ -12,7 +12,7 @@ function AddCompetition({ refreshCompetitions }) {
         return /^[A-Za-zА-Яа-яЁё0123456789\s]+$/.test(text);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); // предотвращаем перезагрузку страницы
 
         if (NameCompetition == "") {
@@ -31,18 +31,45 @@ function AddCompetition({ refreshCompetitions }) {
             return;
         }*/
 
-        setError(''); // очистить ошибки
+        //console.log('Отправляем данные:', { NameCompetition, DateStart });
+        //console.log(`Добавлено соревнование "${NameCompetition}". Дата: ${DateStart}`);
 
-        /*
+        // Формируем FormData для отправки файла
+        const formData = new FormData();
+        formData.append('CompetitionName', NameCompetition);
+        formData.append('DateStart', DateStart);
 
-        НАДО ДОБАВИТЬ СВЯЗБ С server.js
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/competition/addCompetition', {
+                method: 'POST',
+                body: formData,
+            });
 
-        */
-        // Здесь отправляем данные, например на сервер
-        console.log('Отправляем данные:', { NameCompetition, DateStart });
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+            }
 
-        // Можно очистить форму после отправки
-        setNameCompetition('');
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Добавлено соревнование "${NameCompetition}". Дата: ${DateStart}` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            await refreshCompetitions();
+
+            // Очистка формы
+            setError('');
+            setNameCompetition('');
+            setDateStart('');
+            e.target.reset();
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     return (
@@ -113,17 +140,42 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [competitionToRemove, setCompetitionToRemove] = useState(null);
 
-    const removeCompetition = (competition) => {
-        console.log(`Соревнование ${competition.CompetitionName} (${competition.DateStart}) удалено`);
-        setModalOpen(false);
-        setCompetitionToRemove(null);
-        /*fetch('http://localhost:5000/api/log', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: ${competition.TeamName}`}),
-        })
-            .then(res => res.json())
-            .catch(err => console.error(err));*/
+    const removeCompetition = async (competition) => {
+        //console.log(`Соревнование "${competition.CompetitionName}" (${competition.DateStart}) удалено`);
+
+        // Формируем FormData для отправки файла
+        const formData = new FormData();
+        formData.append('CompetitionId', competition.CompetitionId);
+
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/competition/removeCompetition', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+            }
+
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Соревнование "${competition.CompetitionName}" (${competition.DateStart}) удалено` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            await refreshCompetitions();
+
+            // Очистка формы
+            setModalOpen(false);
+            setCompetitionToRemove(null);
+        } catch (err) {
+            console.error(err.message);
+        }
     };
 
     const openModal = (competition) => {
@@ -175,7 +227,7 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
     const [NameCompetition, setNameCompetition] = useState('');
     const [DateStart, setDateStart] = useState('');
     const [isModalOpen, setModalOpen] = useState(false);
-    const [competitionToRemove, setCompetitionToRemove] = useState(null);
+    const [competitionToEdit, setCompetitionToEdit] = useState(null);
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
@@ -192,12 +244,46 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
         }
 
         // Выводим имя и возраст в консоль
-        console.log(`Соревнование изменено на ${NameCompetition} (${DateStart})`);
-        // Очистка формы
-        setCompetitionToRemove(null);
-        setNameCompetition('');
-        setDateStart('');
-        setModalOpen(false);
+        //console.log(`Соревнование изменено с ${competitionToEdit.CompetitionId} (${competitionToEdit.DateStart}) на ${NameCompetition} (${DateStart})`);
+
+        // Формируем FormData для отправки файла
+        const formData = new FormData();
+        formData.append('CompetitionId', competitionToEdit.CompetitionId);
+        formData.append('CompetitionName', NameCompetition);
+        formData.append('DateStart', DateStart);
+
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/competition/editDataCompetition', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+            }
+
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Соревнование "${competitionToEdit.CompetitionId}" (${competitionToEdit.DateStart}) изменено на "${NameCompetition}" (${DateStart})` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            await refreshCompetitions();
+
+            // Очистка формы
+            setCompetitionToEdit(null);
+            setNameCompetition('');
+            setDateStart('');
+            setModalOpen(false);
+            e.target.reset();
+        } catch (err) {
+            console.error(err.message);
+        }
     };
 
     /*
@@ -211,7 +297,7 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
     };
 
     const openModal = (competition) => {
-        setCompetitionToRemove(competition);
+        setCompetitionToEdit(competition);
         setNameCompetition(competition.CompetitionName);
         setDateStart(difisFromPoint(competition.DateStart));
         setModalOpen(true);
@@ -284,28 +370,6 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [error, setError] = useState('');
 
-    /*const handleSubmit = (e) => {
-        e.preventDefault(); // предотвращаем перезагрузку страницы
-
-        if (NameCompetition == "") {
-            setError('Поле текста не должно быть пустым');
-            return;
-        }
-
-        setError(''); // очистить ошибки
-
-        /*
-
-        НАДО ДОБАВИТЬ СВЯЗБ С server.js
-
-        *\/
-        // Здесь отправляем данные, например на сервер
-        console.log('Отправляем данные:', { NameCompetition, DateStart });
-
-        // Можно очистить форму после отправки
-        setNameCompetition('');
-    };*/
-
     const validateNumber = (num) => {
         // Проверяем, что введено число
         return /^\d+$/.test(num);
@@ -335,7 +399,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Проверка: хотя бы одна команда выбрана
@@ -360,16 +424,61 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
 
         // Формируем данные для отправки
         const result = Object.entries(selectedTeams).map(([teamId, data]) => ({
-            teamId,
-            place: data.place,
+            TeamId: teamId,
+            Place: data.place,
         }));
+        const teamsMap = new Map(availableTeams.map(team => [String(team.TeamId), team.TeamName]));
+        //et addTeams = '';
+        const addTeams = result.map((entry) => {
+            return `"${teamsMap.get(entry.TeamId)}" – ${entry.Place} место`;
+        }).join(', ');
+
+        console.log('result:', result);
+        console.log('typeof result:', typeof result);
+        console.log('Array.isArray(result):', Array.isArray(result));
 
         console.log('Добавляем в соревнование:', selectedCompetition);
         console.log('Выбранные команды с местами:', result);
+        console.log(`В соревнование "${selectedCompetition.CompetitionName}" Добавлены команды: ${addTeams}`);
 
-        // TODO: отправить на сервер
+        // Формируем FormData для отправки файла
+        const formData = new FormData();
+        formData.append('CompetitionId', selectedCompetition.CompetitionId);
+        formData.append('entries', result);
 
-        setModalOpen(false);
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/competition/addTeamInCompetition', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    CompetitionId: selectedCompetition.CompetitionId,
+                    headers: { 'Content-Type': 'application/json' },
+                    entries: JSON.stringify({ CompetitionId: selectedCompetition.CompetitionId, result })
+                })
+            });
+            //JSON.stringify({ CompetitionId: selectedCompetition.CompetitionId, result })
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+            }
+
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В соревнование "${selectedCompetition.CompetitionName}" Добавлены команды: ${addTeams}` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            await refreshCompetitions();
+
+            // Очистка формы
+            setModalOpen(false);
+            e.target.reset();
+        } catch (err) {
+            console.error(err.message);
+        }
     };
 
     const openModal = (competition) => {
@@ -505,7 +614,7 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Проверка: хотя бы одна команда выбрана
@@ -631,7 +740,7 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Валидация: все места должны быть заполнены
@@ -720,7 +829,7 @@ const EditCompetition = () => {
     const [teams, setTeams] = useState(null);
 
     const fetchCompetitions = () => {
-        fetch('http://localhost:5000/api/getCompetitions')
+        fetch('http://localhost:5000/api/getCompetitionsForEditCompetition')
             .then(res => res.json())
             .then(data => setCompetitions(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
