@@ -2,7 +2,7 @@
 import './EditCompetition.css';
 import { useNavigate } from 'react-router-dom';
 
-function AddCompetition() {
+function AddCompetition({ refreshCompetitions }) {
     const [NameCompetition, setNameCompetition] = useState('');
     const [DateStart, setDateStart] = useState('');
     const [error, setError] = useState('');
@@ -109,7 +109,7 @@ const styles = {
     }
 };
 
-function RemoveCompetition({ competitions }) {
+function RemoveCompetition({ competitions, refreshCompetitions }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [competitionToRemove, setCompetitionToRemove] = useState(null);
 
@@ -171,7 +171,7 @@ function RemoveCompetition({ competitions }) {
     );
 }
 
-function EditDataCompetition({ competitions }) {
+function EditDataCompetition({ competitions, refreshCompetitions }) {
     const [NameCompetition, setNameCompetition] = useState('');
     const [DateStart, setDateStart] = useState('');
     const [isModalOpen, setModalOpen] = useState(false);
@@ -277,7 +277,7 @@ function EditDataCompetition({ competitions }) {
     );
 }
 
-function AddTeamInCompetition({ competitions, teams }) {
+function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
     const [selectedCompetition, setSelectedCompetition] = useState(null);
     const [availableTeams, setAvailableTeams] = React.useState([]);
     const [selectedTeams, setSelectedTeams] = useState({});
@@ -457,7 +457,7 @@ function AddTeamInCompetition({ competitions, teams }) {
     );
 }
 
-function RemoveTeamFromCompetition({ competitions, teams }) {
+function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions }) {
     const [selectedCompetition, setSelectedCompetition] = useState(null);
     const [availableTeams, setAvailableTeams] = React.useState([]);
     const [selectedTeams, setSelectedTeams] = useState({});
@@ -605,159 +605,7 @@ function RemoveTeamFromCompetition({ competitions, teams }) {
     );
 }
 
-function EditTeamInCompetition({ competitions, teams, teamsInCompetition }) {
-    const [selectedCompetition, setSelectedCompetition] = useState(null);
-    const [availableTeams, setAvailableTeams] = React.useState([]);
-    const [selectedTeamsInCompetition, setSelectedTeamsInCompetition] = useState({});
-    const [isModalOpen, setModalOpen] = useState(false);
-    const [error, setError] = useState('');
-
-    /*const handleSubmit = (e) => {
-        e.preventDefault(); // предотвращаем перезагрузку страницы
-
-        if (NameCompetition == "") {
-            setError('Поле текста не должно быть пустым');
-            return;
-        }
-
-        setError(''); // очистить ошибки
-
-        /*
-
-        НАДО ДОБАВИТЬ СВЯЗБ С server.js
-
-        *\/
-        // Здесь отправляем данные, например на сервер
-        console.log('Отправляем данные:', { NameCompetition, DateStart });
-
-        // Можно очистить форму после отправки
-        setNameCompetition('');
-    };*/
-
-    const validateNumber = (num) => {
-        // Проверяем, что введено число
-        return /^\d+$/.test(num);
-    };
-
-    const handlePlaceChange = (teamId, value) => {
-        setSelectedTeams(prev => ({
-            ...prev,
-            [teamId]: {
-                ...prev[teamId],
-                place: value,
-            }
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        // Проверка: для каждой выбранной команды место заполнено
-        for (const [teamId, data] of Object.entries(selectedTeams)) {
-            if (!data.place.trim()) {
-                setError('Введите место для всех команд');
-                return;
-            }
-            if (!validateNumber(data.place)) {
-                setError('Место должно быть числом');
-                return;
-            }
-        }
-
-        setError('');
-
-        // Формируем данные для отправки
-        const result = Object.entries(availableTeams).map(([teamId, data]) => ({
-            teamId,
-            place: data.place,
-        }));
-
-        console.log('Изменяем места команд в соревновании:', selectedCompetition);
-        console.log('Команды с местами:', result);
-
-        // TODO: отправить на сервер
-
-        setModalOpen(false);
-    };
-
-    const openModal = (competition) => {
-        setSelectedCompetition(competition);
-        const filteredTeams = teams.filter(
-            (team) => competition.teamsInCompetition.includes(team.TeamId)
-        );
-        setAvailableTeams(filteredTeams);
-        const filteredTeamsInCompetition = teamsInCompetition.filter(
-            (tic) => competition.teamsInCompetition.includes(tic.TeamId)
-        );
-        console.log('asad:', filteredTeamsInCompetition);
-        setSelectedTeamsInCompetition(filteredTeamsInCompetition);
-        setError('');
-        setModalOpen(true);
-    };
-
-    const CompetitionItem = ({ competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
-        return (
-            <div>
-                <button className="competition-item" onClick={() => openModal(competition)}>
-                    <p>{competition.CompetitionName}</p>
-                    <p>Дата соревнования: {competition.DateStart}</p>
-                </button>
-            </div>
-        );
-    };
-
-    return (
-        <div>
-            <div>
-                <h3>Изменение места команды в соревновании</h3>
-                <p>Нажмите на соревнование, в котором хотите изменить место команды</p>
-                <div>
-                    {competitions.map((competition) => (
-                        <CompetitionItem key={competition.CompetitionId} competition={competition} />
-                    ))}
-                </div>
-                <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                    <h2>Добавление команд в {selectedCompetition?.CompetitionName}</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            {availableTeams.length === 0 && <p>В соревновании нет команд.</p>}
-                            {availableTeams.map((team) => {
-                                return (
-                                    <div key={team.TeamId}>
-                                        {team.TeamName}
-                                        <input
-                                            type="text"
-                                            placeholder="Введите место"
-                                            value={team?.Place || ''}
-                                            onChange={(e) => handlePlaceChange(team.TeamId, e.target.value)}
-                                        />
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
-
-                        <button type="submit">Подтвердить</button>
-                        <button type="button" onClick={() => setModalOpen(false)} style={{ marginLeft: 10 }}>
-                            Отмена
-                        </button>
-                    </form>
-                </Modal>
-            </div>
-        </div>
-    );
-}
-
-function EditTeamPlaces({ competitions }) {
+function EditTeamPlaces({ competitions, refreshCompetitions }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedCompetition, setSelectedCompetition] = useState(null);
     const [teamPlaces, setTeamPlaces] = useState({}); // { teamId: place }
@@ -868,7 +716,19 @@ function EditTeamPlaces({ competitions }) {
 
 const EditCompetition = () => {
     const navigate = useNavigate();
-    /*const [teams, setTeams] = useState(null);
+    const [competitions, setCompetitions] = useState(null);
+    const [teams, setTeams] = useState(null);
+
+    const fetchCompetitions = () => {
+        fetch('http://localhost:5000/api/getCompetitions')
+            .then(res => res.json())
+            .then(data => setCompetitions(data))
+            .catch(err => console.error('Ошибка загрузки данных:', err));
+    };
+
+    useEffect(() => {
+        fetchCompetitions();
+    }, []);
 
     useEffect(() => {
         fetch('http://localhost:5000/api/listTeams')
@@ -876,19 +736,9 @@ const EditCompetition = () => {
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
 
-    }, []);*/
+    }, []);
 
-    /*const [teams, setTeams] = useState(null);
-
-    useEffect(() => {
-        fetch('http://localhost:5000/api/listTeams')
-            .then(res => res.json())
-            .then(data => setTeams(data))
-            .catch(err => console.error('Ошибка загрузки данных:', err));
-
-    }, []);*/
-
-    const teams = [
+    /*const teams = [
         {
             TeamId: 1,
             TeamName: 'Navi',
@@ -901,9 +751,9 @@ const EditCompetition = () => {
             TeamId: 3,
             TeamName: 'Eteam',
         }
-    ];
+    ];*/
 
-    const competitions = [
+    /*const competitions = [
         { CompetitionId: 1, CompetitionName: 'Соревнование 1', DateStart: '17.05.2025', teams: [{ TeamId: 3, TeamName: 'Eteam', Place: 1 }] },
         {
             CompetitionId: 2, CompetitionName: 'Соревнование 2', DateStart: '20.05.2025', teams: [
@@ -912,7 +762,8 @@ const EditCompetition = () => {
                 { TeamId: 3, TeamName: 'Eteam', Place: 2 }]
         },
         { CompetitionId: 3, CompetitionName: 'Соревнование 3', DateStart: '22.05.2025', teams: [] }
-    ];
+    ];*/
+    
     const handleClick = () => {
         navigate(`/ListTeams`);
     };
@@ -928,15 +779,15 @@ const EditCompetition = () => {
     const renderContent = () => {
         switch (activeSection) {
             case 'addCompetition':
-                return <AddCompetition />;
+                return <AddCompetition refreshCompetitions={fetchCompetitions} />;
             case 'removeCompetition':
-                return <RemoveCompetition competitions={competitions} />;
+                return <RemoveCompetition competitions={competitions} refreshCompetitions={fetchCompetitions} />;
             case 'editDataCompetition':
-                return <EditDataCompetition competitions={competitions} />;
+                return <EditDataCompetition competitions={competitions} refreshCompetitions={fetchCompetitions} />;
             case 'addTeamInCompetition':
-                return <AddTeamInCompetition competitions={competitions} teams={teams} />;
+                return <AddTeamInCompetition competitions={competitions} teams={teams} refreshCompetitions={fetchCompetitions} />;
             case 'removeTeamFromCompetition':
-                return <RemoveTeamFromCompetition competitions={competitions} teams={teams} />;
+                return <RemoveTeamFromCompetition competitions={competitions} teams={teams} refreshCompetitions={fetchCompetitions} />;
             case 'editTeamPlaces':
                 return <EditTeamPlaces competitions={competitions} />
             default:

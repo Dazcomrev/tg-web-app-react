@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
  
  */
 
-function AddTeam() {
+function AddTeam({ refreshTeams }) {
     const [NameTeam, setNameTeam] = useState('');
     const [error, setError] = useState('');
 
@@ -44,7 +44,7 @@ function AddTeam() {
         //console.log('Отправляем данные:', { NameTeam });
         const formData = new FormData();
         formData.append('NameTeam', NameTeam);
-
+        
         //console.log('formData:', formData);
         try {
             const response = await fetch('http://localhost:5000/api/edit/team/addTeam', {
@@ -67,14 +67,13 @@ function AddTeam() {
                 .then(res => res.json())
                 .catch(err => console.error(err));
 
+            await refreshTeams();
             // Можно очистить форму после отправки
             setNameTeam('');
             setError('');
         } catch (err) {
             setError(err.message);
         }
-
-        
     };
 
     return (
@@ -133,7 +132,7 @@ const styles = {
     }
 };
 
-function RemoveTeam({teams}) {
+function RemoveTeam({ teams, refreshTeams }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [teamToRemove, setTeamToRemove] = useState(null);
 
@@ -164,11 +163,13 @@ function RemoveTeam({teams}) {
                 .then(res => res.json())
                 .catch(err => console.error(err));
 
+            await refreshTeams();
             // Можно очистить форму после отправки
             setModalOpen(false);
             setTeamToRemove(null);
+
         } catch (err) {
-            setError(err.message);
+            console.error(err.message);
         }
     };
 
@@ -209,7 +210,7 @@ function RemoveTeam({teams}) {
         <div>
             <form>
                 <h3>Удаление команды</h3>
-                <p>Нажмите на команду, которую хотите удалить</p>
+                <p>Выберите команду, которую хотите удалить</p>
                 <TwoColumnScrollable items={teams}></TwoColumnScrollable>
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
@@ -222,7 +223,7 @@ function RemoveTeam({teams}) {
     );
 }
 
-function EditNameTeam({ teams }) {
+function EditNameTeam({ teams, refreshTeams }) {
     /*
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
@@ -271,6 +272,7 @@ function EditNameTeam({ teams }) {
                 .then(res => res.json())
                 .catch(err => console.error(err));
 
+            await refreshTeams();
             // Можно очистить форму после отправки
             setModalOpen(false);
             setTeamToEdit(null);
@@ -309,7 +311,7 @@ function EditNameTeam({ teams }) {
     return (
         <div>
             <h3>Изменение названия команды</h3>
-            <p>Нажмите на команду, название которой хотите изменить</p>
+            <p>Выберите команду, название которой хотите изменить</p>
             <div className="two-column-scrollable">
                 {teams.map((team) => (
                     <TeamItem key={team.TeamId} team={team} />
@@ -344,7 +346,7 @@ function EditNameTeam({ teams }) {
     );
 }
 
-function AddPlayerInTeam({ teams, allPlayers }) {
+function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
     
     const [error, setError] = React.useState('');
     const [isModalOpen, setModalOpen] = React.useState(false);
@@ -406,6 +408,7 @@ function AddPlayerInTeam({ teams, allPlayers }) {
                 .then(res => res.json())
                 .catch(err => console.error(err));
 
+            await refreshTeams();
             // Можно очистить форму после отправки
             setModalOpen(false);
             setTeamToEdit(null);
@@ -449,7 +452,7 @@ function AddPlayerInTeam({ teams, allPlayers }) {
     return (
         <div>
             <h3>Добавление игрока в команду</h3>
-            <p>Нажмите на команду, в которую хотите добавить игрока</p>
+            <p>Выберите команду, в которую хотите добавить игрока</p>
             <div className="two-column-scrollable">
                 {teams.map((team) => (
                     <TeamItem key={team.TeamId} team={team} />
@@ -492,7 +495,7 @@ function AddPlayerInTeam({ teams, allPlayers }) {
     );
 }
 
-function RemovePlayerInTeam({ teams, allPlayers }) {
+function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
     /*
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
@@ -555,6 +558,7 @@ function RemovePlayerInTeam({ teams, allPlayers }) {
                 .then(res => res.json())
                 .catch(err => console.error(err));
 
+            await refreshTeams();
             // Можно очистить форму после отправки
             setModalOpen(false);
             setTeamToEdit(null);
@@ -598,7 +602,7 @@ function RemovePlayerInTeam({ teams, allPlayers }) {
     return (
         <div>
             <h3>Удаление игрока из команды</h3>
-            <p>Нажмите на команду, из которой хотите удалить игрока</p>
+            <p>Выберите команду, из которой хотите удалить игрока</p>
             <div className="two-column-scrollable">
                 {teams.map((team) => (
                     <TeamItem key={team.TeamId} team={team} />
@@ -655,18 +659,29 @@ const EditTeam = () => {
 
     const [teams, setTeams] = useState(null);
 
+    const fetchTeams = () => {
+        fetch('http://localhost:5000/api/edit/team/getTeams')
+            .then(res => res.json())
+            .then(data => setTeams(data))
+            .catch(err => console.error('Ошибка загрузки данных:', err));
+    };
+
     useEffect(() => {
+        fetchTeams();
+    }, []);
+
+    /*useEffect(() => {
         fetch('http://localhost:5000/api/edit/team/getTeams')
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
 
-    }, []);
+    }, []);*/
 
     const [allPlayers, setAllPlayers] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/edit/team/getAllPlayers')
+        fetch('http://localhost:5000/api/getAllPlayers')
             .then(res => res.json())
             .then(data => setAllPlayers(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
@@ -698,15 +713,15 @@ const EditTeam = () => {
     const renderContent = () => {
         switch (activeSection) {
             case 'addTeam':
-                return <AddTeam />;
+                return <AddTeam refreshTeams={fetchTeams} />;
             case 'removeTeam':
-                return <RemoveTeam teams={teams} />;
+                return <RemoveTeam teams={teams} refreshTeams={fetchTeams} />;
             case 'editNameTeam':
-                return <EditNameTeam teams={teams} />;
+                return <EditNameTeam teams={teams} refreshTeams={fetchTeams} />;
             case 'addPlayerInTeam':
-                return <AddPlayerInTeam teams={teams} allPlayers={allPlayers} />;
+                return <AddPlayerInTeam teams={teams} allPlayers={allPlayers} refreshTeams={fetchTeams} />;
             case 'removePlayerFromTeam':
-                return <RemovePlayerInTeam teams={teams} allPlayers={allPlayers} />;
+                return <RemovePlayerInTeam teams={teams} allPlayers={allPlayers} refreshTeams={fetchTeams} />;
             default:
                 return <div>Выберите раздел</div>;
         }

@@ -2,7 +2,7 @@
 import './EditPlayer.css';
 import { useNavigate } from 'react-router-dom';
 
-function AddPlayer() {
+function AddPlayer({ refreshPlayers }) {
     const [FirstName, setFirstName] = useState('');
     const [SecondName, setSecondName] = useState('');
     const [ThirdName, setThirdName] = useState('');
@@ -59,7 +59,7 @@ function AddPlayer() {
         if (!validate()) return;
 
         // Выводим имя и возраст в консоль
-        console.log('Отправляем данные:', { Photo, FirstName, SecondName, ThirdName, Age });
+        //console.log(`Добавлен игрок ${SecondName} ${FirstName} ${ThirdName}. Возраст ${Age}. Название изображения: (Надо барать из Ответа сервера)`);
 
         // Формируем FormData для отправки файла
         const formData = new FormData();
@@ -69,10 +69,8 @@ function AddPlayer() {
         formData.append('ThirdName', ThirdName);
         formData.append('Age', Age);
 
-        console.log('formData:', formData);
-
         try {
-            const response = await fetch('http://localhost:5000/api/upload-player', {
+            const response = await fetch('http://localhost:5000/api/edit/player/addPlayer', {
                 method: 'POST',
                 body: formData,
             });
@@ -82,7 +80,17 @@ function AddPlayer() {
             }
 
             const data = await response.json();
-            console.log('Ответ сервера:', data);
+            //console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Добавлен игрок ${SecondName} ${FirstName} ${ThirdName}. Возраст ${Age}. Название изображения: ${data.filename}` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            await refreshPlayers();
 
             // Очистка формы
             setFirstName('');
@@ -184,21 +192,47 @@ const styles = {
     }
 };
 
-function RemovePlayer({ players }) {
+function RemovePlayer({ players, refreshPlayers }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [playerToRemove, setPlayerToRemove] = useState(null);
 
-    const removePlayer = (player) => {
-        console.log(`Игрок ${player.fio} с id ${player.id} удален`);
-        setModalOpen(false);
-        setPlayerToRemove(null);
-        /*fetch('http://localhost:5000/api/log', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: ${player.TeamName}`}),
-        })
-            .then(res => res.json())
-            .catch(err => console.error(err));*/
+    const removePlayer = async (player) => {
+        console.log(`Игрок ${player.FIO} с PlayerId ${player.PlayerId} удален. Возраст: ${player.Age}.Название изображения: ${player.Photo}`);
+
+        // Формируем FormData для отправки файла
+        const formData = new FormData();
+        formData.append('OldPhoto', player.Photo);
+        formData.append('PlayerId', player.PlayerId);
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/edit/player/removePlayer', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке');
+            }
+
+            const data = await response.json();
+            console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Удален игрок ${player.FIO} с PlayerId ${player.PlayerId}. Возраст: ${player.Age}.Название изображения: ${player.Photo}` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            await refreshPlayers();
+
+            // Очистка формы
+            setModalOpen(false);
+            setPlayerToRemove(null);
+        } catch (err) {
+            console.error(err.message);
+        }
     };
 
     const openModal = (player) => {
@@ -218,9 +252,9 @@ function RemovePlayer({ players }) {
         return (
             <div>
                 <button className="player-item" onClick={() => openModal(player)}>
-                    <img src={`http://localhost:5000/images/${player.photo}`} height='300px' alt="photo"></img>
-                    <p>{player.fio}</p>
-                    <p>Возраст: {player.age}</p>
+                    <img src={`http://localhost:5000/images/${player.Photo}`} height='300px' alt="photo"></img>
+                    <p>{player.FIO}</p>
+                    <p>Возраст: {player.Age}</p>
                 </button>
             </div>
         );
@@ -233,13 +267,13 @@ function RemovePlayer({ players }) {
                 <p>Нажмите на игрока, которого хотите удалить</p>
                 <div>
                     {players.map((player) => (
-                        <PlayerItem key={player.id} player={player} />
+                        <PlayerItem key={player.PlayerId} player={player} />
                     ))}
                 </div>
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <h2>Всплывающее окно</h2>
-                <p>Вы уверены что хотите удалить игрока {playerToRemove?.fio}?</p>
+                <p>Вы уверены что хотите удалить игрока {playerToRemove?.FIO}?</p>
                 <button onClick={() => removePlayer(playerToRemove)}>Подтвердить</button>
                 <button onClick={() => setModalOpen(false)}>Отмена</button>
             </Modal>
@@ -247,7 +281,7 @@ function RemovePlayer({ players }) {
     );
 }
 
-function EditInfoPlayer({ players }) {
+function EditInfoPlayer({ players, refreshPlayers }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [playerToEdit, setPlayerToEdit] = useState(null);
     const [PlayerId, setPlayerId] = useState('');
@@ -307,22 +341,27 @@ function EditInfoPlayer({ players }) {
         if (!validate()) return;
 
         // Выводим имя и возраст в консоль
+        const FIO = playerToEdit.FIO.split(" ");
+        const OldFirstName = FIO[0];
+        const OldSecondName = FIO[1];
+        const OldThirdName = FIO[2];
         console.log('Отправляем данные для изменения:', { Photo, FirstName, SecondName, ThirdName, Age, OldPhoto });
+        console.log(`Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые-Новые. Имя: ${OldFirstName}-${FirstName}. Фамилия: ${OldSecondName}-${SecondName}. Отчество: ${OldThirdName}-${ThirdName}. Возраст: ${playerToEdit.Age}-${Age}. Название изображения: ${playerToEdit.Photo}-{data.data.Photo}.`);
 
         // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('Photo', Photo);
+        formData.append('PlayerId', playerToEdit.PlayerId);
         formData.append('FirstName', FirstName);
         formData.append('SecondName', SecondName);
         formData.append('ThirdName', ThirdName);
         formData.append('Age', Age);
-        console.log('OldPhoto: ', OldPhoto);
         formData.append('OldPhoto', OldPhoto);
 
         console.log('formData:', formData);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/update-player/${PlayerId}`, {
+            const response = await fetch(`http://localhost:5000/api/edit/player/editDataPlayer`, {
                 method: 'POST',
                 body: formData,
             });
@@ -333,6 +372,16 @@ function EditInfoPlayer({ players }) {
 
             const data = await response.json();
             console.log('Ответ сервера:', data);
+
+            fetch('http://localhost:5000/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые-Новые. Имя: ${OldFirstName}-${FirstName}. Фамилия: ${OldSecondName}-${SecondName}. Отчество: ${OldThirdName}-${ThirdName}. Возраст: ${playerToEdit.Age}-${Age}. Название изображения: ${playerToEdit.Photo}-${data.data.Photo}.` }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error(err));
+
+            await refreshPlayers();
 
             // Очистка формы
             setFirstName('');
@@ -349,14 +398,14 @@ function EditInfoPlayer({ players }) {
 
     const openModal = (player) => {
         setPlayerToEdit(player);
-        setPlayerId(player.id);
-        const FIO = player.fio.split(" ");
+        setPlayerId(player.PlayerId);
+        const FIO = player.FIO.split(" ");
         setFirstName(FIO[0]);
         setSecondName(FIO[1]);
         setThirdName(FIO[2]);
-        setAge(String(player.age));
-        setPhoto(player.photo);
-        setOldPhoto(player.photo);
+        setAge(String(player.Age));
+        setPhoto(player.Photo);
+        setOldPhoto(player.Photo);
         setModalOpen(true);
     };
 
@@ -368,14 +417,14 @@ function EditInfoPlayer({ players }) {
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
         */
-        //console.log('split fio:', player.fio.split(" "));
-        //setFIO(player.fio.split(" "));
+        //console.log('split FIO:', player.FIO.split(" "));
+        //setFIO(player.FIO.split(" "));
         return (
             <div>
                 <button className="player-item" onClick={() => openModal(player)}>
-                    <img src={`http://localhost:5000/images/${player.photo}`} height='300px' alt="photo"></img>
-                    <p>{player.fio}</p>
-                    <p>Возраст: {player.age}</p>
+                    <img src={`http://localhost:5000/images/${player.Photo}`} height='300px' alt="photo"></img>
+                    <p>{player.FIO}</p>
+                    <p>Возраст: {player.Age}</p>
                 </button>
             </div>
         );
@@ -388,7 +437,7 @@ function EditInfoPlayer({ players }) {
                 <p>Нажмите на игрока, данные которого хотите изменить</p>
                 <div>
                     {players.map((player) => (
-                        <PlayerItem key={player.id} player={player} />
+                        <PlayerItem key={player.PlayerId} player={player} />
                     ))}
                 </div>
             </form>
@@ -453,21 +502,26 @@ function EditInfoPlayer({ players }) {
 
 const EditPlayer = () => {
     const navigate = useNavigate();
-    /*const [Players, setPlayers] = useState(null);
+    
 
-    useEffect(() => {
-        fetch('http://localhost:5000/api/listPlayers')
+    const [players, setPlayers] = useState(null);
+
+    const fetchPlayers = () => {
+        fetch('http://localhost:5000/api/getAllPlayers')
             .then(res => res.json())
             .then(data => setPlayers(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
+    };
 
-    }, []);*/
+    useEffect(() => {
+        fetchPlayers();
+    }, []);
 
-    const players = [
-        { id: 1, fio: 'Иванов Иван2 Иванович2', photo: 'Дед.jpg', age: 18 },
-        { id: 2, fio: 'Иванов1 Иван1 Иванович1', photo: 'Яблоко.jpg', age: 21 },
-        { id: 3, fio: 'Иванов3 Иван3 Иванович3', photo: '1747892911129-806430307.jpg', age: 19 }
-    ];
+    /*const players = [
+        { PlayerId: 1, FIO: 'Иванов Иван2 Иванович2', Photo: 'Дед.jpg', Age: 18 },
+        { PlayerId: 2, FIO: 'Иванов1 Иван1 Иванович1', Photo: 'Яблоко.jpg', Age: 21 },
+        { PlayerId: 3, FIO: 'Иванов3 Иван3 Иванович3', Photo: '1747892911129-806430307.jpg', Age: 19 }
+    ];*/
     //console.log("Иванов2 Иван2 Иванович2".split(" "));
     //console.log("Иванов2 Иван2".split(" ")[2]);
     const handleClick = () => {
@@ -485,11 +539,11 @@ const EditPlayer = () => {
     const renderContent = () => {
         switch (activeSection) {
             case 'addPlayer':
-                return <AddPlayer />;
+                return <AddPlayer refreshPlayers={fetchPlayers} />;
             case 'removePlayer':
-                return <RemovePlayer players={players} />;
+                return <RemovePlayer players={players} refreshPlayers={fetchPlayers} />;
             case 'editName':
-                return <EditInfoPlayer players={players} />;
+                return <EditInfoPlayer players={players} refreshPlayers={fetchPlayers} />;
             default:
                 return <div>Выберите раздел</div>;
         }
