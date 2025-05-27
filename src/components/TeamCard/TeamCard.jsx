@@ -47,7 +47,7 @@ const HistoryItem = ({ history }) => {
             <h4>{history.CompetitionName}</h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 <li>Дата: {history.DateStart}</li>
-                <li>Заняли {history.Place} место</li>
+                <li>{history.Place} место</li>
             </ul>
         </div>
     );
@@ -113,7 +113,7 @@ const PlayerCard = () => {
                     ))}
                     <NoPlayerItem players={teamCard.players}></NoPlayerItem>
                 </div>
-                <div>
+                <div className="test-div">
                     <h3 className="subtitle">История участия в соревнованиях</h3>
                     {teamCard.history.map((history, index) => (
                         <HistoryItem key={index} history={history} />

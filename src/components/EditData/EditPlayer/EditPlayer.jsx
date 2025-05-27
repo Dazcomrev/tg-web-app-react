@@ -344,9 +344,9 @@ function EditInfoPlayer({ players, refreshPlayers }) {
         const FIO = playerToEdit.FIO.split(" ");
         const OldFirstName = FIO[0];
         const OldSecondName = FIO[1];
-        const OldThirdName = FIO[2];
+        const OldThirdName = FIO[2] ? FIO[2] : '';
         console.log('Отправляем данные для изменения:', { Photo, FirstName, SecondName, ThirdName, Age, OldPhoto });
-        console.log(`Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые-Новые. Имя: ${OldFirstName}-${FirstName}. Фамилия: ${OldSecondName}-${SecondName}. Отчество: ${OldThirdName}-${ThirdName}. Возраст: ${playerToEdit.Age}-${Age}. Название изображения: ${playerToEdit.Photo}-{data.data.Photo}.`);
+        console.log(`Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые–Новые. Имя: ${OldFirstName}–${FirstName}. Фамилия: ${OldSecondName}–${SecondName}. Отчество: ${OldThirdName}–${ThirdName}. Возраст: ${playerToEdit.Age}–${Age}. Название изображения: ${playerToEdit.Photo}–{data.data.Photo}.`);
 
         // Формируем FormData для отправки файла
         const formData = new FormData();
@@ -376,7 +376,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
             fetch('http://localhost:5000/api/log', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые-Новые. Имя: ${OldFirstName}-${FirstName}. Фамилия: ${OldSecondName}-${SecondName}. Отчество: ${OldThirdName}-${ThirdName}. Возраст: ${playerToEdit.Age}-${Age}. Название изображения: ${playerToEdit.Photo}-${data.data.Photo}.` }),
+                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые-Новые. Имя: ${OldFirstName}–${FirstName}. Фамилия: ${OldSecondName}–${SecondName}. Отчество: ${OldThirdName}–${ThirdName}. Возраст: ${playerToEdit.Age}–${Age}. Название изображения: ${playerToEdit.Photo}–${data.data.Photo}.` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -402,7 +402,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
         const FIO = player.FIO.split(" ");
         setFirstName(FIO[0]);
         setSecondName(FIO[1]);
-        setThirdName(FIO[2]);
+        setThirdName(FIO[2] ? FIO[2] : '');
         setAge(String(player.Age));
         setPhoto(player.Photo);
         setOldPhoto(player.Photo);
@@ -516,7 +516,7 @@ const EditPlayer = () => {
     useEffect(() => {
         fetchPlayers();
     }, []);
-    refreshPlayers = { fetchPlayers }
+
     /*const players = [
         { PlayerId: 1, FIO: 'Иванов Иван2 Иванович2', Photo: 'Дед.jpg', Age: 18 },
         { PlayerId: 2, FIO: 'Иванов1 Иван1 Иванович1', Photo: 'Яблоко.jpg', Age: 21 },
@@ -560,7 +560,7 @@ const EditPlayer = () => {
         <div>
             <button className="back" onClick={handleClick}>Список команд</button>
             <button className="back" onClick={backClick}>Назад</button>
-            <h2>Выберите какую информацию хотите отредактироать</h2>
+            <h2>Выберите какую информацию в разделе игрок хотите отредактироать</h2>
             <button className="button" onClick={() => setActiveSection("addPlayer")}>Добавление игрока</button>
             <button className="button" onClick={() => setActiveSection("removePlayer")}>Удаление игрока</button>
             <button className="button" onClick={() => setActiveSection("editName")}>Изменение общих данных игрока</button>
