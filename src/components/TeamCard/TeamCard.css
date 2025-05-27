@@ -27,3 +27,12 @@
     height: 100px;
     background: #b9b9b9
 }
+
+.hr-matchs {
+    width: 100%;
+}
+
+.hr-competitions {
+    color:forestgreen;
+    border-width: 5px;
+}

@@ -703,7 +703,6 @@ const EditMatch = () => {
     useEffect(() => {
         fetchCompetitions();
     }, []);
-    console.log(competitions);
 
     const handleClick = () => {
         navigate(`/ListTeams`);

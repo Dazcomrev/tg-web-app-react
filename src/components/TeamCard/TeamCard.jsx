@@ -5,6 +5,39 @@ import '../Button/Button.css';
 import Header from '../Header/Header';
 import { useParams } from 'react-router-dom';
 
+function ImageTooltip({ children, imgSrc, imgAlt }) {
+    const [visible, setVisible] = useState(false);
+
+    return (
+        <div
+            style={{ position: 'relative', display: 'inline-block' }}
+            onMouseEnter={() => setVisible(true)}
+            onMouseLeave={() => setVisible(false)}
+        >
+            {children}
+
+            {visible && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        marginTop: 8,
+                        padding: 5,
+                        border: '1px solid #ccc',
+                        backgroundColor: '#fff',
+                        boxShadow: '0 0 5px rgba(0,0,0,0.3)',
+                        zIndex: 1000,
+                    }}
+                >
+                    <img src={imgSrc} alt={imgAlt} style={{ maxWidth: 200, maxHeight: 150 }} />
+                </div>
+            )}
+        </div>
+    );
+}
+
 const PlayerItem = ({ player, teamId }) => {
     const navigate = useNavigate();
 
@@ -19,17 +52,21 @@ const PlayerItem = ({ player, teamId }) => {
         /*fetch('http://localhost:5000/api/log', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр игрока', actionDetails: `ID игрока: ${player.PlayerId}` }),
+            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр игрока', actionDetails: `Игрок: ${player.FIO}. ID игрока: ${player.PlayerId}` }),
         })
             .then(res => res.json())
             .catch(err => console.error(err));*/
     };
-
+    //<img src={`http://localhost:5000/images/${player.Photo}`} height='150px' alt="photo"></img>
+    const imgSrc = `http://localhost:5000/images/${player.Photo}`;
     return (
+
         <button className="player-item" onClick={handleClick}>
-            <img src={`http://localhost:5000/images/${player.Photo}`} height='150px' alt="photo"></img>
-            <p>{player.FIO}</p>
+            <ImageTooltip imgSrc={imgSrc} imgAlt="photo">
+                <p>{player.FIO}</p>
+            </ImageTooltip>
         </button>
+
     );
 };
 
@@ -40,14 +77,34 @@ const NoPlayerItem = ({ players }) => {
     return <p></p>;
 };
 
-const HistoryItem = ({ history }) => {
+const HistoryItem = ({ history, teams }) => {
     
     return (
         <div className="history-item">
-            <h4>{history.CompetitionName}</h4>
+            <hr className={'hr-competitions'} />
+            <h3>{history.CompetitionName}</h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 <li>Дата: {history.DateStart}</li>
-                <li>{history.Place} место</li>
+                <li>Место : {history.Place}</li>
+                <div>
+                    <h3>Матчи команды: </h3>
+                    {history.matchs.length == 0 && 'Отсутствуют'}
+                    {history.matchs.map(match => {
+                        const teamsMap = new Map(teams?.map(team => [team.TeamId, team.TeamName]));
+                        const score1 = match.Score1 != -1 ? String(match.Score1) : 'не указан';
+                        const score2 = match.Score2 != -1 ? String(match.Score2) : 'не указан';
+                        const winnerName = match.HaveWinner ? match.WinnerId == match.Team1 ? `"${teamsMap.get(match.Team1)}"` : `"${teamsMap.get(match.Team2)}"` : 'не указан';
+                        return (
+                            <div key={match.MatchId}>
+                                <hr className={'hr-matchs'} />
+                                <p>"{teamsMap?.get(match?.Team1)}" – "{teamsMap?.get(match?.Team2)}"</p>
+                                <p>Счет: {score1} – {score2}</p>
+                                <p>Победитель: {winnerName}</p>
+                                <p>Дата соревнования: {match?.DateMatch}</p>
+                            </div>
+                        )
+                    })}
+                </div>
             </ul>
         </div>
     );
@@ -98,6 +155,16 @@ const PlayerCard = () => {
             .catch(err => console.error(err));
     }, [teamId]);
 
+    const [teams, setTeams] = useState(null);
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/listTeams')
+            .then(res => res.json())
+            .then(data => setTeams(data))
+            .catch(err => console.error('Ошибка загрузки данных:', err));
+
+    }, []);
+
     if (!teamCard) return <div>Загрузка...</div>;
 
     return (
@@ -116,7 +183,7 @@ const PlayerCard = () => {
                 <div className="test-div">
                     <h3 className="subtitle">История участия в соревнованиях</h3>
                     {teamCard.history.map((history, index) => (
-                        <HistoryItem key={index} history={history} />
+                        <HistoryItem key={index} history={history} teams={teams} />
                     ))}
                     <NoHistoryItem history={teamCard.history}></NoHistoryItem>
                 </div>

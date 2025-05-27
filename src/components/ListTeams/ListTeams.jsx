@@ -10,7 +10,7 @@ const ListTeams = () => {
         navigate(`/EditData`);
     };
 
-    /*const data1 = [
+    /*const teams = [
         {
             TeamId: 1,
             TeamName: 'Navi',

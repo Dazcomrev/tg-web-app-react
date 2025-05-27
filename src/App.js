@@ -13,6 +13,7 @@ import Player from './components/EditData/EditPlayer/EditPlayer';
 import Competition from './components/EditData/EditCompetition/EditCompetition';
 import Match from './components/EditData/EditMatch/EditMatch';
 import { useNavigate } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 function App() {
     const { onToggleButton, tg } = useTelegram();
@@ -33,15 +34,32 @@ function App() {
                 <Route path={'/TeamCard/:teamId/PlayerCard/:playerId'} element={<PlayerCard />}></Route>
                 <Route path={'/TeamCard/:teamId'} element={<TeamCard />}></Route>
                 <Route path={'/ListTeams'} element={<ListTeams />}></Route>
-                <Route path={'/EditData/EditMatch'} element={<Match />}></Route>
-                <Route path={'/EditData/EditCompetition'} element={<Competition />}></Route>
-                <Route path={'/EditData/EditPlayer'} element={<Player />}></Route>
-                <Route path={'/EditData/EditTeam'} element={<Team />}></Route>
-                <Route path={'/EditData'} element={<EditData />}></Route>
+                {/* Защищённые маршруты */}
+                <Route
+                    path="/EditData/*"
+                    element={
+                        <ProtectedRoute>
+                            <Routes>
+                                <Route path="EditMatch" element={<Match />} />
+                                <Route path="EditCompetition" element={<Competition />} />
+                                <Route path="EditPlayer" element={<Player />} />
+                                <Route path="EditTeam" element={<Team />} />
+                                <Route path="" element={<EditData />} />
+                            </Routes>
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path={'/'} element={<button onClick={handleClick}>Список команд</button>}></Route>
             </Routes>
         </div>
     );
 }
+/*
+<Route path={'/EditData/EditMatch'} element={<Match />}></Route>
+                <Route path={'/EditData/EditCompetition'} element={<Competition />}></Route>
+                <Route path={'/EditData/EditPlayer'} element={<Player />}></Route>
+                <Route path={'/EditData/EditTeam'} element={<Team />}></Route>
+                <Route path={'/EditData'} element={<EditData />}></Route>
+*/
 
 export default App;

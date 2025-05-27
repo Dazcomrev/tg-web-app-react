@@ -28,6 +28,14 @@ const HistoryItem = ({ history }) => {
 const PlayerCard = () => {
     const { playerId, teamId } = useParams();
     const navigate = useNavigate();
+    const [teams, setTeams] = useState(null);
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/edit/team/getTeams')
+            .then(res => res.json())
+            .then(data => setTeams(data))
+            .catch(err => console.error('Ошибка загрузки данных:', err));
+    }, []);
 
     const handleClick = () => {
         navigate(`/ListTeams`);
@@ -35,6 +43,18 @@ const PlayerCard = () => {
 
     const handleClickTeam = () => {
         navigate(`/TeamCard/${teamId}`);
+        const teamsMap = new Map(teams?.map(team => [String(team.TeamId), team.TeamName]));
+        console.log('teamId:', teamId);
+        console.log('teamsMap:', teamsMap);
+        console.log('teamsMap.get(teamId):', teamsMap.get(teamId));
+        
+        fetch('http://localhost:5000/api/log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Возвращение от просмотра игрока к карточке команды. Название команды: "${teamsMap.get(teamId)}". TeamId: ${teamId}`}),
+        })
+            .then(res => res.json())
+            .catch(err => console.error(err));
     };
 
     /*const playerCard1 = {
@@ -54,6 +74,8 @@ const PlayerCard = () => {
             },
         ]
     }*/
+
+    
 
     const [playerCard, setPlayerCard] = useState(null);
 

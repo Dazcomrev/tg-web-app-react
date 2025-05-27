@@ -45,7 +45,7 @@ const TeamItem = ({ team }) => {
         /*fetch('http://localhost:5000/api/log', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: ${team.TeamName}`}),
+            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Название команды: "${team.TeamName}". TeamId: ${team.TeamId}`}),
         })
             .then(res => res.json())
             .catch(err => console.error(err));*/
@@ -69,6 +69,7 @@ const TwoColumnScrollable = ({ items }) => {
             {items.map((team) => (
                 <TeamItem key={team.TeamId} team={team} />
             ))}
+            {items.length === 0 && <p>Нет информации ни об одной из команд</p> }
         </div>
     );
 };
