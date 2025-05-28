@@ -50,12 +50,12 @@ const ListTeams = () => {
     }, []);*/
 
     if (!teams) return <div>Загрузка...</div>;
-
+    //<p>user: {user}</p>
     return (
         <div>
             <button className="back" onClick={handleClick}>Редактирование</button>
             <h2>Cписок команд вуза</h2>
-            <p>user: {user}</p>
+            
             <p>queryId: {queryId}</p>
             <TwoColumnScrollable items={teams}></TwoColumnScrollable>
         </div>
