@@ -1,6 +1,9 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './EditTeam.css';
 import { useNavigate } from 'react-router-dom';
+//import { useTelegram } from '../../../hooks/useTelegram';
+import { useURL } from '../../../hooks/URLs';
+const { urlServer } = useURL();
 
 /*
 
@@ -47,7 +50,7 @@ function AddTeam({ refreshTeams }) {
         
         //console.log('formData:', formData);
         try {
-            const response = await fetch('http://localhost:5000/api/edit/team/addTeam', {
+            const response = await fetch(`${urlServer}api/edit/team/addTeam`, {
                 method: 'POST',
                 body: formData
             });
@@ -59,7 +62,7 @@ function AddTeam({ refreshTeams }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Создана команда ${NameTeam}` }),
@@ -143,7 +146,7 @@ function RemoveTeam({ teams, refreshTeams }) {
         formData.append('TeamId', team.TeamId);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/team/removeTeam', {
+            const response = await fetch(`${urlServer}api/edit/team/removeTeam`, {
                 method: 'POST',
                 body: formData
             });
@@ -155,7 +158,7 @@ function RemoveTeam({ teams, refreshTeams }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Команда ${team.TeamName} с id ${team.TeamId} удалена` }),
@@ -252,7 +255,7 @@ function EditNameTeam({ teams, refreshTeams }) {
         formData.append('NewTeamName', newName);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/team/editNameTeam', {
+            const response = await fetch(`${urlServer}api/edit/team/editNameTeam`, {
                 method: 'POST',
                 body: formData
             });
@@ -264,7 +267,7 @@ function EditNameTeam({ teams, refreshTeams }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Название команды ${team.TeamName} изменено на ${newName}` }),
@@ -388,7 +391,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
         formData.append('PlayerId', PlayerId);
         formData.append('DateAdd', DateAdd);
         try {
-            const response = await fetch('http://localhost:5000/api/edit/team/addPlayerInTeam', {
+            const response = await fetch(`${urlServer}api/edit/team/addPlayerInTeam`, {
                 method: 'POST',
                 body: formData
             });
@@ -400,7 +403,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В команду ${team.TeamName} (TeamId = ${team.TeamId}) ${DateAdd} добавлен игрок ${FIO} с PlayerId = ${PlayerId}` }),
@@ -538,7 +541,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
         formData.append('PlayerId', PlayerId);
         formData.append('DateLeft', DateLeft);
         try {
-            const response = await fetch('http://localhost:5000/api/edit/team/removePlayerFromTeam', {
+            const response = await fetch(`${urlServer}api/edit/team/removePlayerFromTeam`, {
                 method: 'POST',
                 body: formData
             });
@@ -550,7 +553,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Из команды ${team.TeamName} (TeamId = ${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId = ${PlayerId}` }),
@@ -660,7 +663,7 @@ const EditTeam = () => {
     const [teams, setTeams] = useState(null);
 
     const fetchTeams = () => {
-        fetch('http://localhost:5000/api/edit/team/getTeams')
+        fetch(`${urlServer}api/edit/team/getTeams`)
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
@@ -671,7 +674,7 @@ const EditTeam = () => {
     }, []);
 
     /*useEffect(() => {
-        fetch('http://localhost:5000/api/edit/team/getTeams')
+        fetch(`${urlServer}api/edit/team/getTeams`)
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
@@ -681,7 +684,7 @@ const EditTeam = () => {
     const [allPlayers, setAllPlayers] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/getAllPlayers')
+        fetch(`${urlServer}api/getAllPlayers`)
             .then(res => res.json())
             .then(data => setAllPlayers(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));

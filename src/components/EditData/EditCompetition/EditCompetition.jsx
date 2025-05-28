@@ -1,6 +1,9 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './EditCompetition.css';
 import { useNavigate } from 'react-router-dom';
+//import { useTelegram } from '../../../hooks/useTelegram';
+import { useURL } from '../../../hooks/URLs';
+const { urlServer } = useURL();
 
 const pointFromDifis = (dateDifis) => {
     const y = dateDifis.split("-")[0];
@@ -46,7 +49,7 @@ function AddCompetition({ refreshCompetitions }) {
         formData.append('DateStart', DateStart);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/competition/addCompetition', {
+            const response = await fetch(`${urlServer}api/edit/competition/addCompetition`, {
                 method: 'POST',
                 body: formData,
             });
@@ -58,7 +61,7 @@ function AddCompetition({ refreshCompetitions }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Добавлено соревнование "${NameCompetition}". Дата: ${pointFromDifis(DateStart)}` }),
@@ -154,7 +157,7 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
         formData.append('CompetitionId', competition.CompetitionId);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/competition/removeCompetition', {
+            const response = await fetch(`${urlServer}api/edit/competition/removeCompetition`, {
                 method: 'POST',
                 body: formData,
             });
@@ -166,7 +169,7 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Удалено соревнование "${competition.CompetitionName}" (${competition.DateStart}) c CompetitionId = ${competition.CompetitionId}` }),
@@ -259,7 +262,7 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
         formData.append('DateStart', DateStart);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/competition/editDataCompetition', {
+            const response = await fetch(`${urlServer}api/edit/competition/editDataCompetition`, {
                 method: 'POST',
                 body: formData,
             });
@@ -271,7 +274,7 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Соревнование с CompetitionId = ${competitionToEdit.CompetitionId} – "${competitionToEdit.CompetitionName}" (${competitionToEdit.DateStart}) изменено на "${NameCompetition}" (${pointFromDifis(DateStart)})` }),
@@ -448,7 +451,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
         formData.append('entries', result);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/competition/addTeamInCompetition', {
+            const response = await fetch(`${urlServer}api/edit/competition/addTeamInCompetition`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -466,7 +469,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В соревнование "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) добавлены команды: ${addTeams}` }),
@@ -641,7 +644,7 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
         //console.log(`В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) удалены команды: ${removeTeams}`);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/competition/removeTeamFromCompetition', {
+            const response = await fetch(`${urlServer}api/edit/competition/removeTeamFromCompetition`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -659,7 +662,7 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) удалены команды: ${removeTeams}` }),
@@ -813,7 +816,7 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
         //console.log(`В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) изменены места команд: ${removeTeams}`);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/competition/editTeamPlaces', {
+            const response = await fetch(`${urlServer}api/edit/competition/editTeamPlaces`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -831,7 +834,7 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) изменены места команд: ${removeTeams}` }),
@@ -917,7 +920,7 @@ const EditCompetition = () => {
     const [teams, setTeams] = useState(null);
 
     const fetchCompetitions = () => {
-        fetch('http://localhost:5000/api/getCompetitionsForEditCompetition')
+        fetch(`${urlServer}api/getCompetitionsForEditCompetition`)
             .then(res => res.json())
             .then(data => setCompetitions(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
@@ -928,7 +931,7 @@ const EditCompetition = () => {
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/listTeams')
+        fetch(`${urlServer}api/listTeams`)
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));

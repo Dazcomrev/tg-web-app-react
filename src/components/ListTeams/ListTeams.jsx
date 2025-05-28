@@ -2,15 +2,20 @@
 import './ListTeams.css';
 import TwoColumnScrollable from './TwoColumnScrollable/TwoColumnScrollable';
 import { useNavigate } from 'react-router-dom';
+import { useTelegram } from '../../hooks/useTelegram';
+import { useURL } from '../../hooks/URLs';
+const { urlServer } = useURL();
 
 const ListTeams = () => {
     const navigate = useNavigate();
+    const { tg, queryId } = useTelegram();
+    //console.log(queryId);
 
     const handleClick = () => {
         navigate(`/EditData`);
     };
 
-    /*const teams = [
+    const teams = [
         {
             TeamId: 1,
             TeamName: 'Navi',
@@ -32,17 +37,17 @@ const ListTeams = () => {
             NumberDefeats: 0,
             FrequencyWins: '0'
         }
-    ];*/
+    ];
 
-    const [teams, setTeams] = useState(null);
+    /*const [teams, setTeams] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/listTeams')
+        fetch(`${urlServer}api/listTeams`)
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
 
-    }, []);
+    }, []);*/
 
     if (!teams) return <div>Загрузка...</div>;
 

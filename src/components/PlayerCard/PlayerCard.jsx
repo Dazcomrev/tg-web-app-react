@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import '../Button/Button.css';
 import Header from '../Header/Header';
 import { useParams } from 'react-router-dom';
+//import { useTelegram } from '../../hooks/useTelegram';
+import { useURL } from '../../hooks/URLs';
+const { urlServer } = useURL();
 
 const HistoryItem = ({ history }) => {
 
@@ -31,7 +34,7 @@ const PlayerCard = () => {
     const [teams, setTeams] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/edit/team/getTeams')
+        fetch(`${urlServer}api/edit/team/getTeams`)
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
@@ -44,17 +47,14 @@ const PlayerCard = () => {
     const handleClickTeam = () => {
         navigate(`/TeamCard/${teamId}`);
         const teamsMap = new Map(teams?.map(team => [String(team.TeamId), team.TeamName]));
-        console.log('teamId:', teamId);
-        console.log('teamsMap:', teamsMap);
-        console.log('teamsMap.get(teamId):', teamsMap.get(teamId));
         
-        fetch('http://localhost:5000/api/log', {
+        /*fetch(`${urlServer}api/log`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Возвращение от просмотра игрока к карточке команды. Название команды: "${teamsMap.get(teamId)}". TeamId: ${teamId}`}),
         })
             .then(res => res.json())
-            .catch(err => console.error(err));
+            .catch(err => console.error(err));*/
     };
 
     /*const playerCard1 = {
@@ -80,7 +80,7 @@ const PlayerCard = () => {
     const [playerCard, setPlayerCard] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/playerCard/${playerId}`)
+        fetch(`${urlServer}api/playerCard/${playerId}`)
             .then(res => res.json())
             .then(data => setPlayerCard(data))
             .catch(err => console.error(err));

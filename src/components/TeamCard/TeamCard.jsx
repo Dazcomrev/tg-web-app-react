@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import '../Button/Button.css';
 import Header from '../Header/Header';
 import { useParams } from 'react-router-dom';
+//import { useTelegram } from '../../hooks/useTelegram';
+import { useURL } from '../../hooks/URLs';
+const { urlServer } = useURL();
 
 function ImageTooltip({ children, imgSrc, imgAlt }) {
     const [visible, setVisible] = useState(false);
@@ -49,7 +52,7 @@ const PlayerItem = ({ player, teamId }) => {
 
     const handleClick = () => {
         navigate(`/TeamCard/${teamId}/PlayerCard/${player.PlayerId}`);
-        /*fetch('http://localhost:5000/api/log', {
+        /*fetch(`${urlServer}api/log`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр игрока', actionDetails: `Игрок: ${player.FIO}. ID игрока: ${player.PlayerId}` }),
@@ -149,7 +152,7 @@ const PlayerCard = () => {
     const [teamCard, setTeamCard] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/teamCard/${teamId}`)
+        fetch(`${urlServer}api/teamCard/${teamId}`)
             .then(res => res.json())
             .then(data => setTeamCard(data))
             .catch(err => console.error(err));
@@ -158,7 +161,7 @@ const PlayerCard = () => {
     const [teams, setTeams] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/listTeams')
+        fetch(`${urlServer}api/listTeams`)
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));

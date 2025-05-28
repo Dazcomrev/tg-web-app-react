@@ -1,6 +1,9 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './EditMatch.css';
 import { useNavigate } from 'react-router-dom';
+//import { useTelegram } from '../../../hooks/useTelegram';
+import { useURL } from '../../../hooks/URLs';
+const { urlServer } = useURL();
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null; // ничего не рендерим, если окно закрыто
 
@@ -144,7 +147,7 @@ function AddMatch({ competitions, refreshCompetitions }) {
         //setError('');
         //setModalOpen(false);
         try {
-            const response = await fetch('http://localhost:5000/api/edit/match/addMatch', {
+            const response = await fetch(`${urlServer}api/edit/match/addMatch`, {
                 method: 'POST',
                 body: formData,
             });
@@ -156,7 +159,7 @@ function AddMatch({ competitions, refreshCompetitions }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Добавлен матч "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${pointFromDifis(dateMatch)}.` }),
@@ -346,7 +349,7 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
         //console.log(`Удален матч "${teamsMap.get(Match.Team1)}" – "${teamsMap.get(Match.Team2)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${Match.DateMatch}.`);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/match/removeMatch', {
+            const response = await fetch(`${urlServer}api/edit/match/removeMatch`, {
                 method: 'POST',
                 body: formData,
             });
@@ -358,7 +361,7 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Удален матч "${teamsMap.get(Match.Team1)}" – "${teamsMap.get(Match.Team2)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${Match.DateMatch}.` }),
@@ -545,7 +548,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
 
         //console.log(`Изменены данные матча "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}". Счет: Был – ${oldScore1}:${oldScore2}; Стал – ${score1}:${score2}. Победитель: Был – ${oldWinnerName}; Стал – ${winnerName}. Дата: Была – ${selectedMatch.DateMatch}; Стала – ${pointFromDifis(dateMatch)}`);
         try {
-            const response = await fetch('http://localhost:5000/api/edit/match/editDataMatch', {
+            const response = await fetch(`${urlServer}api/edit/match/editDataMatch`, {
                 method: 'POST',
                 body: formData,
             });
@@ -557,7 +560,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
             //const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Изменены данные матча "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}". Счет: Был – ${oldScore1}:${oldScore2}; Стал – ${score1}:${score2}. Победитель: Был – ${oldWinnerName}; Стал – ${winnerName}. Дата: Была – ${selectedMatch.DateMatch}; Стала – ${pointFromDifis(dateMatch)}` }),
@@ -694,7 +697,7 @@ const EditMatch = () => {
     const [competitions, setCompetitions] = useState(null);
 
     const fetchCompetitions = () => {
-        fetch('http://localhost:5000/api/getCompetitionsForEditMatch')
+        fetch(`${urlServer}api/getCompetitionsForEditMatch`)
             .then(res => res.json())
             .then(data => setCompetitions(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));

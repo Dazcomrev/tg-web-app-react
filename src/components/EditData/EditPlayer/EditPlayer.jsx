@@ -1,6 +1,9 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './EditPlayer.css';
 import { useNavigate } from 'react-router-dom';
+//import { useTelegram } from '../../../hooks/useTelegram';
+import { useURL } from '../../../hooks/URLs';
+const { urlServer } = useURL();
 
 function AddPlayer({ refreshPlayers }) {
     const [FirstName, setFirstName] = useState('');
@@ -70,7 +73,7 @@ function AddPlayer({ refreshPlayers }) {
         formData.append('Age', Age);
 
         try {
-            const response = await fetch('http://localhost:5000/api/edit/player/addPlayer', {
+            const response = await fetch(`${urlServer}api/edit/player/addPlayer`, {
                 method: 'POST',
                 body: formData,
             });
@@ -82,7 +85,7 @@ function AddPlayer({ refreshPlayers }) {
             const data = await response.json();
             //console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Добавлен игрок ${SecondName} ${FirstName} ${ThirdName}. Возраст ${Age}. Название изображения: ${data.filename}` }),
@@ -205,7 +208,7 @@ function RemovePlayer({ players, refreshPlayers }) {
         formData.append('PlayerId', player.PlayerId);
         
         try {
-            const response = await fetch('http://localhost:5000/api/edit/player/removePlayer', {
+            const response = await fetch(`${urlServer}api/edit/player/removePlayer`, {
                 method: 'POST',
                 body: formData,
             });
@@ -217,7 +220,7 @@ function RemovePlayer({ players, refreshPlayers }) {
             const data = await response.json();
             console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Удален игрок ${player.FIO} с PlayerId ${player.PlayerId}. Возраст: ${player.Age}.Название изображения: ${player.Photo}` }),
@@ -252,7 +255,7 @@ function RemovePlayer({ players, refreshPlayers }) {
         return (
             <div>
                 <button className="player-item" onClick={() => openModal(player)}>
-                    <img src={`http://localhost:5000/images/${player.Photo}`} height='300px' alt="photo"></img>
+                    <img src={`${urlServer}images/${player.Photo}`} height='300px' alt="photo"></img>
                     <p>{player.FIO}</p>
                     <p>Возраст: {player.Age}</p>
                 </button>
@@ -361,7 +364,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
         console.log('formData:', formData);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/edit/player/editDataPlayer`, {
+            const response = await fetch(`${urlServer}api/edit/player/editDataPlayer`, {
                 method: 'POST',
                 body: formData,
             });
@@ -373,7 +376,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
             const data = await response.json();
             console.log('Ответ сервера:', data);
 
-            fetch('http://localhost:5000/api/log', {
+            fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые-Новые. Имя: ${OldFirstName}–${FirstName}. Фамилия: ${OldSecondName}–${SecondName}. Отчество: ${OldThirdName}–${ThirdName}. Возраст: ${playerToEdit.Age}–${Age}. Название изображения: ${playerToEdit.Photo}–${data.data.Photo}.` }),
@@ -422,7 +425,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
         return (
             <div>
                 <button className="player-item" onClick={() => openModal(player)}>
-                    <img src={`http://localhost:5000/images/${player.Photo}`} height='300px' alt="photo"></img>
+                    <img src={`${urlServer}images/${player.Photo}`} height='300px' alt="photo"></img>
                     <p>{player.FIO}</p>
                     <p>Возраст: {player.Age}</p>
                 </button>
@@ -507,7 +510,7 @@ const EditPlayer = () => {
     const [players, setPlayers] = useState(null);
 
     const fetchPlayers = () => {
-        fetch('http://localhost:5000/api/getAllPlayers')
+        fetch(`${urlServer}api/getAllPlayers`)
             .then(res => res.json())
             .then(data => setPlayers(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
