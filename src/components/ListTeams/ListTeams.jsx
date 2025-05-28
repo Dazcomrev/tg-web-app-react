@@ -55,6 +55,7 @@ const ListTeams = () => {
         <div>
             <button className="back" onClick={handleClick}>Редактирование</button>
             <h2>Cписок команд вуза</h2>
+            <p>{queryId }</p>
             <TwoColumnScrollable items={teams}></TwoColumnScrollable>
         </div>
     )
