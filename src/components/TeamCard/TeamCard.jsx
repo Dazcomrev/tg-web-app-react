@@ -13,28 +13,15 @@ function ImageTooltip({ children, imgSrc, imgAlt }) {
 
     return (
         <div
-            style={{ position: 'relative', display: 'inline-block' }}
+            className="tooltip-container"
             onMouseEnter={() => setVisible(true)}
             onMouseLeave={() => setVisible(false)}
         >
             {children}
 
             {visible && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        marginTop: 8,
-                        padding: 5,
-                        border: '1px solid #ccc',
-                        backgroundColor: '#fff',
-                        boxShadow: '0 0 5px rgba(0,0,0,0.3)',
-                        zIndex: 1000,
-                    }}
-                >
-                    <img src={imgSrc} alt={imgAlt} style={{ maxWidth: 200, maxHeight: 150 }} />
+                <div className="tooltip-popup">
+                    <img src={imgSrc} alt={imgAlt} className="tooltip-image" />
                 </div>
             )}
         </div>
@@ -84,9 +71,9 @@ const HistoryItem = ({ history, teams }) => {
     
     return (
         <div className="history-item">
-            <hr className={'hr-competitions'} />
+            <hr className='hr-competitions' />
             <h3>{history.CompetitionName}</h3>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            <ul className="history-list">
                 <li>Дата: {history.DateStart}</li>
                 <li>Место : {history.Place}</li>
                 <div>
@@ -98,8 +85,8 @@ const HistoryItem = ({ history, teams }) => {
                         const score2 = match.Score2 != -1 ? String(match.Score2) : 'не указан';
                         const winnerName = match.HaveWinner ? match.WinnerId == match.Team1 ? `"${teamsMap.get(match.Team1)}"` : `"${teamsMap.get(match.Team2)}"` : 'не указан';
                         return (
-                            <div key={match.MatchId}>
-                                <hr className={'hr-matchs'} />
+                            <div key={match.MatchId} className="match-item">
+                                <hr className='hr-matchs' />
                                 <p>"{teamsMap?.get(match?.Team1)}" – "{teamsMap?.get(match?.Team2)}"</p>
                                 <p>Счет: {score1} – {score2}</p>
                                 <p>Победитель: {winnerName}</p>
@@ -237,7 +224,7 @@ const PlayerCard = () => {
 
     return (
         <div>
-            <button className="back" onClick={handleClick}>Список команд</button>
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
             <div>
                 <h2 className="team-name">Команда {teamCard.name}</h2>
                 <p>Частота побед: {teamCard.frequency * 100}%</p>

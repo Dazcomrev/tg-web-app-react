@@ -1,17 +1,61 @@
 ﻿.two-column-scrollable {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
-    height: auto;
+    max-height: 70vh;
     overflow-y: auto;
-    border: 1px solid #ccc;
     padding: 8px;
+    background: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    border-radius: 8px;
     box-sizing: border-box;
 }
 
+    /* Стили для скроллбара (для современных браузеров) */
+    .two-column-scrollable::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .two-column-scrollable::-webkit-scrollbar-thumb {
+        background-color: var(--tg-theme-hint-color, #ccc);
+        border-radius: 4px;
+    }
+
 .team-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    height: auto;
-    background: #f9f9f9;
+    background: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: filter 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
+    .team-item:hover,
+    .team-item:focus {
+        filter: brightness(0.9);
+        outline: none;
+    }
+
+    .team-item h3 {
+        margin: 0 0 8px 0;
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    .team-item ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+        .team-item ul li {
+            margin-bottom: 4px;
+        }

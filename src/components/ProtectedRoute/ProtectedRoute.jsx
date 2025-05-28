@@ -28,19 +28,20 @@ function ProtectedRoute({ children }) {
     }
 
     return (
-        <div>
-            <button className="back" onClick={handleClick}>Список команд</button>
-            <h2>Введите пароль для доступа</h2>
-            <form onSubmit={handleSubmit}>
+        <div className="protected-route-container">
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
+            <h2 className="protected-title">Введите пароль для доступа</h2>
+            <form onSubmit={handleSubmit} className="protected-form">
                 <input
                     type="password"
                     value={inputPass}
                     onChange={(e) => setInputPass(e.target.value)}
                     placeholder="Пароль"
+                    className="protected-input"
                 />
-                <button type="submit">Войти</button>
+                <button type="submit" className="btn-submit">Войти</button>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
         </div>
     );
 }

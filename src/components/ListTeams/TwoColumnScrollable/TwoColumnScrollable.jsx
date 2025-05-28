@@ -72,7 +72,7 @@ const TwoColumnScrollable = ({ items }) => {
             {items.map((team) => (
                 <TeamItem key={team.TeamId} team={team} />
             ))}
-            {items.length === 0 && <p>Нет информации ни об одной из команд</p> }
+            { items.length === 0 && <p>Нет информации ни об одной из команд</p> }
         </div>
     );
 };

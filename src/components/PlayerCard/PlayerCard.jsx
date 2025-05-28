@@ -19,8 +19,8 @@ const HistoryItem = ({ history }) => {
     }
     return (
         <div className="history-item">
-            <h4>{history.TeamName}</h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            <h4 className="history-team-name">{history.TeamName}</h4>
+            <ul className="history-list">
                 <li>Вошел: {history.DateAdd}</li>
                 <li>{leftTeam(history.DateLeft)}</li>
             </ul>
@@ -31,14 +31,24 @@ const HistoryItem = ({ history }) => {
 const PlayerCard = () => {
     const { playerId, teamId } = useParams();
     const navigate = useNavigate();
-    const [teams, setTeams] = useState(null);
+    /*const [teams, setTeams] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/edit/team/getTeams`)
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
-    }, []);
+    }, []);*/
+
+    const teams = [
+        {
+            TeamId: 1, TeamName: 'Navi', players: [
+                { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' }, 
+                { PlayerId: 3, FIO: 'Косяк Павел Александрович', Photo: '1747892911129-806430307.jpg' }
+            ]
+        },
+        { TeamId: 2, TeamName: 'DreamTeam', players: [] },
+        { TeamId: 3, TeamName: 'Eteam', players: [{ PlayerId: 2, FIO: 'Петров Петр Петрович', Photo: 'Дед.jpg' }] }];
 
     const handleClick = () => {
         navigate(`/ListTeams`);
@@ -88,18 +98,17 @@ const PlayerCard = () => {
 
     //console.log('playerCard.playerCard:', playerCard);
 
-    if (!playerCard) return <div>Загрузка...</div>;
-    //   /images/
-    //http://localhost:5000/images/
+    if (!playerCard) return <div className="loading">Загрузка...</div>;
+
     return (
-        <div>
-            <button className="back" onClick={handleClick}>Список команд</button>
-            <button className="back" onClick={handleClickTeam}>Назад</button>
-            <div>
-                <img src={`http://localhost:5000/images/${playerCard.pathPhoto}`} height='300px' alt="photo"></img>
+        <div className="player-card-container">
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
+            <button className="btn-back" onClick={handleClickTeam}>Назад</button>
+            <div className="player-info">
+                <img className="player-photo"  src={`http://localhost:5000/images/${playerCard.pathPhoto}`} alt="photo"></img>
                 <h2 className="player-name">{playerCard.FIO}</h2>
-                <p>Возраст: {playerCard.Age}</p>
-                <div>
+                <p className="player-age">Возраст: {playerCard.Age}</p>
+                <div className="player-history">
                     <h3 className="subtitle">В каких командах находился</h3>
                     {playerCard.history.map((history, index) => (
                         <HistoryItem key={index} history={history} />

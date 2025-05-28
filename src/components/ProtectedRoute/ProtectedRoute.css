@@ -1,8 +1,84 @@
-﻿.back {
-    padding: 10px 15px;
-    background: var(--tg-theme-bg-color);
-    color: var(--tg-theme-text-color);
+﻿/*.btn-back {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
     border: none;
-    outline: none;
+    padding: 10px 18px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 16px;
+    margin: 8px 8px 16px 0;
+    transition: background-color 0.3s ease;
+}*/
+/* ProtectedRoute.css */
+
+.protected-route-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background: var(--tg-theme-bg-color, #fff);
+    color: var(--tg-theme-text-color, #222);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+.btn-back {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-back:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.protected-title {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.protected-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.protected-input {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.btn-submit {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-submit:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-weight: 600;
 }

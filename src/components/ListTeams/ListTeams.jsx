@@ -54,12 +54,12 @@ const ListTeams = () => {
     }, []);*/
     //console.log('ListTeams:', teams);
 
-    if (!teams) return <div>Загрузка...</div>;
+    if (!teams) return <div className="loading">Загрузка...</div>;
 
     return (
-        <div>
-            <button className="back" onClick={handleClick}>Редактирование</button>
-            <h2>Cписок команд вуза</h2>
+        <div className="list-teams-container">
+            <button className="btn-back" onClick={handleClick}>Редактирование</button>
+            <h2 className="title">Cписок команд вуза</h2>
             <TwoColumnScrollable items={teams}></TwoColumnScrollable>
         </div>
     )

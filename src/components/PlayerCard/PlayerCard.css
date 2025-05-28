@@ -1,24 +1,97 @@
-﻿.back {
-    padding: 10px 15px;
+﻿/* PlayerCard.css */
+
+.player-card-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background: var(--tg-theme-bg-color);
     color: var(--tg-theme-text-color);
-    border: none;
-    outline: none;
-    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.player-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    height: auto;
-    width: 100%;
-    background: #f9f9f9;
+.btn-back {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 8px 8px 16px 0;
+    transition: background-color 0.3s ease;
 }
+
+    .btn-back:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.player-info {
+    text-align: center;
+}
+
+.player-photo {
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    object-fit: cover;
+}
+
+.player-name {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.player-age {
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+
+.player-history {
+    text-align: left;
+}
+
+.subtitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* HistoryItem styles */
 
 .history-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    height: auto;
-    width: 100%;
-    background: #f9f9f9;
+    background: var(--tg-theme-bg-color);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.history-team-name {
+    margin: 0 0 8px 0;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+    .history-list li {
+        margin-bottom: 4px;
+    }
+
+.loading {
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+    color: var(--tg-theme-hint-color, #666);
 }

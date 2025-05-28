@@ -41,13 +41,13 @@ function AddTeam({ refreshTeams }) {
             return;
         }
 
-        
+
 
         // Здесь отправляем данные, например на сервер
         //console.log('Отправляем данные:', { NameTeam });
         const formData = new FormData();
         formData.append('NameTeam', NameTeam);
-        
+
         //console.log('formData:', formData);
         try {
             const response = await fetch(`${urlServer}api/edit/team/addTeam`, {
@@ -80,26 +80,25 @@ function AddTeam({ refreshTeams }) {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h3>Добавление команды</h3>
-                <div>
-                    <label>
-                        Название команды: 
-                        <input
-                            type="text"
-                            value={NameTeam}
-                            onChange={(e) => setNameTeam(e.target.value)}
-                            placeholder="Введите название команды"
-                        />
-                    </label>
-                </div>
+        <form className="form-container" onSubmit={handleSubmit}>
+            <h3>Добавление команды</h3>
+            <div className="form-label">
+                <label>
+                    Название команды:
+                    <input
+                        type="text"
+                        value={NameTeam}
+                        onChange={(e) => setNameTeam(e.target.value)}
+                        placeholder="Введите название команды"
+                        className="form-input"
+                    />
+                </label>
+            </div>
 
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
 
-                <button type="submit">Добавить</button>
-            </form>
-        </div>
+            <button type="submit" className="btn-main">Добавить</button>
+        </form>
     );
 }
 
@@ -107,33 +106,14 @@ function Modal({ isOpen, onClose, children}) {
     if (!isOpen) return null; // ничего не рендерим, если окно закрыто
 
     return (
-        <div style={styles.overlay}>
-            <div style={styles.modal}>
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <button onClick={onClose} className="btn-close">Закрыть</button>
                 {children}
-                <button onClick={onClose} style={styles.closeBtn}>Закрыть</button>
             </div>
         </div>
     );
 }
-const styles = {
-    overlay: {
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        display: 'flex', justifyContent: 'center', alignItems: 'center',
-        zIndex: 1000,
-    },
-    modal: {
-        background: '#fff',
-        padding: 20,
-        borderRadius: 8,
-        maxWidth: '500px',
-        width: '90%',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-    },
-    closeBtn: {
-        marginTop: 20,
-    }
-};
 
 function RemoveTeam({ teams, refreshTeams }) {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -219,8 +199,8 @@ function RemoveTeam({ teams, refreshTeams }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <h2>Всплывающее окно</h2>
                 <p>Вы уверены что хотите удалить команду?</p>
-                <button onClick={() => removeTeam(teamToRemove)}>Подтвердить</button>
-                <button onClick={() => setModalOpen(false)}>Отмена</button>
+                <button className="btn-confirm" onClick={() => removeTeam(teamToRemove)}>Подтвердить</button>
+                <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
             </Modal>
         </div>
     );
@@ -334,13 +314,14 @@ function EditNameTeam({ teams, refreshTeams }) {
                                 onChange={(e) => setNameTeam(e.target.value)}
                                 placeholder="Введите название команды"
                                 autoFocus
+                                className="form-input"
                             />
                         </label>
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button type="submit">Изменить</button>
-                    <button type="button" onClick={() => setModalOpen(false)}>
+                    <button className="btn-confirm" type="submit">Изменить</button>
+                    <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                         Отмена
                     </button>
                 </form>
@@ -488,8 +469,8 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button type="submit">Добавить</button>
-                    <button type="button" onClick={() => setModalOpen(false)}>
+                    <button className="btn-confirm" type="submit">Добавить</button>
+                    <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                         Отмена
                     </button>
                 </form>
@@ -638,8 +619,8 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button type="submit">Удалить</button>
-                    <button type="button" onClick={() => setModalOpen(false)}>
+                    <button className="btn-confirm" type="submit">Удалить</button>
+                    <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                         Отмена
                     </button>
                 </form>
@@ -733,16 +714,17 @@ const EditTeam = () => {
     //if (!teams) return <div>Загрузка...</div>;
 
     return (
-        <div>
-            <button className="back" onClick={handleClick}>Список команд</button>
-            <button className="back" onClick={backClick}>Назад</button>
-            <h2>Выберите какую информацию в разделе команда хотите отредактироать</h2>
-            <button className="button" onClick={() => setActiveSection("addTeam")}>Добавление команды</button>
-            <button className="button" onClick={() => setActiveSection("removeTeam")}>Удаление команды</button>
-            <button className="button" onClick={() => setActiveSection("editNameTeam")}>Изменение названия команды</button>
-            <button className="button" onClick={() => setActiveSection("addPlayerInTeam")}>Добавление игрока в команду</button>
-            <button className="button" onClick={() => setActiveSection("removePlayerFromTeam")}>Удаление игрока из команды</button>
-
+        <div className="edit-team-container">
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
+            <button className="btn-back" onClick={backClick}>Назад</button>
+            <h2 className="edit-team-title">Выберите какую информацию в разделе команда хотите отредактироать</h2>
+            <div className="buttons-group">
+                <button className="btn-main" onClick={() => setActiveSection("addTeam")}>Добавление команды</button>
+                <button className="btn-main" onClick={() => setActiveSection("removeTeam")}>Удаление команды</button>
+                <button className="btn-main" onClick={() => setActiveSection("editNameTeam")}>Изменение названия команды</button>
+                <button className="btn-main" onClick={() => setActiveSection("addPlayerInTeam")}>Добавление игрока в команду</button>
+                <button className="btn-main" onClick={() => setActiveSection("removePlayerFromTeam")}>Удаление игрока из команды</button>
+            </div>
             <hr />
 
             <div>

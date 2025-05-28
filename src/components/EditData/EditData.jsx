@@ -29,13 +29,15 @@ const EditData = () => {
     };
 
     return (
-        <div>
-            <button className="back" onClick={handleClick}>Список команд</button>
-            <h2>Выберите какую информацию хотите отредактироать</h2>
-            <button className="button" onClick={editTeamClick}>Команда</button>
-            <button className="button" onClick={editPlayerClick}>Игрок</button>
-            <button className="button" onClick={editCompetitionClick}>Соревнование</button>
-            <button className="button" onClick={editMatchClick}>Матч</button>
+        <div className="edit-data-container">
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
+            <h2 className="edit-data-title">Выберите какую информацию хотите отредактироать</h2>
+            <div className="buttons-group">
+                <button className="btn-main" onClick={editTeamClick}>Команда</button>
+                <button className="btn-main" onClick={editPlayerClick}>Игрок</button>
+                <button className="btn-main" onClick={editCompetitionClick}>Соревнование</button>
+                <button className="btn-main" onClick={editMatchClick}>Матч</button>
+            </div>
         </div>
     )
 }
