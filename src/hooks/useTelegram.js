@@ -27,5 +27,7 @@ export function useTelegram() {
         queryId: tg.initDataUnsafe?.query_id,
         username: tg.initDataUnsafe?.user.username,
         last_name: tg.initDataUnsafe?.user.last_name,
+        userId: tg.initDataUnsafe?.user.id,
+        first_name: tg.initDataUnsafe?.user.first_name,
     }
 }
