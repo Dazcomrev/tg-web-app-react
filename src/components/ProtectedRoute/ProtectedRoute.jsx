@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import './ProtectedRoute.css';
 
 const PASSWORD = '123'; // Замените на нужный пароль
 
