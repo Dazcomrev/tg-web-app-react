@@ -8,8 +8,9 @@ const { urlServer } = useURL();
 
 const ListTeams = () => {
     const navigate = useNavigate();
-    const { tg, queryId, user } = useTelegram();
+    const { tg, queryId, user, username, last_name } = useTelegram();
     //console.log(queryId);
+    
 
     const handleClick = () => {
         navigate(`/EditData`);
@@ -55,8 +56,9 @@ const ListTeams = () => {
         <div>
             <button className="back" onClick={handleClick}>Редактирование</button>
             <h2>Cписок команд вуза</h2>
-            
             <p>queryId: {queryId}</p>
+            <p>username: {username}</p>
+            <p>last_name: {last_name}</p>
             <TwoColumnScrollable items={teams}></TwoColumnScrollable>
         </div>
     )
