@@ -2,21 +2,19 @@
 import './ListTeams.css';
 import TwoColumnScrollable from './TwoColumnScrollable/TwoColumnScrollable';
 import { useNavigate } from 'react-router-dom';
-import { useTelegram } from '../../hooks/useTelegram';
+//import { useTelegram } from '../../hooks/useTelegram';
 import { useURL } from '../../hooks/URLs';
 const { urlServer } = useURL();
 
 const ListTeams = () => {
     const navigate = useNavigate();
-    const { tg, queryId, user, username, last_name, userId, first_name } = useTelegram();
-    //console.log(queryId);
-    
+    //const { userId} = useTelegram();
 
     const handleClick = () => {
         navigate(`/EditData`);
     };
 
-    const teams = [
+    /*const teams = [
         {
             TeamId: 1,
             TeamName: 'Navi',
@@ -38,7 +36,12 @@ const ListTeams = () => {
             NumberDefeats: 0,
             FrequencyWins: '0'
         }
-    ];
+    ];*/
+
+    const teams = [
+        { TeamId: 1, TeamName: 'Navi', NumberWins: 4, NumberDefeats: 0, FrequencyWins: '1.0000' },
+        { TeamId: 2, TeamName: 'DreamTeam', NumberWins: 0, NumberDefeats: 1, FrequencyWins: '0.0000' },
+        { TeamId: 3, TeamName: 'Eteam', NumberWins: 0, NumberDefeats: 0, FrequencyWins: '0' } ];
 
     /*const [teams, setTeams] = useState(null);
 
@@ -49,16 +52,14 @@ const ListTeams = () => {
             .catch(err => console.error('Ошибка загрузки данных:', err));
 
     }, []);*/
+    //console.log('ListTeams:', teams);
 
     if (!teams) return <div>Загрузка...</div>;
-    //<p>user: {user}</p>
+
     return (
         <div>
             <button className="back" onClick={handleClick}>Редактирование</button>
             <h2>Cписок команд вуза</h2>
-            <p>queryId: {queryId}</p>
-            <p>userId: {userId}</p>
-            <p>first_name: {first_name}</p>
             <TwoColumnScrollable items={teams}></TwoColumnScrollable>
         </div>
     )

@@ -75,16 +75,18 @@ const PlayerCard = () => {
         ]
     }*/
 
-    
+    const playerCard = { FIO: 'Иванов Иван Иванович', Age: 18, pathPhoto: 'Яблоко.jpg', history: [{ TeamName: 'Navi', DateAdd: '10.05.2025', DateLeft: null }] }
 
-    const [playerCard, setPlayerCard] = useState(null);
+    /*const [playerCard, setPlayerCard] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/playerCard/${playerId}`)
             .then(res => res.json())
             .then(data => setPlayerCard(data))
             .catch(err => console.error(err));
-    }, [playerId]);
+    }, [playerId]);*/
+
+    //console.log('playerCard.playerCard:', playerCard);
 
     if (!playerCard) return <div>Загрузка...</div>;
     //   /images/

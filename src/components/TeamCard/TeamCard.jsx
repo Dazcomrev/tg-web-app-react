@@ -128,7 +128,7 @@ const PlayerCard = () => {
         navigate(`/ListTeams`);
     };
 
-    /*const teamCard1 = {
+    /*const teamCard = {
         name: 'Navi',
         players: [
             { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' },
@@ -148,17 +148,78 @@ const PlayerCard = () => {
         ],
         frequency: '1.00'
     };*/
+    const teamCard = {
+        name: "Navi",
+        players: [
+            { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' },
+            { PlayerId: 3, FIO: 'Косяк Павел Александрович', Photo: '1747892911129-806430307.jpg' }
+        ],
+        history: [{
+            CompetitionId: 7, CompetitionName: 'AAD', DateStart: '24.05.2025', Place: 1, matchs: [
+                {
+                    DateMatch: "22.05.2025",
+                    HaveWinner: true,
+                    MatchId: 30,
+                    Score1: 3,
+                    Score2: 1,
+                    Team1: 1,
+                    Team2: 2,
+                    WinnerId: 1,
+                },
+                {
+                    DateMatch: "25.05.2025",
+                    HaveWinner: true,
+                    MatchId: 31,
+                    Score1: 3,
+                    Score2: 0,
+                    Team1: 1,
+                    Team2: 3,
+                    WinnerId: 1,
+                }
+            ]
+        },
+        {
+            CompetitionId: 6, CompetitionName: 'Соревнование', DateStart: '24.05.2025', Place: 1, matchs: [
+                {
+                    DateMatch: "28.05.2025",
+                    HaveWinner: false,
+                    MatchId: 32,
+                    Score1: -1,
+                    Score2: -1,
+                    Team1: 1,
+                    Team2: 3,
+                    WinnerId: 1,
+                }
+            ]
+        },
+        {
+            CompetitionId: 1, CompetitionName: 'Тестовое соревнование', DateStart: '14.05.2025', Place: 1, matchs: [
+                {
+                    DateMatch: "15.05.2025",
+                    HaveWinner: true,
+                    MatchId: 1,
+                    Score1: 3,
+                    Score2: 0,
+                    Team1: 1,
+                    Team2: 2,
+                    WinnerId: 1,
+                }
+            ]
+        }],
+        frequency: "1.0000",
+    };
 
-    const [teamCard, setTeamCard] = useState(null);
+    /*const [teamCard, setTeamCard] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/teamCard/${teamId}`)
             .then(res => res.json())
             .then(data => setTeamCard(data))
             .catch(err => console.error(err));
-    }, [teamId]);
+    }, [teamId]);*/
+    //console.log('TeamCard.TeamCard:', teamCard);
 
-    const [teams, setTeams] = useState(null);
+    /*const [teams, setTeams] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/listTeams`)
@@ -166,7 +227,11 @@ const PlayerCard = () => {
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
 
-    }, []);
+    }, []);*/
+    const teams = [
+        { TeamId: 1, TeamName: 'Navi', NumberWins: 4, NumberDefeats: 0, FrequencyWins: '1.0000' },
+        { TeamId: 2, TeamName: 'DreamTeam', NumberWins: 0, NumberDefeats: 1, FrequencyWins: '0.0000' },
+        { TeamId: 3, TeamName: 'Eteam', NumberWins: 0, NumberDefeats: 0, FrequencyWins: '0' }];
 
     if (!teamCard) return <div>Загрузка...</div>;
 
