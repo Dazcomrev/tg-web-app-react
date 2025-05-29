@@ -109,7 +109,9 @@ function Modal({ isOpen, onClose, children}) {
         <div className="modal-overlay">
             <div className="modal-content">
                 <button onClick={onClose} className="btn-close">Закрыть</button>
-                {children}
+                <div className="under-close">
+                    {children}
+                </div>
             </div>
         </div>
     );
@@ -631,6 +633,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
 
 
 const EditTeam = () => {
+
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -659,7 +662,7 @@ const EditTeam = () => {
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
-
+ 
     }, []);*/
 
     const [allPlayers, setAllPlayers] = useState(null);
@@ -711,8 +714,26 @@ const EditTeam = () => {
         }
     };
 
-    //if (!teams) return <div>Загрузка...</div>;
+    //if (!teams || !allPlayers) return <div>Загрузка...</div>;
+    return (
+        <div className="edit-team-container">
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
+            <button className="btn-back" onClick={backClick}>Назад</button>
+            <h2 className="edit-team-title">Выберите какую информацию в разделе команда хотите отредактироать</h2>
+            <div className="buttons-group">
+                <button className="btn-main" onClick={() => setActiveSection("addTeam")}>Добавление команды</button>
+                <button className="btn-main" onClick={() => setActiveSection("removeTeam")}>Удаление команды</button>
+                <button className="btn-main" onClick={() => setActiveSection("editNameTeam")}>Изменение названия команды</button>
+                <button className="btn-main" onClick={() => setActiveSection("addPlayerInTeam")}>Добавление игрока в команду</button>
+                <button className="btn-main" onClick={() => setActiveSection("removePlayerFromTeam")}>Удаление игрока из команды</button>
+            </div>
+            <hr />
 
+            <div>
+                {renderContent()}
+            </div>
+        </div>
+    )
     return (
         <div className="edit-team-container">
             <button className="btn-back" onClick={handleClick}>Список команд</button>

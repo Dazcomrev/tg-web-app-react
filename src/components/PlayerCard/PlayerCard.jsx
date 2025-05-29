@@ -43,7 +43,7 @@ const PlayerCard = () => {
     const teams = [
         {
             TeamId: 1, TeamName: 'Navi', players: [
-                { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' }, 
+                { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' },
                 { PlayerId: 3, FIO: 'Косяк Павел Александрович', Photo: '1747892911129-806430307.jpg' }
             ]
         },
@@ -57,7 +57,7 @@ const PlayerCard = () => {
     const handleClickTeam = () => {
         navigate(`/TeamCard/${teamId}`);
         const teamsMap = new Map(teams?.map(team => [String(team.TeamId), team.TeamName]));
-        
+
         /*fetch(`${urlServer}api/log`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -85,8 +85,11 @@ const PlayerCard = () => {
         ]
     }*/
 
-    const playerCard = { FIO: 'Иванов Иван Иванович', Age: 18, pathPhoto: 'Яблоко.jpg', history: [{ TeamName: 'Navi', DateAdd: '10.05.2025', DateLeft: null }] }
-
+    const playerCards = {
+        1: { FIO: 'Иванов Иван Иванович', Age: 18, pathPhoto: 'Яблоко.jpg', history: [{ TeamName: 'Navi', DateAdd: '10.05.2025', DateLeft: null }] },
+        3: { FIO: 'Косяк Павел Александрович', Age: 250, pathPhoto: '1747892911129-806430307.jpg', history: [{ TeamName: 'Navi', DateAdd: '20.05.2025', DateLeft: null }] }
+};
+    const playerCard = playerCards[playerId];
     /*const [playerCard, setPlayerCard] = useState(null);
 
     useEffect(() => {
@@ -95,7 +98,6 @@ const PlayerCard = () => {
             .then(data => setPlayerCard(data))
             .catch(err => console.error(err));
     }, [playerId]);*/
-
     //console.log('playerCard.playerCard:', playerCard);
 
     if (!playerCard) return <div className="loading">Загрузка...</div>;

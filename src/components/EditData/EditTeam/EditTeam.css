@@ -87,7 +87,8 @@
 }
 
 .btn-close {
-    margin-left: 361px;
+    position:absolute;
+    right: 20px;
     background-color: var(--tg-theme-button-color, #ff1111);
     color: var(--tg-theme-button-text-color, #fff);
     border: none;
@@ -102,11 +103,18 @@
         background-color: var(--tg-theme-button-hover-color, #006699);
     }
 
+.under-close {
+    margin-top: 40px;
+}
+
 .btn-confirm {
-    margin-top: 20px;
+    position: relative;
+    top: 75%;
+    margin-top: 10px;
     background-color: var(--tg-theme-button-color, #0088cc);
     color: var(--tg-theme-button-text-color, #fff);
     border: none;
+    width: 130px;
     padding: 10px 18px;
     border-radius: 6px;
     cursor: pointer;
@@ -119,8 +127,7 @@
     }
 
 .btn-cancel {
-    margin-top: 20px;
-    margin-left: 258px;
+    margin-left: 51%;
     background-color: var(--tg-theme-button-color, #0088cc);
     color: var(--tg-theme-button-text-color, #fff);
     border: none;

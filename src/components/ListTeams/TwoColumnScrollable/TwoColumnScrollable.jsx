@@ -30,13 +30,6 @@ const onTeamCard = () => {
 const TeamItem = ({ team }) => {
     const navigate = useNavigate();
 
-    /*const { user } = useTelegram();
-
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAA");
-    console.log(user);
-    console.log("fsfs");
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAA");*/
-
     /*
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
