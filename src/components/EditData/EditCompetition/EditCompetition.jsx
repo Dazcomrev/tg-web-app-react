@@ -86,28 +86,30 @@ function AddCompetition({ refreshCompetitions }) {
             <form onSubmit={handleSubmit}>
                 <h3>Добавление соревнования</h3>
                 <div>
-                    <label>
+                    <label className="form-label">
                         Название соревнования:
                         <input
                             type="text"
                             value={NameCompetition}
                             onChange={(e) => setNameCompetition(e.target.value)}
                             placeholder="Введите название соревнования"
+                            className="form-input"
                         />
                     </label><br />
-                    <label>
+                    <label className="form-label">
                         Дата начала соревнования:
                         <input
                             type="date"
                             value={DateStart}
                             onChange={(e) => setDateStart(e.target.value)}
+                            className="form-input"
                         />
                     </label>
                 </div>
 
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {error && <p className="error-message">{error}</p>}
 
-                <button type="submit">Добавить</button>
+                <button className="btn-confirm" type="submit">Добавить</button>
             </form>
         </div>
     );
@@ -117,33 +119,16 @@ function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null; // ничего не рендерим, если окно закрыто
 
     return (
-        <div style={styles.overlay}>
-            <div style={styles.modal}>
-                {children}
-                <button onClick={onClose} style={styles.closeBtn}>Закрыть</button>
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <button onClick={onClose} className="btn-close">Закрыть</button>
+                <div className="under-close">
+                    {children}
+                </div>
             </div>
         </div>
     );
 }
-const styles = {
-    overlay: {
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        display: 'flex', justifyContent: 'center', alignItems: 'center',
-        zIndex: 1000,
-    },
-    modal: {
-        background: '#fff',
-        padding: 20,
-        borderRadius: 8,
-        maxWidth: '500px',
-        width: '90%',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-    },
-    closeBtn: {
-        marginTop: 20,
-    }
-};
 
 function RemoveCompetition({ competitions, refreshCompetitions }) {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -225,8 +210,8 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <h2>Всплывающее окно</h2>
                 <p>Вы уверены что хотите удалить соревнование?</p>
-                <button onClick={() => removeCompetition(competitionToRemove)}>Подтвердить</button>
-                <button onClick={() => setModalOpen(false)}>Отмена</button>
+                <button className="btn-confirm" onClick={() => removeCompetition(competitionToRemove)}>Подтвердить</button>
+                <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
             </Modal>
         </div>
     );
@@ -345,27 +330,29 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
                 <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                     <h2>Всплывающее окно</h2>
                     <div>
-                        <label>
+                        <label className="form-label">
                             Название соревнования:
                             <input
                                 type="text"
                                 value={NameCompetition}
                                 onChange={(e) => setNameCompetition(e.target.value)}
                                 placeholder="Введите название соревнования"
+                                className="form-input"
                             />
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Дата начала соревнования:
                             <input
                                 type="date"
                                 value={DateStart}
                                 onChange={(e) => setDateStart(e.target.value)}
+                                className="form-input"
                             />
                         </label>
                     </div>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button type="submit">Подтвердить</button>
-                    <button onClick={() => setModalOpen(false)}>Отмена</button>
+                    {error && <p className="error-message">{error}</p>}
+                    <button className="btn-confirm" type="submit">Подтвердить</button>
+                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
                 </Modal>
             </form>
         </div>
@@ -531,38 +518,43 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
                 <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                     <h2>Добавление команд в {selectedCompetition?.CompetitionName}</h2>
                     <form onSubmit={handleSubmit}>
-                        <div>
+                        <div className="form-container">
                             {availableTeams.length === 0 && <p>Все команды уже добавлены в это соревнование.</p>}
                             {availableTeams.map(team => {
                                 const isChecked = !!selectedTeams[team.TeamId];
                                 return (
                                     <div key={team.TeamId} className="checkbox-wrapper">
                                         <label>
+                                            
                                             <input
                                                 type="checkbox"
                                                 checked={isChecked}
                                                 onChange={() => handleCheckboxChange(team.TeamId)}
+                                                className="form-input"
                                             />
-                                            {team.TeamName}
                                         </label>
-                                        {isChecked && (<p>–   Место на соревновании:</p>)}
-                                        {isChecked && (
-                                            <input
-                                                type="text"
-                                                placeholder="Введите место"
-                                                value={selectedTeams[team.TeamId]?.place || ''}
-                                                onChange={(e) => handlePlaceChange(team.TeamId, e.target.value)}
-                                            />
-                                        )}
+                                        <label>{team.TeamName}</label>
+                                        <label>
+                                            {isChecked && (<p>– Место на соревновании:</p>)}
+                                            {isChecked && (
+                                                <input
+                                                    type="text"
+                                                    placeholder="Введите место"
+                                                    value={selectedTeams[team.TeamId]?.place || ''}
+                                                    onChange={(e) => handlePlaceChange(team.TeamId, e.target.value)}
+                                                    className="form-input"
+                                                />
+                                            )}
+                                        </label>
                                     </div>
                                 );
                             })}
                         </div>
 
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
+                        {error && <p className="error-message">{error}</p>}
 
-                        <button type="submit">Подтвердить</button>
-                        <button type="button" onClick={() => setModalOpen(false)} style={{ marginLeft: 10 }}>
+                        <button className="btn-confirm" type="submit">Подтвердить</button>
+                        <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                             Отмена
                         </button>
                     </form>
@@ -724,7 +716,7 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
                 <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                     <h2>Удаление команд из {selectedCompetition?.CompetitionName}</h2>
                     <form onSubmit={handleSubmit}>
-                        <div>
+                        <div className="form-container">
                             {availableTeams.length === 0 && <p>В соревновании нет команд.</p>}
                             {availableTeams.map(team => {
                                 const isChecked = !!selectedTeams[team.TeamId];
@@ -735,18 +727,19 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
                                                 type="checkbox"
                                                 checked={isChecked}
                                                 onChange={() => handleCheckboxChange(team.TeamId)}
+                                                className="form-input"
                                             />
-                                            {team.TeamName}
                                         </label>
+                                        <label>{team.TeamName}</label>
                                     </div>
                                 );
                             })}
                         </div>
 
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
+                        {error && <p className="error-message">{error}</p>}
 
-                        <button type="submit">Подтвердить</button>
-                        <button type="button" onClick={() => setModalOpen(false)} style={{ marginLeft: 10 }}>
+                        <button className="btn-confirm" type="submit">Подтвердить</button>
+                        <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                             Отмена
                         </button>
                     </form>
@@ -885,27 +878,26 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <h2>Редактирование мест в {selectedCompetition?.CompetitionName}</h2>
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className="form-container">
                         {selectedCompetition?.teams.length === 0 && <p>В соревновании нет команд.</p>}
                         {selectedCompetition?.teams.map(team => (
-                            <div key={team.TeamId} style={{ marginBottom: 10, display: 'flex', alignItems: 'center' }}>
-                                <div>{team.TeamName}
+                            <div key={team.TeamId} className="team-row">
+                                    <span className="team-name">{team.TeamName} – </span>
                                     <input
                                         type="text"
                                         value={teamPlaces[team.TeamId] || ''}
                                         onChange={e => handlePlaceChange(team.TeamId, e.target.value)}
-                                        style={{ width: 100, marginLeft: 10 }}
                                         placeholder="Введите место"
+                                        className="form-input team-input"
                                     />
-                                </div>
                             </div>
                         ))}
                     </div>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p className="error-message">{error}</p>}
 
-                    <button type="submit">Сохранить</button>
-                    <button type="button" onClick={() => setModalOpen(false)} style={{ marginLeft: 10 }}>
+                    <button className="btn-confirm" type="submit">Сохранить</button>
+                    <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                         Отмена
                     </button>
                 </form>
@@ -963,7 +955,7 @@ const EditCompetition = () => {
         },
         { CompetitionId: 3, CompetitionName: 'Соревнование 3', DateStart: '22.05.2025', teams: [] }
     ];*/
-    
+
     const handleClick = () => {
         navigate(`/ListTeams`);
     };
@@ -998,16 +990,18 @@ const EditCompetition = () => {
     //if (!teams) return <div>Загрузка...</div>;
 
     return (
-        <div>
-            <button className="back" onClick={handleClick}>Список команд</button>
-            <button className="back" onClick={backClick}>Назад</button>
+        <div className="edit-match-container">
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
+            <button className="btn-back" onClick={backClick}>Назад</button>
             <h2>Выберите какую информацию в разделе соревнование хотите отредактироать</h2>
-            <button className="button" onClick={() => setActiveSection("addCompetition")}>Добавление соревнования</button>
-            <button className="button" onClick={() => setActiveSection("removeCompetition")}>Удаление соревнования</button>
-            <button className="button" onClick={() => setActiveSection("editDataCompetition")}>Изменение данных соревнования</button>
-            <button className="button" onClick={() => setActiveSection("addTeamInCompetition")}>Добавление команды в соревновании</button>
-            <button className="button" onClick={() => setActiveSection("removeTeamFromCompetition")}>Удаление команды из соревнования</button>
-            <button className="button" onClick={() => setActiveSection("editTeamPlaces")}>Изменение места команды в соревновании</button>
+            <div className="buttons-group">
+                <button className="btn-main" onClick={() => setActiveSection("addCompetition")}>Добавление соревнования</button>
+                <button className="btn-main" onClick={() => setActiveSection("removeCompetition")}>Удаление соревнования</button>
+                <button className="btn-main" onClick={() => setActiveSection("editDataCompetition")}>Изменение данных соревнования</button>
+                <button className="btn-main" onClick={() => setActiveSection("addTeamInCompetition")}>Добавление команды в соревновании</button>
+                <button className="btn-main" onClick={() => setActiveSection("removeTeamFromCompetition")}>Удаление команды из соревнования</button>
+                <button className="btn-main" onClick={() => setActiveSection("editTeamPlaces")}>Изменение места команды в соревновании</button>
+            </div>
 
             <hr />
 

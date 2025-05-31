@@ -8,33 +8,16 @@ function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null; // ничего не рендерим, если окно закрыто
 
     return (
-        <div style={styles.overlay}>
-            <div style={styles.modal}>
-                {children}
-                <button onClick={onClose} style={styles.closeBtn}>Закрыть</button>
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <button onClick={onClose} className="btn-close">Закрыть</button>
+                <div className="under-close">
+                    {children}
+                </div>
             </div>
         </div>
     );
 }
-const styles = {
-    overlay: {
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        display: 'flex', justifyContent: 'center', alignItems: 'center',
-        zIndex: 1000,
-    },
-    modal: {
-        background: '#fff',
-        padding: 20,
-        borderRadius: 8,
-        maxWidth: '500px',
-        width: '90%',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-    },
-    closeBtn: {
-        marginTop: 20,
-    }
-};
 
 const pointFromDifis = (dateDifis) => {
     const y = dateDifis.split("-")[0];
@@ -211,7 +194,7 @@ function AddMatch({ competitions, refreshCompetitions }) {
                 <form onSubmit={handleSubmit}>
                     <h3>Добавление матча в {selectedCompetition?.CompetitionName}</h3>
                     <div>
-                        <label>
+                        <label className="form-label">
                             1 команда:
                             <select value={firstTeam || ''}
                                 onChange={(e) => setfirstTeam(e.target.value)}>
@@ -223,7 +206,7 @@ function AddMatch({ competitions, refreshCompetitions }) {
                                 ))}
                             </select>
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             2 команда:
                             <select value={secondTeam || ''}
                                 onChange={(e) => setSecondTeam(e.target.value)}>
@@ -235,7 +218,7 @@ function AddMatch({ competitions, refreshCompetitions }) {
                                 ))}
                             </select>
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Команда победитель:
                             <select value={winner || ''}
                                 onChange={(e) => setWinner(e.target.value)}>
@@ -244,15 +227,16 @@ function AddMatch({ competitions, refreshCompetitions }) {
                                 <option key={2} value={2}>2 команда</option>
                             </select>
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Дата матча:
                             <input
                                 type="date"
                                 value={dateMatch}
                                 onChange={(e) => setDateMatch(e.target.value)}
+                                className="form-input"
                             />
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Счет 1 команды:
                             <input
                                 type="text"
@@ -260,9 +244,10 @@ function AddMatch({ competitions, refreshCompetitions }) {
                                 onChange={(e) => setFirstScore(e.target.value)}
                                 placeholder="Введите счет"
                                 min="1"
+                                className="form-input"
                             />
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Счет 2 команды:
                             <input
                                 type="text"
@@ -270,22 +255,23 @@ function AddMatch({ competitions, refreshCompetitions }) {
                                 onChange={(e) => setSecondScore(e.target.value)}
                                 placeholder="Введите счет"
                                 min="1"
+                                className="form-input"
                             />
                         </label>
 
                     </div>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p className="error-message">{error}</p>}
 
-                    <button type="submit">Добавить</button>
-                    <button onClick={() => setModalOpen(false)}>Отмена</button>
+                    <button className="btn-confirm" type="submit">Добавить</button>
+                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
 
-                    <div>
+                    <div className="match-list">
                         <p>Матчи, которые уже есть:</p>
                         {selectedCompetition?.matchs.map((match, index) => {
                             const teamsMap = new Map(selectedCompetition?.teams.map(team => [team.TeamId, team.TeamName]));
                             return (
-                                <p>{index + 1}. {teamsMap.get(match.Team1)} и {teamsMap.get(match.Team2)} – {match?.DateMatch}</p>
+                                <p key={match.MatchId}>{index + 1}. {teamsMap.get(match.Team1)} и {teamsMap.get(match.Team2)} – {match?.DateMatch}</p>
                             )}
                         )}
                     </div>
@@ -414,7 +400,7 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
                     <h3>Удаление матча из {selectedCompetition?.CompetitionName}</h3>
                     <p>Наведите курсор на матч в списке, чтобы узнать подробности матча</p>
                     <div>
-                        <label>
+                        <label className="form-label">
                             Матчи:
                             <select value={selectedMatch || ''}
                                 onChange={(e) => setSelectedMatch(e.target.value)}>
@@ -434,10 +420,10 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
                         </label><br />
                     </div>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p className="error-message">{error}</p>}
 
-                    <button type="submit">Удалить</button>
-                    <button onClick={() => setModalOpen(false)}>Отмена</button>
+                    <button className="btn-confirm" type="submit">Удалить</button>
+                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
 
 
                 </form>
@@ -581,7 +567,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
     const CompetitionItem = ({ competition }) => {
         return (
             <div>
-                <div className="competition-item">
+                <div className="competition-with-match-item">
                     <h2>{competition.CompetitionName}</h2>
                     <p>Дата соревнования: {competition.DateStart}</p>
                     <div>
@@ -616,11 +602,11 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
 
         return (
             <div>
-                <button className="competition-item" onClick={() => openModal(match)}>
+                <button className="match-item" onClick={() => openModal(match)}>
                     <p>"{match.Team1Name}" – "{match.Team2Name}"</p>
                     <p>Счет: {score1} – {score2}</p>
                     <p>Победитель: {winnerName}</p>
-                    <p>Дата соревнования: {match.DateMatch}</p>
+                    <p>Дата матча: {match.DateMatch}</p>
                 </button>
             </div>
         );
@@ -642,7 +628,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
                     <h3>Изменение матча в {selectedCompetition?.CompetitionName}</h3>
                     <h3>{selectedMatch?.Team1Name} – {selectedMatch?.Team2Name}</h3>
                     <div>
-                        <label>
+                        <label className="form-label">
                             Команда победитель:
                             <select value={winner || '0'}
                                 onChange={(e) => setWinner(e.target.value)}>
@@ -651,15 +637,16 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
                                 <option key={2} value={2}>2 команда</option>
                             </select>
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Дата матча:
                             <input
                                 type="date"
                                 value={dateMatch}
                                 onChange={(e) => setDateMatch(e.target.value)}
+                                className="form-input"
                             />
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Счет 1 команды:
                             <input
                                 type="text"
@@ -667,9 +654,10 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
                                 onChange={(e) => setFirstScore(e.target.value)}
                                 placeholder="Введите счет"
                                 min="1"
+                                className="form-input"
                             />
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Счет 2 команды:
                             <input
                                 type="text"
@@ -677,15 +665,16 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
                                 onChange={(e) => setSecondScore(e.target.value)}
                                 placeholder="Введите счет"
                                 min="1"
+                                className="form-input"
                             />
                         </label>
 
                     </div>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p className="error-message">{error}</p>}
 
-                    <button type="submit">Добавить</button>
-                    <button onClick={() => setModalOpen(false)}>Отмена</button>
+                    <button className="btn-confirm" type="submit">Добавить</button>
+                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
                 </form>
             </Modal>
         </div>
@@ -742,7 +731,7 @@ const EditMatch = () => {
             case 'removeMatch':
                 return <RemoveMatch competitions={competitions} refreshCompetitions={fetchCompetitions} />;
             case 'editInfoMatch':
-                return <EditInfoMatch competitions={competitions} refreshCompetitions={fetchCompetitions}  />;
+                return <EditInfoMatch competitions={competitions} refreshCompetitions={fetchCompetitions} />;
             default:
                 return <div>Выберите раздел</div>;
         }
@@ -751,17 +740,19 @@ const EditMatch = () => {
     //if (!teams) return <div>Загрузка...</div>;
 
     return (
-        <div>
-            <button className="back" onClick={handleClick}>Список команд</button>
-            <button className="back" onClick={backClick}>Назад</button>
+        <div className="edit-match-container">
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
+            <button className="btn-back" onClick={backClick}>Назад</button>
             <h2>Выберите какую информацию в разделе матч хотите отредактироать</h2>
-            <button className="button" onClick={() => setActiveSection("addMatch")}>Добавление матча</button>
-            <button className="button" onClick={() => setActiveSection("removeMatch")}>Удаление матча</button>
-            <button className="button" onClick={() => setActiveSection("editInfoMatch")}>Изменение данных матча</button>
+            <div className="buttons-group">
+                <button className="btn-main" onClick={() => setActiveSection("addMatch")}>Добавление матча</button>
+                <button className="btn-main" onClick={() => setActiveSection("removeMatch")}>Удаление матча</button>
+                <button className="btn-main" onClick={() => setActiveSection("editInfoMatch")}>Изменение данных матча</button>
+            </div>
 
             <hr />
 
-            <div>
+            <div className="edit-match-content">
                 {renderContent()}
             </div>
         </div>

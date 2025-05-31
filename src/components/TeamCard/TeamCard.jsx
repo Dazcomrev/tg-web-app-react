@@ -48,13 +48,15 @@ const PlayerItem = ({ player, teamId }) => {
             .catch(err => console.error(err));*/
     };
     //<img src={`http://localhost:5000/images/${player.Photo}`} height='150px' alt="photo"></img>
-    const imgSrc = `http://localhost:5000/images/${player.Photo}`;
+    /*const imgSrc = `http://localhost:5000/images/${player.Photo}`;
+    <ImageTooltip imgSrc={imgSrc} imgAlt="photo">
+        <p>{player.FIO}</p>
+    </ImageTooltip>*/
     return (
 
         <button className="player-item" onClick={handleClick}>
-            <ImageTooltip imgSrc={imgSrc} imgAlt="photo">
-                <p>{player.FIO}</p>
-            </ImageTooltip>
+            <img src={`http://localhost:5000/images/${player.Photo}`} alt="photo"></img>
+            <p>{player.FIO}</p>
         </button>
 
     );
@@ -68,7 +70,7 @@ const NoPlayerItem = ({ players }) => {
 };
 
 const HistoryItem = ({ history, teams }) => {
-    
+    /*<hr className='hr-matchs' />*/
     return (
         <div className="history-item">
             <hr className='hr-competitions' />
@@ -86,7 +88,6 @@ const HistoryItem = ({ history, teams }) => {
                         const winnerName = match.HaveWinner ? match.WinnerId == match.Team1 ? `"${teamsMap.get(match.Team1)}"` : `"${teamsMap.get(match.Team2)}"` : 'не указан';
                         return (
                             <div key={match.MatchId} className="match-item">
-                                <hr className='hr-matchs' />
                                 <p>"{teamsMap?.get(match?.Team1)}" – "{teamsMap?.get(match?.Team2)}"</p>
                                 <p>Счет: {score1} – {score2}</p>
                                 <p>Победитель: {winnerName}</p>

@@ -82,14 +82,14 @@ function AddTeam({ refreshTeams }) {
     return (
         <form className="form-container" onSubmit={handleSubmit}>
             <h3>Добавление команды</h3>
-            <div className="form-label">
-                <label>
+            <div>
+                <label className="form-label">
                     Название команды:
                     <input
                         type="text"
                         value={NameTeam}
                         onChange={(e) => setNameTeam(e.target.value)}
-                        placeholder="Введите название команды"
+                        placeholder="Введите название"
                         className="form-input"
                     />
                 </label>
@@ -97,7 +97,7 @@ function AddTeam({ refreshTeams }) {
 
             {error && <p className="error-message">{error}</p>}
 
-            <button type="submit" className="btn-main">Добавить</button>
+            <button type="submit" className="btn-confirm">Добавить</button>
         </form>
     );
 }
@@ -199,7 +199,6 @@ function RemoveTeam({ teams, refreshTeams }) {
                 <TwoColumnScrollable items={teams}></TwoColumnScrollable>
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                <h2>Всплывающее окно</h2>
                 <p>Вы уверены что хотите удалить команду?</p>
                 <button className="btn-confirm" onClick={() => removeTeam(teamToRemove)}>Подтвердить</button>
                 <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
@@ -308,7 +307,7 @@ function EditNameTeam({ teams, refreshTeams }) {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <p>Старое название команды: {teamToEdit?.TeamName}</p>
-                        <label>
+                        <label className="form-label">
                             Новое название команды:
                             <input
                                 type="text"
@@ -333,14 +332,14 @@ function EditNameTeam({ teams, refreshTeams }) {
 }
 
 function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
-    
+
     const [error, setError] = React.useState('');
     const [isModalOpen, setModalOpen] = React.useState(false);
     const [teamToEdit, setTeamToEdit] = React.useState(null);
     const [DateAdd, setDateAdd] = useState('');
     const [PlayerId, setPlayerId] = React.useState("");
     const [players, setPlayers] = React.useState([]);
-    
+
     const openModal = (team) => {
         setTeamToEdit(team);
         setPlayerId('0');
@@ -368,7 +367,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
             }
         });
         //console.log(`В команду ${team.TeamName} (${team.TeamId}) добавлен игрок ${FIO} с PlayerId ${PlayerId}. Дата: ${DateAdd}`);
-        
+
         const formData = new FormData();
         formData.append('TeamId', team.TeamId);
         formData.append('PlayerId', PlayerId);
@@ -450,27 +449,31 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <p>Выберите участника для команды {teamToEdit?.TeamName}</p>
-                        <label>Игрок: </label>
-                        <select value={PlayerId || ''}
-                            onChange={(e) => setPlayerId(e.target.value)}>
-                            <option key={0} value={0}>---------</option>
-                            {players.map((player) => (
-                                <option key={player.PlayerId} value={player.PlayerId}>
-                                    {player.FIO}
-                                </option>
-                            ))}
-                        </select><br />
-                        <label>Дата добавления в команду: </label>
-                        <label>
+                        <label className="form-label">
+                            Игрок:
+                            <select value={PlayerId || ''}
+                                onChange={(e) => setPlayerId(e.target.value)}>
+                                <option className="form-input" key={0} value={0}>---------</option>
+                                {players.map((player) => (
+                                    <option key={player.PlayerId} value={player.PlayerId}>
+                                        {player.FIO}
+                                    </option>
+                                ))}
+                            </select>
+                        </label><br />
+                        <label></label>
+                        <label className="form-label">
+                            Дата добавления в команду:
                             <input
                                 type="date"
                                 value={DateAdd}
                                 onChange={(e) => setDateAdd(e.target.value)}
+                                className="form-input"
                             />
                         </label>
                     </div>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p className="error-message">{error}</p>}
                     <button className="btn-confirm" type="submit">Добавить</button>
                     <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                         Отмена
@@ -600,22 +603,25 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <p>Выберите участника для команды {teamToEdit?.TeamName}</p>
-                        <label>Игрок: </label>
-                        <select value={PlayerId || ''}
-                            onChange={(e) => setPlayerId(e.target.value)}>
-                            <option key={0} value={0}>---------</option>
-                            {players.map((player) => (
-                                <option key={player.PlayerId} value={player.PlayerId}>
-                                    {player.FIO}
-                                </option>
-                            ))}
-                        </select><br />
-                        <label>Дата выхода из команды: </label>
-                        <label>
+                        <label className="form-label">
+                            Игрок:
+                            <select className="form-input" value={PlayerId || ''}
+                                onChange={(e) => setPlayerId(e.target.value)}>
+                                <option key={0} value={0}>---------</option>
+                                {players.map((player) => (
+                                    <option key={player.PlayerId} value={player.PlayerId}>
+                                        {player.FIO}
+                                    </option>
+                                ))}
+                            </select>
+                        </label><br />
+                        <label className="form-label">
+                            Дата выхода из команды:
                             <input
                                 type="date"
                                 value={DateLeft}
                                 onChange={(e) => setDateLeft(e.target.value)}
+                                className="form-input"
                             />
                         </label>
                     </div>
@@ -715,25 +721,6 @@ const EditTeam = () => {
     };
 
     //if (!teams || !allPlayers) return <div>Загрузка...</div>;
-    return (
-        <div className="edit-team-container">
-            <button className="btn-back" onClick={handleClick}>Список команд</button>
-            <button className="btn-back" onClick={backClick}>Назад</button>
-            <h2 className="edit-team-title">Выберите какую информацию в разделе команда хотите отредактироать</h2>
-            <div className="buttons-group">
-                <button className="btn-main" onClick={() => setActiveSection("addTeam")}>Добавление команды</button>
-                <button className="btn-main" onClick={() => setActiveSection("removeTeam")}>Удаление команды</button>
-                <button className="btn-main" onClick={() => setActiveSection("editNameTeam")}>Изменение названия команды</button>
-                <button className="btn-main" onClick={() => setActiveSection("addPlayerInTeam")}>Добавление игрока в команду</button>
-                <button className="btn-main" onClick={() => setActiveSection("removePlayerFromTeam")}>Удаление игрока из команды</button>
-            </div>
-            <hr />
-
-            <div>
-                {renderContent()}
-            </div>
-        </div>
-    )
     return (
         <div className="edit-team-container">
             <button className="btn-back" onClick={handleClick}>Список команд</button>

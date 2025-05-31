@@ -108,36 +108,40 @@ function AddPlayer({ refreshPlayers }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="form-container" onSubmit={handleSubmit}>
+            <h3>Добавление игрока</h3>
             <div>
-                <label>
+                <label className="form-label">
                     Имя игрока:
                     <input
                         type="text"
                         value={FirstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="Введите имя игрока"
+                        className="form-input"
                     />
                 </label><br />
-                <label>
+                <label className="form-label">
                     Фамилия игрока:
                     <input
                         type="text"
                         value={SecondName}
                         onChange={(e) => setSecondName(e.target.value)}
                         placeholder="Введите фамилия игрока"
+                        className="form-input"
                     />
                 </label><br />
-                <label>
+                <label className="form-label">
                     Отчество игрока:
                     <input
                         type="text"
                         value={ThirdName}
                         onChange={(e) => setThirdName(e.target.value)}
                         placeholder="Введите отчество игрока"
+                        className="form-input"
                     />
                 </label><br />
-                <label>
+                <label className="form-label">
                     Возраст игрока:
                     <input
                         type="text"
@@ -145,20 +149,21 @@ function AddPlayer({ refreshPlayers }) {
                         onChange={(e) => setAge(e.target.value)}
                         placeholder="Введите возраст игрока"
                         min="1"
+                        className="form-input"
                     />
                 </label><br />
             </div>
 
             <div>
-                <label>
+                <label className="form-label">
                     Фото игрока:
-                    <input type="file" accept="image/*" onChange={handleFileChange} />
+                    <input type="file" accept="image/*" onChange={handleFileChange} className="form-input-file" />
                 </label>
             </div>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
 
-            <button type="submit">Добавить</button>
+            <button className="btn-confirm" type="submit">Добавить</button>
         </form>
     );
 }
@@ -167,33 +172,16 @@ function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null; // ничего не рендерим, если окно закрыто
 
     return (
-        <div style={styles.overlay}>
-            <div style={styles.modal}>
-                {children}
-                <button onClick={onClose} style={styles.closeBtn}>Закрыть</button>
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <button onClick={onClose} className="btn-close">Закрыть</button>
+                <div className="under-close">
+                    {children}
+                </div>
             </div>
         </div>
     );
 }
-const styles = {
-    overlay: {
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        display: 'flex', justifyContent: 'center', alignItems: 'center',
-        zIndex: 1000,
-    },
-    modal: {
-        background: '#fff',
-        padding: 20,
-        borderRadius: 8,
-        maxWidth: '500px',
-        width: '90%',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-    },
-    closeBtn: {
-        marginTop: 20,
-    }
-};
 
 function RemovePlayer({ players, refreshPlayers }) {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -255,7 +243,7 @@ function RemovePlayer({ players, refreshPlayers }) {
         return (
             <div>
                 <button className="player-item" onClick={() => openModal(player)}>
-                    <img src={`${urlServer}images/${player.Photo}`} height='300px' alt="photo"></img>
+                    <img src={`${urlServer}images/${player.Photo}`} alt="photo"></img>
                     <p>{player.FIO}</p>
                     <p>Возраст: {player.Age}</p>
                 </button>
@@ -268,17 +256,16 @@ function RemovePlayer({ players, refreshPlayers }) {
             <form>
                 <h3>Удаление игрока</h3>
                 <p>Нажмите на игрока, которого хотите удалить</p>
-                <div>
+                <div className="players-list">
                     {players.map((player) => (
                         <PlayerItem key={player.PlayerId} player={player} />
                     ))}
                 </div>
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                <h2>Всплывающее окно</h2>
                 <p>Вы уверены что хотите удалить игрока {playerToRemove?.FIO}?</p>
-                <button onClick={() => removePlayer(playerToRemove)}>Подтвердить</button>
-                <button onClick={() => setModalOpen(false)}>Отмена</button>
+                <button className="btn-confirm" onClick={() => removePlayer(playerToRemove)}>Подтвердить</button>
+                <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
             </Modal>
         </div>
     );
@@ -425,7 +412,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
         return (
             <div>
                 <button className="player-item" onClick={() => openModal(player)}>
-                    <img src={`${urlServer}images/${player.Photo}`} height='300px' alt="photo"></img>
+                    <img src={`${urlServer}images/${player.Photo}`} alt="photo"></img>
                     <p>{player.FIO}</p>
                     <p>Возраст: {player.Age}</p>
                 </button>
@@ -438,7 +425,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
             <form>
                 <h3>Изменение данных об игроке</h3>
                 <p>Нажмите на игрока, данные которого хотите изменить</p>
-                <div>
+                <div className="players-list">
                     {players.map((player) => (
                         <PlayerItem key={player.PlayerId} player={player} />
                     ))}
@@ -447,34 +434,37 @@ function EditInfoPlayer({ players, refreshPlayers }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label>
+                        <label className="form-label">
                             Имя игрока:
                             <input
                                 type="text"
                                 value={FirstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                                 placeholder="Введите имя игрока"
+                                className="form-input"
                             />
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Фамилия игрока:
                             <input
                                 type="text"
                                 value={SecondName}
                                 onChange={(e) => setSecondName(e.target.value)}
                                 placeholder="Введите фамилия игрока"
+                                className="form-input"
                             />
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Отчество игрока:
                             <input
                                 type="text"
                                 value={ThirdName}
                                 onChange={(e) => setThirdName(e.target.value)}
                                 placeholder="Введите отчество игрока"
+                                className="form-input"
                             />
                         </label><br />
-                        <label>
+                        <label className="form-label">
                             Возраст игрока:
                             <input
                                 type="text"
@@ -482,21 +472,22 @@ function EditInfoPlayer({ players, refreshPlayers }) {
                                 onChange={(e) => setAge(e.target.value)}
                                 placeholder="Введите возраст игрока"
                                 min="1"
+                                className="form-input"
                             />
                         </label><br />
                     </div>
 
                     <div>
-                        <label>
+                        <label className="form-label">
                             Фото игрока:
-                            <input type="file" accept="image/*" onChange={handleFileChange} />
+                            <input type="file" accept="image/*" onChange={handleFileChange} className="form-input-file" />
                         </label>
                     </div>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p className="error-message">{error}</p>}
 
-                    <button type="submit">Подтвердить</button>
-                    <button onClick={() => setModalOpen(false)}>Отмена</button>
+                    <button className="btn-confirm" type="submit">Подтвердить</button>
+                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
                 </form>
             </Modal>
         </div>
@@ -505,7 +496,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
 
 const EditPlayer = () => {
     const navigate = useNavigate();
-    
+
 
     const [players, setPlayers] = useState(null);
 
@@ -560,17 +551,19 @@ const EditPlayer = () => {
     */
 
     return (
-        <div>
-            <button className="back" onClick={handleClick}>Список команд</button>
-            <button className="back" onClick={backClick}>Назад</button>
-            <h2>Выберите какую информацию в разделе игрок хотите отредактироать</h2>
-            <button className="button" onClick={() => setActiveSection("addPlayer")}>Добавление игрока</button>
-            <button className="button" onClick={() => setActiveSection("removePlayer")}>Удаление игрока</button>
-            <button className="button" onClick={() => setActiveSection("editName")}>Изменение общих данных игрока</button>
+        <div className="edit-player-container">
+            <button className="btn-back" onClick={handleClick}>Список команд</button>
+            <button className="btn-back" onClick={backClick}>Назад</button>
+            <h2 className="edit-player-title">Выберите какую информацию в разделе игрок хотите отредактироать</h2>
+            <div className="buttons-group">
+                <button className="btn-main" onClick={() => setActiveSection("addPlayer")}>Добавление игрока</button>
+                <button className="btn-main" onClick={() => setActiveSection("removePlayer")}>Удаление игрока</button>
+                <button className="btn-main" onClick={() => setActiveSection("editName")}>Изменение общих данных игрока</button>
+            </div>
 
             <hr />
 
-            <div>
+            <div className="edit-player-content">
                 {renderContent()}
             </div>
         </div>

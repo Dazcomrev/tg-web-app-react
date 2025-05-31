@@ -1,8 +1,172 @@
-﻿.button {
-    padding: 10px 15px;
-    background: var(--tg-theme-bg-color);
-    color: var(--tg-theme-text-color);
-    border: none;
-    outline: none;
-    cursor: pointer;
+﻿/* EditPlayer.css */
+
+.edit-player-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    background: var(--tg-theme-bg-color, #fff);
+    color: var(--tg-theme-text-color, #222);
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.btn-back {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 12px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-back:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.edit-player-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.buttons-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.btn-main {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    min-width: 160px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-main:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.edit-player-content {
+    margin-top: 20px;
+}
+
+/* Модальное окно */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--tg-theme-bg-color, #fff);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.under-close {
+    margin-top: 40px;
+}
+
+.btn-close {
+    position: absolute;
+    right: 20px;
+    background-color: var(--tg-theme-button-color, #ff1111);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-close:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+/* Формы и ошибки */
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+}
+
+.form-input, .form-input-file, select {
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-top: 4px;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* Список игроков */
+
+.players-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.player-item {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    width: 180px;
+    cursor: pointer;
+    text-align: center;
+    transition: filter 0.2s ease;
+}
+
+    .player-item:hover,
+    .player-item:focus {
+        filter: brightness(0.9);
+        outline: none;
+    }
+
+    .player-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }

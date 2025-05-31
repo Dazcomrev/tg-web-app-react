@@ -7,17 +7,18 @@
     cursor: pointer;
 }
 
-.competition-item {
-    width: 100%;
-    align-items: center;
-}
-
 .checkbox-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px; /* расстояние между чекбоксом и текстом */
+    gap: 5px; /* расстояние между чекбоксом и текстом */
     margin-bottom: 8px;
     padding-left: 0; /* убираем отступ слева */
+
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    font-size: 16px;
+    color: var(--tg-theme-text-color, #222);
 }
 
     .checkbox-wrapper label {
@@ -41,3 +42,256 @@
         padding: 4px 6px;
         font-size: 14px;
     }
+
+/* EditMatch.css */
+
+.edit-match-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    background: var(--tg-theme-bg-color, #fff);
+    color: var(--tg-theme-text-color, #222);
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.btn-back {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 12px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-back:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.edit-match-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.buttons-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.btn-main {
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    min-width: 160px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-main:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.edit-match-content {
+    margin-top: 20px;
+}
+
+/* Модальное окно */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--tg-theme-bg-color, #fff);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    position: relative;
+    color: var(--tg-theme-text-color, #222);
+}
+
+.btn-close {
+    position: absolute;
+    right: 20px;
+    background-color: var(--tg-theme-button-color, #ff1111);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-close:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.under-close {
+    margin-top: 40px;
+}
+
+.btn-confirm {
+    position: relative;
+    top: 75%;
+    margin-top: 10px;
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    width: 130px;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-confirm:hover {
+        background-color: var(--tg-theme-button-hover-color, #006699);
+    }
+
+.btn-cancel {
+    margin-left: 51%;
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.cancel:hover {
+    background-color: var(--tg-theme-button-hover-color, #006699);
+}
+/* Формы и ошибки */
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    color: var(--tg-theme-text-color, #222);
+}
+
+.form-input, select {
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-top: 4px;
+    color: var(--tg-theme-text-color, #222);
+    background-color: var(--tg-theme-bg-color, #fff);
+}
+
+.team-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.team-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--tg-theme-text-color, #222);
+    /* Отступ справа, чтобы отделить от input */
+    margin-right: 10px;
+    /* Чтобы текст не переносился на новую строку */
+    white-space: nowrap;
+}
+
+.team-input {
+    width: 100px;
+    /* Отступ слева можно убрать, т.к. есть margin у team-name */
+    margin-left: 0;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* Элементы соревнований */
+
+.competition-item {
+    width: 100%;
+    align-items: center;
+    background-color: var(--tg-theme-bg-color, #f9f9f9);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+    color: var(--tg-theme-text-color, #222);
+    transition: background-color 0.3s ease;
+}
+
+    .competition-item:hover {
+        background-color: #e6f0ff;
+    }
+
+.competition-with-match-item {
+    background-color: var(--tg-theme-bg-color, #f9f9f9);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+    color: var(--tg-theme-text-color, #222);
+    transition: background-color 0.3s ease;
+}
+
+.match-item {
+    width: 100%;
+    background-color: var(--tg-theme-bg-color, #f9f9f9);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+    color: var(--tg-theme-text-color, #222);
+    transition: background-color 0.3s ease;
+}
+
+    .match-item:hover {
+        background-color: #e6f0ff;
+    }
+
+/* Список матчей */
+
+.match-list p {
+    margin: 5px 0;
+    color: var(--tg-theme-text-color, #222);
+}

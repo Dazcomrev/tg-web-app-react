@@ -58,6 +58,13 @@
         outline: none;
     }
 
+    .player-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+
 /* HistoryItem */
 .history-item {
     margin-bottom: 24px;

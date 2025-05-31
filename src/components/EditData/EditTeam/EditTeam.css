@@ -86,8 +86,12 @@
     position: relative;
 }
 
+.under-close {
+    margin-top: 40px;
+}
+
 .btn-close {
-    position:absolute;
+    position: absolute;
     right: 20px;
     background-color: var(--tg-theme-button-color, #ff1111);
     color: var(--tg-theme-button-text-color, #fff);
@@ -102,10 +106,6 @@
     .btn-close:hover {
         background-color: var(--tg-theme-button-hover-color, #006699);
     }
-
-.under-close {
-    margin-top: 40px;
-}
 
 .btn-confirm {
     position: relative;
@@ -156,6 +156,7 @@
     display: flex;
     flex-direction: column;
     font-size: 16px;
+    color: var(--tg-theme-text-color, #222);
 }
 
 .form-input, select {
@@ -165,6 +166,8 @@
     border: 1px solid #ccc;
     box-sizing: border-box;
     margin-top: 4px;
+    color: var(--tg-theme-text-color, #222);
+    background-color: var(--tg-theme-bg-color, #fff);
 }
 
 .error-message {
