@@ -12,7 +12,7 @@ const HistoryItem = ({ history }) => {
 
     const leftTeam = (dateLeft) => {
         if (dateLeft) {
-            return `Вышел: ${dateLeft}`;
+            return `Покинул: ${dateLeft}`;
         } else {
             return "Сейчас в команде";
         }
@@ -21,7 +21,7 @@ const HistoryItem = ({ history }) => {
         <div className="history-item">
             <h4 className="history-team-name">{history.TeamName}</h4>
             <ul className="history-list">
-                <li>Вошел: {history.DateAdd}</li>
+                <li>Присоединился: {history.DateAdd}</li>
                 <li>{leftTeam(history.DateLeft)}</li>
             </ul>
         </div>

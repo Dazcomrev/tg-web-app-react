@@ -2,7 +2,7 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import './ProtectedRoute.css';
 
-const PASSWORD = '123'; // Замените на нужный пароль
+const PASSWORD = ['123', '1']; // Заменить на нужный пароль!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 function ProtectedRoute({ children }) {
     const [isAuthorized, setIsAuthorized] = useState(false);
@@ -12,10 +12,17 @@ function ProtectedRoute({ children }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (inputPass === PASSWORD) {
-            setIsAuthorized(true);
-            setError('');
-        } else {
+
+        let flag = false;
+        for (let i = 0; i < PASSWORD.length; i = i + 1) {
+            if (inputPass === PASSWORD[i]) {
+                setIsAuthorized(true);
+                setError('');
+                flag = true;
+                break;
+            }
+        } 
+        if (!flag) {
             setError('Неверный пароль');
         }
     };

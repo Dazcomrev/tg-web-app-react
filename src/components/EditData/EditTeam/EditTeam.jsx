@@ -496,6 +496,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
     const [teamToEdit, setTeamToEdit] = React.useState(null);
     const [PlayerId, setPlayerId] = React.useState("");
     const [DateLeft, setDateLeft] = useState('');
+    const [nowDate, setNowDate] = useState('');
     const [players, setPlayers] = React.useState([]);
 
     const openModal = (team) => {
@@ -508,6 +509,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
         let year = now.getFullYear();
         let dateStr = `${year}-${month}-${day}`;
         setDateLeft(dateStr);
+        setNowDate(dateStr);
         setPlayers(team.players);
         setModalOpen(true);
     };
@@ -576,6 +578,12 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
             return;
         }
 
+        const leftD = new Date(Date.parse(DateLeft));
+        const nowD = new Date(Date.parse(nowDate));
+        if (leftD > nowD) {
+            setError('Необходимо выбрать дату не позднее сегодняшней');
+            return;
+        }
         setError('');
         removePlayerFromTeam(teamToEdit, PlayerId);
     };
@@ -639,6 +647,18 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
 
 
 const EditTeam = () => {
+    let now = new Date();
+    let day = String(now.getDate()).padStart(2, '0');
+    let month = String(now.getMonth() + 1).padStart(2, '0');
+    let year = now.getFullYear();
+    let dateStr = `${year}-${month}-${day}`;
+    const d1 = new Date(Date.parse(dateStr));
+    const d2 = new Date(Date.parse("2025-05-20"));
+    if (d2 < d1) {
+        console.log('<')
+    } else {
+        console.log('>')
+    }
 
     const navigate = useNavigate();
 
