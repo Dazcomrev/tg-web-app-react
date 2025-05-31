@@ -13,7 +13,7 @@
 .btn-cls {
     position: absolute;
     right: 0;
-    background-color: var(--tg-theme-button-color, #ff1111);
+    background-color: #ff1111;
     color: var(--tg-theme-button-text-color, #fff);
     border: none;
     padding: 10px 18px;
