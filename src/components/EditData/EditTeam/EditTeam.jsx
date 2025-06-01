@@ -191,6 +191,8 @@ function RemoveTeam({ teams, refreshTeams }) {
         );
     };
 
+    if (!teams) return <div>Загрузка...</div>;
+
     return (
         <div>
             <form>
@@ -291,6 +293,8 @@ function EditNameTeam({ teams, refreshTeams }) {
             </button>
         </div>
     );
+
+    if (!teams) return <div>Загрузка...</div>;
 
     return (
         <div>
@@ -433,7 +437,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
             </button>
         </div>
     );
-
+    if (!teams || !allPlayers) return <div>Загрузка...</div>;
     return (
         <div>
             <h3>Добавление игрока в команду</h3>
@@ -596,6 +600,8 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
         </div>
     );
 
+    if (!teams || !allPlayers) return <div>Загрузка...</div>;
+
     return (
         <div>
             <h3>Удаление игрока из команды</h3>
@@ -666,7 +672,7 @@ const EditTeam = () => {
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
     };
-    console.log('urlServer:', urlServer);
+    
     useEffect(() => {
         fetchTeams();
     }, []);
@@ -728,7 +734,6 @@ const EditTeam = () => {
         }
     };
 
-    if (!teams || !allPlayers) return <div edit-team-container>Загрузка...</div>;
     return (
         <div className="edit-team-container">
             <button className="btn-back" onClick={handleClick}>Список команд</button>
