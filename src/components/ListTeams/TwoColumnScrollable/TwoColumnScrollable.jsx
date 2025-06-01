@@ -2,7 +2,6 @@
 import './TwoColumnScrollable.css';
 import { useTelegram } from '../../../hooks/useTelegram';
 import { useNavigate } from 'react-router-dom';
-import { useTelegram } from '../../../hooks/useTelegram';
 import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
 

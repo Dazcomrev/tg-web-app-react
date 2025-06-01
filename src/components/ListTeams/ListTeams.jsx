@@ -9,7 +9,6 @@ const { urlServer } = useURL();
 const ListTeams = () => {
     const navigate = useNavigate();
     const { userId } = useTelegram();
-    console.log('ListTeams_userId:', userId);
 
     const handleClick = () => {
         navigate(`/EditData`);

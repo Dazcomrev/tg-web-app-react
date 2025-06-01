@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import '../Button/Button.css';
 import Header from '../Header/Header';
 import { useParams } from 'react-router-dom';
-//import { useTelegram } from '../../hooks/useTelegram';
+import { useTelegram } from '../../hooks/useTelegram';
 import { useURL } from '../../hooks/URLs';
 const { urlServer } = useURL();
+const { userId } = useTelegram();
 
 function ImageTooltip({ children, imgSrc, imgAlt }) {
     const [visible, setVisible] = useState(false);
@@ -30,7 +31,6 @@ function ImageTooltip({ children, imgSrc, imgAlt }) {
 
 const PlayerItem = ({ player, teamId }) => {
     const navigate = useNavigate();
-
     /*
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
@@ -39,13 +39,13 @@ const PlayerItem = ({ player, teamId }) => {
 
     const handleClick = () => {
         navigate(`/TeamCard/${teamId}/PlayerCard/${player.PlayerId}`);
-        /*fetch(`${urlServer}api/log`, {
+        fetch(`${urlServer}api/log`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр игрока', actionDetails: `Игрок: ${player.FIO}. ID игрока: ${player.PlayerId}` }),
+            body: JSON.stringify({ userId: `${userId}`, actionType: 'Просмотр игрока', actionDetails: `Игрок: ${player.FIO}. ID игрока: ${player.PlayerId}` }),
         })
             .then(res => res.json())
-            .catch(err => console.error(err));*/
+            .catch(err => console.error(err));
     };
     //<img src={`${urlServer}images/${player.Photo}`} height='150px' alt="photo"></img>
     /*const imgSrc = `${urlServer}images/${player.Photo}`;
@@ -136,7 +136,7 @@ const PlayerCard = () => {
         ],
         frequency: '1.00'
     };*/
-    const teamCard = {
+    /*const teamCard = {
         name: "Navi",
         players: [
             { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' },
@@ -195,19 +195,23 @@ const PlayerCard = () => {
             ]
         }],
         frequency: "1.0000",
-    };
+    };*/
+    /*const teams = [
+        { TeamId: 1, TeamName: 'Navi', NumberWins: 4, NumberDefeats: 0, FrequencyWins: '1.0000' },
+        { TeamId: 2, TeamName: 'DreamTeam', NumberWins: 0, NumberDefeats: 1, FrequencyWins: '0.0000' },
+        { TeamId: 3, TeamName: 'Eteam', NumberWins: 0, NumberDefeats: 0, FrequencyWins: '0' }];*/
 
-    /*const [teamCard, setTeamCard] = useState(null);
+    const [teamCard, setTeamCard] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/teamCard/${teamId}`)
             .then(res => res.json())
             .then(data => setTeamCard(data))
             .catch(err => console.error(err));
-    }, [teamId]);*/
+    }, [teamId]);
     //console.log('TeamCard.TeamCard:', teamCard);
 
-    /*const [teams, setTeams] = useState(null);
+    const [teams, setTeams] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/listTeams`)
@@ -215,11 +219,7 @@ const PlayerCard = () => {
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
 
-    }, []);*/
-    const teams = [
-        { TeamId: 1, TeamName: 'Navi', NumberWins: 4, NumberDefeats: 0, FrequencyWins: '1.0000' },
-        { TeamId: 2, TeamName: 'DreamTeam', NumberWins: 0, NumberDefeats: 1, FrequencyWins: '0.0000' },
-        { TeamId: 3, TeamName: 'Eteam', NumberWins: 0, NumberDefeats: 0, FrequencyWins: '0' }];
+    }, []);
 
     if (!teamCard) return <div>Загрузка...</div>;
 

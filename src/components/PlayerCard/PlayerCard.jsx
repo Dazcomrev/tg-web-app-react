@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import '../Button/Button.css';
 import Header from '../Header/Header';
 import { useParams } from 'react-router-dom';
-//import { useTelegram } from '../../hooks/useTelegram';
+import { useTelegram } from '../../hooks/useTelegram';
 import { useURL } from '../../hooks/URLs';
 const { urlServer } = useURL();
+const { userId } = useTelegram();
 
 const HistoryItem = ({ history }) => {
 
@@ -31,16 +32,16 @@ const HistoryItem = ({ history }) => {
 const PlayerCard = () => {
     const { playerId, teamId } = useParams();
     const navigate = useNavigate();
-    /*const [teams, setTeams] = useState(null);
+    const [teams, setTeams] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/edit/team/getTeams`)
             .then(res => res.json())
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
-    }, []);*/
+    }, []);
 
-    const teams = [
+    /*const teams = [
         {
             TeamId: 1, TeamName: 'Navi', players: [
                 { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' },
@@ -48,7 +49,7 @@ const PlayerCard = () => {
             ]
         },
         { TeamId: 2, TeamName: 'DreamTeam', players: [] },
-        { TeamId: 3, TeamName: 'Eteam', players: [{ PlayerId: 2, FIO: 'Петров Петр Петрович', Photo: 'Дед.jpg' }] }];
+        { TeamId: 3, TeamName: 'Eteam', players: [{ PlayerId: 2, FIO: 'Петров Петр Петрович', Photo: 'Дед.jpg' }] }];*/
 
     const handleClick = () => {
         navigate(`/ListTeams`);
@@ -58,13 +59,13 @@ const PlayerCard = () => {
         navigate(`/TeamCard/${teamId}`);
         const teamsMap = new Map(teams?.map(team => [String(team.TeamId), team.TeamName]));
 
-        /*fetch(`${urlServer}api/log`, {
+        fetch(`${urlServer}api/log`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'userId', actionType: 'Просмотр команды', actionDetails: `Возвращение от просмотра игрока к карточке команды. Название команды: "${teamsMap.get(teamId)}". TeamId: ${teamId}`}),
+            body: JSON.stringify({ userId: `${userId}`, actionType: 'Просмотр команды', actionDetails: `Возвращение от просмотра игрока к карточке команды. Название команды: "${teamsMap.get(teamId)}". TeamId: ${teamId}`}),
         })
             .then(res => res.json())
-            .catch(err => console.error(err));*/
+            .catch(err => console.error(err));
     };
 
     /*const playerCard1 = {
@@ -85,19 +86,19 @@ const PlayerCard = () => {
         ]
     }*/
 
-    const playerCards = {
+    /*const playerCards = {
         1: { FIO: 'Иванов Иван Иванович', Age: 18, pathPhoto: 'Яблоко.jpg', history: [{ TeamName: 'Navi', DateAdd: '10.05.2025', DateLeft: null }] },
         3: { FIO: 'Косяк Павел Александрович', Age: 250, pathPhoto: '1747892911129-806430307.jpg', history: [{ TeamName: 'Navi', DateAdd: '20.05.2025', DateLeft: null }] }
 };
-    const playerCard = playerCards[playerId];
-    /*const [playerCard, setPlayerCard] = useState(null);
+    const playerCard = playerCards[playerId];*/
+    const [playerCard, setPlayerCard] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/playerCard/${playerId}`)
             .then(res => res.json())
             .then(data => setPlayerCard(data))
             .catch(err => console.error(err));
-    }, [playerId]);*/
+    }, [playerId]);
     //console.log('playerCard.playerCard:', playerCard);
 
     if (!playerCard) return <div className="loading">Загрузка...</div>;
