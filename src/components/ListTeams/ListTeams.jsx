@@ -38,12 +38,12 @@ const ListTeams = () => {
         }
     ];*/
 
-    const teams = [
+    /*const teams = [
         { TeamId: 1, TeamName: 'Navi', NumberWins: 4, NumberDefeats: 0, FrequencyWins: '1.0000' },
         { TeamId: 2, TeamName: 'DreamTeam', NumberWins: 0, NumberDefeats: 1, FrequencyWins: '0.0000' },
-        { TeamId: 3, TeamName: 'Eteam', NumberWins: 0, NumberDefeats: 0, FrequencyWins: '0' } ];
+        { TeamId: 3, TeamName: 'Eteam', NumberWins: 0, NumberDefeats: 0, FrequencyWins: '0' } ];*/
 
-    /*const [teams, setTeams] = useState(null);
+    const [teams, setTeams] = useState(null);
 
     useEffect(() => {
         fetch(`${urlServer}api/listTeams`)
@@ -51,7 +51,7 @@ const ListTeams = () => {
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
 
-    }, []);*/
+    }, []);
     //console.log('ListTeams:', teams);
 
     if (!teams) return <div className="loading">Загрузка...</div>;

@@ -2,7 +2,7 @@
 import './TwoColumnScrollable.css';
 import { useTelegram } from '../../../hooks/useTelegram';
 import { useNavigate } from 'react-router-dom';
-//import { useTelegram } from '../../../hooks/useTelegram';
+import { useTelegram } from '../../../hooks/useTelegram';
 import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
 
@@ -29,7 +29,7 @@ const onTeamCard = () => {
 
 const TeamItem = ({ team }) => {
     const navigate = useNavigate();
-
+    const { userId } = useTelegram();
     /*
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
@@ -38,13 +38,13 @@ const TeamItem = ({ team }) => {
 
     const handleClick = () => {
         navigate(`/TeamCard/${team.TeamId}`);
-        /*fetch(`${urlServer}api/log`, {
+        fetch(`${urlServer}api/log`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: `{userId}`, actionType: 'Просмотр команды', actionDetails: `Название команды: "${team.TeamName}". TeamId: ${team.TeamId}`}),
+            body: JSON.stringify({ userId: `${userId}`, actionType: 'Просмотр команды', actionDetails: `Название команды: "${team.TeamName}". TeamId: ${team.TeamId}`}),
         })
             .then(res => res.json())
-            .catch(err => console.error(err));*/
+            .catch(err => console.error(err));
     };
 
     return (
