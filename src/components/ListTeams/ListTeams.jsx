@@ -2,13 +2,14 @@
 import './ListTeams.css';
 import TwoColumnScrollable from './TwoColumnScrollable/TwoColumnScrollable';
 import { useNavigate } from 'react-router-dom';
-//import { useTelegram } from '../../hooks/useTelegram';
+import { useTelegram } from '../../hooks/useTelegram';
 import { useURL } from '../../hooks/URLs';
 const { urlServer } = useURL();
 
 const ListTeams = () => {
     const navigate = useNavigate();
-    //const { userId } = useTelegram();
+    const { userId } = useTelegram();
+    console.log('ListTeams_userId:', userId);
 
     const handleClick = () => {
         navigate(`/EditData`);
