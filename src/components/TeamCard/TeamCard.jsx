@@ -47,15 +47,15 @@ const PlayerItem = ({ player, teamId }) => {
             .then(res => res.json())
             .catch(err => console.error(err));*/
     };
-    //<img src={`http://localhost:5000/images/${player.Photo}`} height='150px' alt="photo"></img>
-    /*const imgSrc = `http://localhost:5000/images/${player.Photo}`;
+    //<img src={`${urlServer}images/${player.Photo}`} height='150px' alt="photo"></img>
+    /*const imgSrc = `${urlServer}images/${player.Photo}`;
     <ImageTooltip imgSrc={imgSrc} imgAlt="photo">
         <p>{player.FIO}</p>
     </ImageTooltip>*/
     return (
 
         <button className="player-item" onClick={handleClick}>
-            <img src={`http://localhost:5000/images/${player.Photo}`} alt="photo"></img>
+            <img src={`${urlServer}images/${player.Photo}`} alt="photo"></img>
             <p>{player.FIO}</p>
         </button>
 

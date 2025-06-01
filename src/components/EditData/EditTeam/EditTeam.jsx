@@ -647,18 +647,6 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
 
 
 const EditTeam = () => {
-    let now = new Date();
-    let day = String(now.getDate()).padStart(2, '0');
-    let month = String(now.getMonth() + 1).padStart(2, '0');
-    let year = now.getFullYear();
-    let dateStr = `${year}-${month}-${day}`;
-    const d1 = new Date(Date.parse(dateStr));
-    const d2 = new Date(Date.parse("2025-05-20"));
-    if (d2 < d1) {
-        console.log('<')
-    } else {
-        console.log('>')
-    }
 
     const navigate = useNavigate();
 
@@ -678,7 +666,7 @@ const EditTeam = () => {
             .then(data => setTeams(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
     };
-
+    console.log('urlServer:', urlServer);
     useEffect(() => {
         fetchTeams();
     }, []);

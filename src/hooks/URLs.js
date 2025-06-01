@@ -1,5 +1,5 @@
 ﻿const urlWebApp = 'https://aesthetic-creponne-ffd0c8.netlify.app/';
-const urlServer = 'http://localhost:5000/';
+const urlServer = 'http://server-production-ff27.up.railway.app/'//'http://localhost:5000/';
 export function useURL() {
     return {
         urlWebApp,

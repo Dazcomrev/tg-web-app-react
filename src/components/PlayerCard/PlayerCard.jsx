@@ -107,7 +107,7 @@ const PlayerCard = () => {
             <button className="btn-back" onClick={handleClick}>Список команд</button>
             <button className="btn-back" onClick={handleClickTeam}>Назад</button>
             <div className="player-info">
-                <img className="player-photo"  src={`http://localhost:5000/images/${playerCard.pathPhoto}`} alt="photo"></img>
+                <img className="player-photo" src={`${urlServer}images/${playerCard.pathPhoto}`} alt="photo"></img>
                 <h2 className="player-name">{playerCard.FIO}</h2>
                 <p className="player-age">Возраст: {playerCard.Age}</p>
                 <div className="player-history">
