@@ -728,7 +728,7 @@ const EditTeam = () => {
         }
     };
 
-    //if (!teams || !allPlayers) return <div>Загрузка...</div>;
+    if (!teams || !allPlayers) return <div edit-team-container>Загрузка...</div>;
     return (
         <div className="edit-team-container">
             <button className="btn-back" onClick={handleClick}>Список команд</button>
