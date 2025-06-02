@@ -1,10 +1,10 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './EditTeam.css';
 import { useNavigate } from 'react-router-dom';
-//import { useTelegram } from '../../../hooks/useTelegram';
+import { useTelegram } from '../../../hooks/useTelegram';
 import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
-
+const { userId } = useTelegram();
 /*
 
         НАДО ДОБАВИТЬ СВЯЗЬ С server.js
@@ -65,7 +65,7 @@ function AddTeam({ refreshTeams }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Создана команда ${NameTeam}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Создана команда ${NameTeam}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -143,7 +143,7 @@ function RemoveTeam({ teams, refreshTeams }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Команда ${team.TeamName} с id ${team.TeamId} удалена` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Команда ${team.TeamName} с id ${team.TeamId} удалена` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -253,7 +253,7 @@ function EditNameTeam({ teams, refreshTeams }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Название команды ${team.TeamName} изменено на ${newName}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Название команды ${team.TeamName} изменено на ${newName}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -392,7 +392,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В команду ${team.TeamName} (TeamId = ${team.TeamId}) ${DateAdd} добавлен игрок ${FIO} с PlayerId = ${PlayerId}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `В команду ${team.TeamName} (TeamId = ${team.TeamId}) ${DateAdd} добавлен игрок ${FIO} с PlayerId = ${PlayerId}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -548,7 +548,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Из команды ${team.TeamName} (TeamId = ${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId = ${PlayerId}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Из команды ${team.TeamName} (TeamId = ${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId = ${PlayerId}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));

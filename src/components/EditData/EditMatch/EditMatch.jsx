@@ -1,9 +1,11 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './EditMatch.css';
 import { useNavigate } from 'react-router-dom';
-//import { useTelegram } from '../../../hooks/useTelegram';
+import { useTelegram } from '../../../hooks/useTelegram';
 import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
+const { userId } = useTelegram();
+
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null; // ничего не рендерим, если окно закрыто
 
@@ -145,7 +147,7 @@ function AddMatch({ competitions, refreshCompetitions }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Добавлен матч "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${pointFromDifis(dateMatch)}.` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Добавлен матч "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${pointFromDifis(dateMatch)}.` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -350,7 +352,7 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Удален матч "${teamsMap.get(Match.Team1)}" – "${teamsMap.get(Match.Team2)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${Match.DateMatch}.` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Удален матч "${teamsMap.get(Match.Team1)}" – "${teamsMap.get(Match.Team2)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${Match.DateMatch}.` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -549,7 +551,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Изменены данные матча "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}". Счет: Был – ${oldScore1}:${oldScore2}; Стал – ${score1}:${score2}. Победитель: Был – ${oldWinnerName}; Стал – ${winnerName}. Дата: Была – ${selectedMatch.DateMatch}; Стала – ${pointFromDifis(dateMatch)}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Изменены данные матча "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}". Счет: Был – ${oldScore1}:${oldScore2}; Стал – ${score1}:${score2}. Победитель: Был – ${oldWinnerName}; Стал – ${winnerName}. Дата: Была – ${selectedMatch.DateMatch}; Стала – ${pointFromDifis(dateMatch)}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));

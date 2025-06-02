@@ -1,9 +1,10 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './EditCompetition.css';
 import { useNavigate } from 'react-router-dom';
-//import { useTelegram } from '../../../hooks/useTelegram';
+import { useTelegram } from '../../../hooks/useTelegram';
 import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
+const { userId } = useTelegram();
 
 const pointFromDifis = (dateDifis) => {
     const y = dateDifis.split("-")[0];
@@ -64,7 +65,7 @@ function AddCompetition({ refreshCompetitions }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Добавлено соревнование "${NameCompetition}". Дата: ${pointFromDifis(DateStart)}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Добавлено соревнование "${NameCompetition}". Дата: ${pointFromDifis(DateStart)}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -157,7 +158,7 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Удалено соревнование "${competition.CompetitionName}" (${competition.DateStart}) c CompetitionId = ${competition.CompetitionId}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Удалено соревнование "${competition.CompetitionName}" (${competition.DateStart}) c CompetitionId = ${competition.CompetitionId}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -262,7 +263,7 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Соревнование с CompetitionId = ${competitionToEdit.CompetitionId} – "${competitionToEdit.CompetitionName}" (${competitionToEdit.DateStart}) изменено на "${NameCompetition}" (${pointFromDifis(DateStart)})` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Соревнование с CompetitionId = ${competitionToEdit.CompetitionId} – "${competitionToEdit.CompetitionName}" (${competitionToEdit.DateStart}) изменено на "${NameCompetition}" (${pointFromDifis(DateStart)})` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -459,7 +460,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В соревнование "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) добавлены команды: ${addTeams}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `В соревнование "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) добавлены команды: ${addTeams}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -657,7 +658,7 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) удалены команды: ${removeTeams}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) удалены команды: ${removeTeams}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -830,7 +831,7 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) изменены места команд: ${removeTeams}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) изменены места команд: ${removeTeams}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));

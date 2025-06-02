@@ -8,7 +8,7 @@ const { urlServer } = useURL();
 
 const ListTeams = () => {
     const navigate = useNavigate();
-    const { userId } = useTelegram();
+    //const { userId } = useTelegram();
 
     const handleClick = () => {
         navigate(`/EditData`);

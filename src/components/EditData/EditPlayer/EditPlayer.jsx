@@ -1,9 +1,10 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './EditPlayer.css';
 import { useNavigate } from 'react-router-dom';
-//import { useTelegram } from '../../../hooks/useTelegram';
+import { useTelegram } from '../../../hooks/useTelegram';
 import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
+const { userId } = useTelegram();
 
 function AddPlayer({ refreshPlayers }) {
     const [FirstName, setFirstName] = useState('');
@@ -88,7 +89,7 @@ function AddPlayer({ refreshPlayers }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Добавлен игрок ${SecondName} ${FirstName} ${ThirdName}. Возраст ${Age}. Название изображения: ${data.filename}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Добавлен игрок ${SecondName} ${FirstName} ${ThirdName}. Возраст ${Age}. Название изображения: ${data.filename}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -211,7 +212,7 @@ function RemovePlayer({ players, refreshPlayers }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Удален игрок ${player.FIO} с PlayerId ${player.PlayerId}. Возраст: ${player.Age}.Название изображения: ${player.Photo}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Удален игрок ${player.FIO} с PlayerId ${player.PlayerId}. Возраст: ${player.Age}.Название изображения: ${player.Photo}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
@@ -366,7 +367,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: 'userId', actionType: 'Редактирование данных', actionDetails: `Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые-Новые. Имя: ${OldFirstName}–${FirstName}. Фамилия: ${OldSecondName}–${SecondName}. Отчество: ${OldThirdName}–${ThirdName}. Возраст: ${playerToEdit.Age}–${Age}. Название изображения: ${playerToEdit.Photo}–${data.data.Photo}.` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые-Новые. Имя: ${OldFirstName}–${FirstName}. Фамилия: ${OldSecondName}–${SecondName}. Отчество: ${OldThirdName}–${ThirdName}. Возраст: ${playerToEdit.Age}–${Age}. Название изображения: ${playerToEdit.Photo}–${data.data.Photo}.` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
