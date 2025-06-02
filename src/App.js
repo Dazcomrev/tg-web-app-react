@@ -18,7 +18,6 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 function App() {
     const { onToggleButton, tg, userId } = useTelegram();
     const navigate = useNavigate();
-    console.log('App_userId:', userId);
 
     useEffect(() => {
         tg.ready();
