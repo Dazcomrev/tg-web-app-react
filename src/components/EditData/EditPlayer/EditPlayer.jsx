@@ -233,14 +233,6 @@ function RemovePlayer({ players, refreshPlayers }) {
     };
 
     const PlayerItem = ({ player }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="player-item" onClick={() => openModal(player)}>
@@ -336,8 +328,8 @@ function EditInfoPlayer({ players, refreshPlayers }) {
         const OldFirstName = FIO[0];
         const OldSecondName = FIO[1];
         const OldThirdName = FIO[2] ? FIO[2] : '';
-        console.log('Отправляем данные для изменения:', { Photo, FirstName, SecondName, ThirdName, Age, OldPhoto });
-        console.log(`Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые–Новые. Имя: ${OldFirstName}–${FirstName}. Фамилия: ${OldSecondName}–${SecondName}. Отчество: ${OldThirdName}–${ThirdName}. Возраст: ${playerToEdit.Age}–${Age}. Название изображения: ${playerToEdit.Photo}–{data.data.Photo}.`);
+        //console.log('Отправляем данные для изменения:', { Photo, FirstName, SecondName, ThirdName, Age, OldPhoto });
+        //console.log(`Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые–Новые. Имя: ${OldFirstName}–${FirstName}. Фамилия: ${OldSecondName}–${SecondName}. Отчество: ${OldThirdName}–${ThirdName}. Возраст: ${playerToEdit.Age}–${Age}. Название изображения: ${playerToEdit.Photo}–{data.data.Photo}.`);
 
         // Формируем FormData для отправки файла
         const formData = new FormData();
@@ -349,8 +341,6 @@ function EditInfoPlayer({ players, refreshPlayers }) {
         formData.append('Age', Age);
         formData.append('OldPhoto', OldPhoto);
 
-        console.log('formData:', formData);
-
         try {
             const response = await fetch(`${urlServer}api/edit/player/editDataPlayer`, {
                 method: 'POST',
@@ -361,8 +351,8 @@ function EditInfoPlayer({ players, refreshPlayers }) {
                 throw new Error('Ошибка при загрузке');
             }
 
-            const data = await response.json();
-            console.log('Ответ сервера:', data);
+            //const data = await response.json();
+            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -401,13 +391,6 @@ function EditInfoPlayer({ players, refreshPlayers }) {
     };
 
     const PlayerItem = ({ player }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
         //console.log('split FIO:', player.FIO.split(" "));
         //setFIO(player.FIO.split(" "));
         return (
@@ -487,7 +470,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className="btn-confirm" type="submit">Подтвердить</button>
+                    <button className="btn-confirm" type="submit">Изменить</button>
                     <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
                 </form>
             </Modal>

@@ -179,14 +179,6 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
     };
 
     const CompetitionItem = ({ competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="competition-item" onClick={() => openModal(competition)}>
@@ -281,9 +273,6 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
         }
     };
 
-    /*
-    Добавить проверку на формат даты
-    */
     const difisFromPoint = (datePoint) => {
         const d = datePoint.split(".")[0];
         const m = datePoint.split(".")[1];
@@ -299,14 +288,6 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
     };
 
     const CompetitionItem = ({ competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="competition-item" onClick={() => openModal(competition)}>
@@ -352,7 +333,7 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
                         </label>
                     </div>
                     {error && <p className="error-message">{error}</p>}
-                    <button className="btn-confirm" type="submit">Подтвердить</button>
+                    <button className="btn-confirm" type="submit">Изменить</button>
                     <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
                 </Modal>
             </form>
@@ -488,14 +469,6 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
     };
 
     const CompetitionItem = ({ competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="competition-item" onClick={() => openModal(competition)}>
@@ -554,7 +527,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
 
                         {error && <p className="error-message">{error}</p>}
 
-                        <button className="btn-confirm" type="submit">Подтвердить</button>
+                        <button className="btn-confirm" type="submit">Добавить</button>
                         <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                             Отмена
                         </button>
@@ -571,28 +544,6 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
     const [selectedTeams, setSelectedTeams] = useState({});
     const [isModalOpen, setModalOpen] = useState(false);
     const [error, setError] = useState('');
-
-    /*const handleSubmit = (e) => {
-        e.preventDefault(); // предотвращаем перезагрузку страницы
-
-        if (NameCompetition == "") {
-            setError('Поле текста не должно быть пустым');
-            return;
-        }
-
-        setError(''); // очистить ошибки
-
-        /*
-
-        НАДО ДОБАВИТЬ СВЯЗБ С server.js
-
-        *\/
-        // Здесь отправляем данные, например на сервер
-        console.log('Отправляем данные:', { NameCompetition, DateStart });
-
-        // Можно очистить форму после отправки
-        setNameCompetition('');
-    };*/
 
     const validateNumber = (num) => {
         // Проверяем, что введено число
@@ -739,7 +690,7 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
 
                         {error && <p className="error-message">{error}</p>}
 
-                        <button className="btn-confirm" type="submit">Подтвердить</button>
+                        <button className="btn-confirm" type="submit">Удалить</button>
                         <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                             Отмена
                         </button>
@@ -847,14 +798,6 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
     };
 
     const CompetitionItem = ({ competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="competition-item" onClick={() => openModal(competition)}>
@@ -897,7 +840,7 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className="btn-confirm" type="submit">Сохранить</button>
+                    <button className="btn-confirm" type="submit">Изменить</button>
                     <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
                         Отмена
                     </button>

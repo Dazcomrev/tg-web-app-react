@@ -163,14 +163,6 @@ function AddMatch({ competitions, refreshCompetitions }) {
     };
 
     const CompetitionItem = ({ competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="competition-item" onClick={() => openModal(competition)}>
@@ -368,14 +360,6 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
     };
 
     const CompetitionItem = ({ competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="competition-item" onClick={() => openModal(competition)}>
@@ -590,13 +574,6 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
     };
 
     const MatchItem = ({ match, competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
         const teamsMap = new Map(competition?.teams.map(team => [String(team.TeamId), team.TeamName]));
         const score1 = match.Score1 != -1 ? String(match.Score1) : 'не указан';
         const score2 = match.Score2 != -1 ? String(match.Score2) : 'не указан';
@@ -675,7 +652,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className="btn-confirm" type="submit">Добавить</button>
+                    <button className="btn-confirm" type="submit">Подтвердить</button>
                     <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
                 </form>
             </Modal>
