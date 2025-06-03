@@ -5,18 +5,6 @@ import { useTelegram } from '../../../hooks/useTelegram';
 import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
 const { userId } = useTelegram();
-/*
-
-        НАДО ДОБАВИТЬ СВЯЗЬ С server.js
-        
-        СООБЩЕНИЕ ОБ УСПЕШНОСТИ
-        */
-/*
- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- 
- */
 
 function AddTeam({ refreshTeams }) {
     const [NameTeam, setNameTeam] = useState('');
@@ -164,14 +152,6 @@ function RemoveTeam({ teams, refreshTeams }) {
     };
 
     const TeamItem = ({ team }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="team-item" onClick={() => openModal(team)}>
@@ -210,12 +190,6 @@ function RemoveTeam({ teams, refreshTeams }) {
 }
 
 function EditNameTeam({ teams, refreshTeams }) {
-    /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
     const [NameTeam, setNameTeam] = React.useState('');
     const [error, setError] = React.useState('');
     const [isModalOpen, setModalOpen] = React.useState(false);
@@ -354,11 +328,19 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
         let year = now.getFullYear();
         let dateStr = `${year}-${month}-${day}`;
         setDateAdd(dateStr);
-        const playersInTeamIds = new Set(team.players.map(player => player.PlayerId));
+        /*const playersInTeamIds = new Set(team.players.map(player => player.PlayerId));
         const playersNotInTeam = allPlayers
             .filter(player => !playersInTeamIds.has(player.PlayerId))
-            .map(player => ({ PlayerId: player.PlayerId, FIO: player.FIO || '' }));
-        setPlayers(playersNotInTeam);
+            .map(player => ({ PlayerId: player.PlayerId, FIO: player.FIO || '' }));*/
+
+        const playersInTeams = new Set();
+        teams.forEach(team => {
+            team.players.forEach(player => {
+                playersInTeams.add(player.PlayerId);
+            });
+        });
+        const playersWithoutTeam = allPlayers.filter(player => !playersInTeams.has(player.PlayerId));
+        setPlayers(playersWithoutTeam);//playersNotInTeam
         setModalOpen(true);
     };
 
@@ -489,12 +471,6 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
 }
 
 function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
-    /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
     const [error, setError] = React.useState('');
     const [isModalOpen, setModalOpen] = React.useState(false);
     const [teamToEdit, setTeamToEdit] = React.useState(null);
@@ -711,6 +687,7 @@ const EditTeam = () => {
         { PlayerId: 1, FIO: 'Иванов2 Иван2 Иванович2' },
         { PlayerId: 3, FIO: 'Иванов23 Иван23 Иванович23' },
         { PlayerId: 5, FIO: 'Иванов5 Иван5 Иванович5' }
+        { PlayerId: 7, FIO: 'Иванов7 Иван7 Иванович7' }
     ];*/
 
     // Состояние, которое хранит текущий выбранный раздел
