@@ -652,7 +652,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className="btn-confirm" type="submit">Подтвердить</button>
+                    <button className="btn-confirm" type="submit">Изменить</button>
                     <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
                 </form>
             </Modal>
