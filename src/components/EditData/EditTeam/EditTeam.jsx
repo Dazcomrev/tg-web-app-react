@@ -299,10 +299,12 @@ function EditNameTeam({ teams, refreshTeams }) {
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button className="btn-confirm" type="submit">Изменить</button>
-                    <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
-                        Отмена
-                    </button>
+                    <div className="modal-buttons">
+                        <button className="btn-confirm" type="submit">Изменить</button>
+                        <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
+                            Отмена
+                        </button>
+                    </div>
                 </form>
             </Modal>
         </div>
