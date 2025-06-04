@@ -203,8 +203,10 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <h2>Всплывающее окно</h2>
                 <p>Вы уверены что хотите удалить соревнование?</p>
-                <button className="btn-confirm" onClick={() => removeCompetition(competitionToRemove)}>Подтвердить</button>
-                <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                <div className="modal-buttons">
+                    <button className="btn-confirm" onClick={() => removeCompetition(competitionToRemove)}>Подтвердить</button>
+                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                </div>
             </Modal>
         </div>
     );
@@ -333,8 +335,11 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
                         </label>
                     </div>
                     {error && <p className="error-message">{error}</p>}
-                    <button className="btn-confirm" type="submit">Изменить</button>
-                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+
+                    <div className="modal-buttons">
+                        <button className="btn-confirm" type="submit">Изменить</button>
+                        <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                    </div>
                 </Modal>
             </form>
         </div>
@@ -412,7 +417,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
             return `"${teamsMap.get(entry.TeamId)}" – ${place}`;
         }).join(', ');
 
-        console.log(`В соревнование "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) добавлены команды: ${addTeams}`);
+        //console.log(`В соревнование "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) добавлены команды: ${addTeams}`);
 
         // Формируем FormData для отправки файла
         const formData = new FormData();
@@ -499,7 +504,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
                                 return (
                                     <div key={team.TeamId} className="checkbox-wrapper">
                                         <label>
-                                            
+
                                             <input
                                                 type="checkbox"
                                                 checked={isChecked}
@@ -527,10 +532,12 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
 
                         {error && <p className="error-message">{error}</p>}
 
-                        <button className="btn-confirm" type="submit">Добавить</button>
-                        <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
-                            Отмена
-                        </button>
+                        <div className="modal-buttons">
+                            <button className="btn-confirm" type="submit">Добавить</button>
+                            <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
+                                Отмена
+                            </button>
+                        </div>
                     </form>
                 </Modal>
             </div>
@@ -637,14 +644,6 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
     };
 
     const CompetitionItem = ({ competition }) => {
-
-        /*
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        */
-
         return (
             <div>
                 <button className="competition-item" onClick={() => openModal(competition)}>
@@ -690,10 +689,12 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
 
                         {error && <p className="error-message">{error}</p>}
 
-                        <button className="btn-confirm" type="submit">Удалить</button>
-                        <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
-                            Отмена
-                        </button>
+                        <div className="modal-buttons">
+                            <button className="btn-confirm" type="submit">Удалить</button>
+                            <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
+                                Отмена
+                            </button>
+                        </div>
                     </form>
                 </Modal>
             </div>
@@ -752,7 +753,7 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
         const teamsMap = new Map(selectedCompetition.teams.map(team => [String(team.TeamId), team.TeamName]));
         const teamsOldPlace = new Map(selectedCompetition.teams.map(team => [String(team.TeamId), team.Place]));
         const removeTeams = result.map((entry) => {
-            const oldPlace = teamsOldPlace.get(entry.TeamId) != '0' ? `${teamsOldPlace.get(entry.TeamId) } место` : 'место не указано';
+            const oldPlace = teamsOldPlace.get(entry.TeamId) != '0' ? `${teamsOldPlace.get(entry.TeamId)} место` : 'место не указано';
             const newPlace = entry.Place != '0' ? `${entry.Place} место` : 'место не указано';
             return `"${teamsMap.get(entry.TeamId)}": ${oldPlace} изменено на ${newPlace}`;
         }).join(', ');
@@ -826,24 +827,26 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
                         {selectedCompetition?.teams.length === 0 && <p>В соревновании нет команд.</p>}
                         {selectedCompetition?.teams.map(team => (
                             <div key={team.TeamId} className="team-row">
-                                    <span className="team-name">{team.TeamName} – </span>
-                                    <input
-                                        type="text"
-                                        value={teamPlaces[team.TeamId] || ''}
-                                        onChange={e => handlePlaceChange(team.TeamId, e.target.value)}
-                                        placeholder="Введите место"
-                                        className="form-input team-input"
-                                    />
+                                <span className="team-name">{team.TeamName} – </span>
+                                <input
+                                    type="text"
+                                    value={teamPlaces[team.TeamId] || ''}
+                                    onChange={e => handlePlaceChange(team.TeamId, e.target.value)}
+                                    placeholder="Введите место"
+                                    className="form-input team-input"
+                                />
                             </div>
                         ))}
                     </div>
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className="btn-confirm" type="submit">Изменить</button>
-                    <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
-                        Отмена
-                    </button>
+                    <div className="modal-buttons">
+                        <button className="btn-confirm" type="submit">Изменить</button>
+                        <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
+                            Отмена
+                        </button>
+                    </div>
                 </form>
             </Modal>
         </div>

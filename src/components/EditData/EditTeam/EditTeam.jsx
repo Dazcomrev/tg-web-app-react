@@ -460,10 +460,13 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
                     </div>
 
                     {error && <p className="error-message">{error}</p>}
-                    <button className="btn-confirm" type="submit">Добавить</button>
-                    <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
-                        Отмена
-                    </button>
+                    <div className="modal-buttons">
+
+                        <button className="btn-confirm" type="submit">Добавить</button>
+                        <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
+                            Отмена
+                        </button>
+                    </div>
                 </form>
             </Modal>
         </div>
@@ -617,14 +620,16 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
                     </div>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button className="btn-confirm" type="submit">Удалить</button>
-                    <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
-                        Отмена
-                    </button>
+                    <div className="modal-buttons">
+                        <button className="btn-confirm" type="submit">Удалить</button>
+                        <button className="btn-cancel" type="button" onClick={() => setModalOpen(false)}>
+                            Отмена
+                        </button>
+                    </div>
                 </form>
             </Modal>
         </div>
-    );
+    )
 }
 
 

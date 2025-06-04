@@ -117,7 +117,7 @@ function AddMatch({ competitions, refreshCompetitions }) {
         const score2 = secondScore != '' ? String(secondScore) : 'не указан';
         // Выводим имя и возраст в консоль
         //console.log('Отправляем данные:', { firstTeam, secondTeam, winner, dateMatch, firstScore, secondScore, selectedCompetition });
-        
+
         // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('CompetitionId', selectedCompetition.CompetitionId);
@@ -257,8 +257,10 @@ function AddMatch({ competitions, refreshCompetitions }) {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className="btn-confirm" type="submit">Добавить</button>
-                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                    <div className="modal-buttons">
+                        <button className="btn-confirm" type="submit">Добавить</button>
+                        <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                    </div>
 
                     <div className="match-list">
                         <p>Матчи, которые уже есть:</p>
@@ -266,7 +268,8 @@ function AddMatch({ competitions, refreshCompetitions }) {
                             const teamsMap = new Map(selectedCompetition?.teams.map(team => [team.TeamId, team.TeamName]));
                             return (
                                 <p key={match.MatchId}>{index + 1}. {teamsMap.get(match.Team1)} и {teamsMap.get(match.Team2)} – {match?.DateMatch}</p>
-                            )}
+                            )
+                        }
                         )}
                     </div>
                 </form>
@@ -309,14 +312,14 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
 
         const teamsMap = new Map(selectedCompetition.teams.map(team => [String(team.TeamId), team.TeamName]));
         const matchsMap = new Map(selectedCompetition.matchs.map(match => [String(match.MatchId),
-            {
-                Team1: String(match.Team1),
-                Team2: String(match.Team2),
-                Winner: match.Winner,
-                Score1: String(match.Score1),
-                Score2: String(match.Score2),
-                DateMatch: String(match.DateMatch)
-            }]));
+        {
+            Team1: String(match.Team1),
+            Team2: String(match.Team2),
+            Winner: match.Winner,
+            Score1: String(match.Score1),
+            Score2: String(match.Score2),
+            DateMatch: String(match.DateMatch)
+        }]));
         const Match = matchsMap.get(selectedMatch);
         const winnerName = selectedMatch.HaveWinner ? winner == 1 ? `"${String(teamsMap.get(firstTeam))}"` : `"${String(teamsMap.get(secondTeam))}"` : 'не указан';
         //const winnerName = Match.Winner == 1 ? `"${teamsMap.get(Match.Team1)}"` : Match.Winner == 2 ? `"${teamsMap.get(Match.Team2)}"` : 'не указан';
@@ -408,9 +411,10 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className="btn-confirm" type="submit">Удалить</button>
-                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
-
+                    <div className="modal-buttons">
+                        <button className="btn-confirm" type="submit">Удалить</button>
+                        <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                    </div>
 
                 </form>
             </Modal>
@@ -502,7 +506,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
         const teamsMap = new Map(selectedCompetition.teams.map(team => [String(team.TeamId), team.TeamName]));
         const winnerName = haveWinner ? winner == 1 ? `"${String(teamsMap.get(firstTeam))}"` : `"${String(teamsMap.get(secondTeam))}"` : 'не указан';
         const oldWinnerName = selectedMatch.HaveWinner ? selectedMatch.Winner == selectedMatch.Team1 ? `"${String(teamsMap.get(firstTeam))}"` : `"${String(teamsMap.get(secondTeam))}"` : 'не указан';
-        const score1 = firstScore != ''  ? String(firstScore) : 'не указан';
+        const score1 = firstScore != '' ? String(firstScore) : 'не указан';
         const score2 = secondScore != '' ? String(secondScore) : 'не указан';
         const oldScore1 = selectedMatch.Score1 != -1 ? String(selectedMatch.Score1) : 'не указан';
         const oldScore2 = selectedMatch.Score2 != -1 ? String(selectedMatch.Score2) : 'не указан';
@@ -566,7 +570,8 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
                             match['competition'] = competition;
                             return (
                                 <MatchItem key={match.MatchId} match={match} competition={competition} onSelect={openModal} />
-                        )})}
+                            )
+                        })}
                     </div>
                 </div>
             </div>
@@ -652,8 +657,10 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className="btn-confirm" type="submit">Изменить</button>
-                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                    <div className="modal-buttons">
+                        <button className="btn-confirm" type="submit">Изменить</button>
+                        <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                    </div>
                 </form>
             </Modal>
         </div>

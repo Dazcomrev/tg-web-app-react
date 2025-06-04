@@ -195,7 +195,7 @@ function RemovePlayer({ players, refreshPlayers }) {
         const formData = new FormData();
         formData.append('OldPhoto', player.Photo);
         formData.append('PlayerId', player.PlayerId);
-        
+
         try {
             const response = await fetch(`${urlServer}api/edit/player/removePlayer`, {
                 method: 'POST',
@@ -257,8 +257,10 @@ function RemovePlayer({ players, refreshPlayers }) {
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <p>Вы уверены что хотите удалить игрока {playerToRemove?.FIO}?</p>
-                <button className="btn-confirm" onClick={() => removePlayer(playerToRemove)}>Подтвердить</button>
-                <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                <div className="modal-buttons">
+                    <button className="btn-confirm" onClick={() => removePlayer(playerToRemove)}>Подтвердить</button>
+                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                </div>
             </Modal>
         </div>
     );
@@ -469,9 +471,10 @@ function EditInfoPlayer({ players, refreshPlayers }) {
                     </div>
 
                     {error && <p className="error-message">{error}</p>}
-
+                    <div className="modal-buttons">
                     <button className="btn-confirm" type="submit">Изменить</button>
-                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                        <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                    </div>
                 </form>
             </Modal>
         </div>
