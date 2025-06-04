@@ -107,10 +107,17 @@
         background-color: var(--tg-theme-button-hover-color, #006699);
     }
 
+.modal-buttons {
+    display: flex;
+    justify-content: flex-start; /* Кнопки слева */
+    gap: 15px; /* Расстояние между кнопками */
+    margin-top: 20px;
+}
+
 .btn-confirm {
-    position: relative;
-    top: 75%;
-    margin-top: 10px;
+    /*position: relative;
+    top: 75%;*/
+    margin-top: 0px;
     background-color: var(--tg-theme-button-color, #0088cc);
     color: var(--tg-theme-button-text-color, #fff);
     border: none;
@@ -122,12 +129,13 @@
     transition: background-color 0.3s ease;
 }
 
-    .btn-confirm:hover {
+    .btn-confirm:hover,
+    .btn-cancel:hover {
         background-color: var(--tg-theme-button-hover-color, #006699);
     }
 
 .btn-cancel {
-    margin-left: 31%;
+    /*margin-left: 31%;*/
     background-color: var(--tg-theme-button-color, #0088cc);
     color: var(--tg-theme-button-text-color, #fff);
     border: none;
@@ -138,9 +146,9 @@
     transition: background-color 0.3s ease;
 }
 
-    .btn-cancel:hover {
+    /*.btn-cancel:hover {
         background-color: var(--tg-theme-button-hover-color, #006699);
-    }
+    }*/
 
 /* Формы и ошибки */
 
