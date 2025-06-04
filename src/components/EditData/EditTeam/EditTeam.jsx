@@ -180,8 +180,10 @@ function RemoveTeam({ teams, refreshTeams }) {
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <p>Вы уверены что хотите удалить команду?</p>
-                <button className="btn-confirm" onClick={() => removeTeam(teamToRemove)}>Подтвердить</button>
-                <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                <div className="modal-buttons">
+                    <button className="btn-confirm" onClick={() => removeTeam(teamToRemove)}>Подтвердить</button>
+                    <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
+                </div>
             </Modal>
         </div>
     );
