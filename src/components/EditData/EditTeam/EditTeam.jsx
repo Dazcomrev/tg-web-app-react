@@ -29,8 +29,6 @@ function AddTeam({ refreshTeams }) {
             return;
         }
 
-
-
         // Здесь отправляем данные, например на сервер
         //console.log('Отправляем данные:', { NameTeam });
         const formData = new FormData();
