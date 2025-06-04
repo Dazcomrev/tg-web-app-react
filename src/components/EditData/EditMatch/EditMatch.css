@@ -111,7 +111,7 @@
 
 .modal-buttons {
     display: flex;
-    /*justify-content: flex-start;  Кнопки слева */
+    justify-content: space-between; /* Кнопки слева */
     gap: 15px; /* Расстояние между кнопками */
     margin-top: 20px;
 }
@@ -129,7 +129,7 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
-    justify-content: flex-start;
+    justify-content: flex-end;
 }
 
     .btn-confirm:hover,
@@ -147,7 +147,6 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
-    justify-content: flex-end;
 }
 
 /*.btn-cancel:hover {
