@@ -209,7 +209,7 @@ const PlayerCard = () => {
             .then(data => setTeamCard(data))
             .catch(err => console.error(err));
     }, [teamId]);
-    //console.log('TeamCard.TeamCard:', teamCard);
+    console.log('TeamCard:', teamCard);
 
     const [teams, setTeams] = useState(null);
 

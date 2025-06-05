@@ -6,6 +6,20 @@ import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
 const { userId } = useTelegram();
 
+const pointFromDifis = (dateDifis) => {
+    const y = dateDifis.split("-")[0];
+    const m = dateDifis.split("-")[1];
+    const d = dateDifis.split("-")[2];
+    return `${d}.${m}.${y}`;
+};
+
+const difisFromPoint = (datePoint) => {
+    const d = datePoint.split(".")[0];
+    const m = datePoint.split(".")[1];
+    const y = datePoint.split(".")[2];
+    return `${y}-${m}-${d}`;
+};
+
 function AddTeam({ refreshTeams }) {
     const [NameTeam, setNameTeam] = useState('');
     const [error, setError] = useState('');
@@ -397,6 +411,49 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
         setPlayerId(e.target.value);
     };
 
+    function isDateAvailable(selectedDateStr) {
+        // Преобразуем выбранную дату из строки в Date
+        const selectedDate = new Date(selectedDateStr.split('.').reverse().join('-')); // 'DD.MM.YYYY' → 'YYYY-MM-DD'
+
+        const periods = [];
+        allPlayers.forEach(player => {
+            if (player.PlayerId == PlayerId) {
+                periods = player.Dates;
+                return;
+            }
+        });
+
+        for (const period of periods) {
+            const startDate = new Date(period.DateAdd.split('.').reverse().join('-'));
+            const endDate = new Date(period.DateLeft.split('.').reverse().join('-'));
+
+            // Проверяем, входит ли selectedDate в интервал [startDate, endDate]
+            if (selectedDate >= startDate && selectedDate <= endDate) {
+                return false; // Дата занята, не доступна
+            }
+        }
+
+        return true; // Дата не попадает ни в один из интервалов
+    }
+
+    function datesInTeams() {
+        const periods = [];
+        allPlayers.forEach(player => {
+            if (player.PlayerId == PlayerId) {
+                periods = player.Dates;
+                return;
+            }
+        });
+        const periodsStr = '';
+        periods.forEach(period => {
+            if (period.DateLeft == null) {
+                return `${period.DateAdd} – сейчас.`;
+            }
+            return `${period.DateAdd} – ${period.DateLeft}.`;
+        });
+        return periodsStr;
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -409,6 +466,13 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
             setError('Необходимо выбрать дату');
             return;
         }
+
+        if (!isDateAvailable(DateAdd)) {
+            setError('Необходимо выбрать дату, когда игрок не находился в команде');
+            return;
+        }
+
+        if (players)
 
         setError('');
         addPlayerInTeam(teamToEdit, PlayerId);
@@ -443,7 +507,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
                                 onChange={(e) => setPlayerId(e.target.value)}>
                                 <option className="form-input" key={0} value={0}>---------</option>
                                 {players.map((player) => (
-                                    <option key={player.PlayerId} value={player.PlayerId}>
+                                    <option key={player.PlayerId} value={player.PlayerId} title={datesInTeams}>
                                         {player.FIO}
                                     </option>
                                 ))}
