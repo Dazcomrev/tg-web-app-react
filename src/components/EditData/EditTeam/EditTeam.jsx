@@ -446,6 +446,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
                 return;
             }
         });
+
         if (!periods || periods.length === 0) return '';
 
         return periods
@@ -614,7 +615,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
         setPlayerId(e.target.value);
     };
 
-    function isDateDeleteAfterDateAdd(selectedDateStr) {
+    function datesInTeams() {
         let periods = [];
         allPlayers.forEach(player => {
             if (player.PlayerId == PlayerId) {
@@ -622,20 +623,60 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
                 return;
             }
         });
-        // Найти период с DateLeft === null
-        const activePeriod = periods.find(period => period.DateLeft === null);
 
-        if (!activePeriod) {
-            // Если нет активного периода, можно считать, что проверка пройдена
-            return true;
+        if (!periods || periods.length === 0) return '';
+
+        return periods
+            .map(({ DateAdd, DateLeft }) => {
+                if (DateLeft == null) {
+                    return `${DateAdd} - неизвестно`
+                }
+                return `${DateAdd} - ${DateLeft}`
+            })
+            .join(', ');
+    }
+
+    function isDateLeftValid(selectedDateLeftStr) {
+        let periods = [];
+        allPlayers.forEach(player => {
+            if (player.PlayerId == PlayerId) {
+                periods = player.Dates;
+                return;
+            }
+        });
+
+        const activePeriod = periods.find(period => period.DateLeft === null);
+        const currentDateAddStr = activePeriod.DateAdd;
+        // Преобразуем выбранную дату DateLeft и текущий DateAdd в Date
+        const selectedDateLeft = new Date(selectedDateLeftStr.split('.').reverse().join('-'));
+        const currentDateAdd = new Date(currentDateAddStr.split('.').reverse().join('-'));
+
+        // Проверка 1: DateLeft должна быть позже DateAdd
+        if (selectedDateLeft <= currentDateAdd) {
+            return { valid: false, message: `Дата выхода должна быть позже даты добавления ${getActivePeriod()}` };
         }
 
-        // Преобразуем даты из формата DD.MM.YYYY в Date
-        const selectedDate = new Date(selectedDateStr.split('.').reverse().join('-'));
-        const lastDateAdd = new Date(activePeriod.DateAdd.split('.').reverse().join('-'));
+        // Проверка 2: DateLeft не должна пересекаться с другими периодами
+        for (const period of periods) {
+            // Пропускаем текущий период (сравниваем по DateAdd)
+            if (period.DateAdd === currentDateAddStr) continue;
 
-        // Проверяем, что выбранная дата позже lastDateAdd
-        return selectedDate >= lastDateAdd;
+            const periodStart = new Date(period.DateAdd.split('.').reverse().join('-'));
+            const periodEnd = period.DateLeft ? new Date(period.DateLeft.split('.').reverse().join('-')) : null;
+
+            // Проверяем, что selectedDateLeft не попадает внутрь другого периода
+            // Если selectedDateLeft >= periodStart и selectedDateLeft <= periodEnd — пересечение
+            if (selectedDateLeft >= periodStart && selectedDateLeft <= periodEnd) {
+                return { valid: false, message: `Дата выхода пересекается с другим периодом` };
+            }
+
+            if (currentDateAdd <= periodStart && currentDateAdd <= periodEnd && selectedDateLeft >= periodStart && selectedDateLeft >= periodEnd) {
+                return { valid: false, message: `При этой дате выхода новый период пересекается с другим периодом` };
+            }
+        }
+
+        // Все проверки пройдены
+        return { valid: true };
     }
 
     function getActivePeriod() {
@@ -664,9 +705,9 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
             setError('Необходимо выбрать дату');
             return;
         }
-
-        if (!isDateDeleteAfterDateAdd(DateLeft)) {
-            setError(`Необходимо выбрать дату не раньше ${getActivePeriod()}`);
+        const { valid, message } = isDateLeftAfterDateAdd(DateLeft)
+        if (!valid) {
+            setError(message);
             return;
         }
 
