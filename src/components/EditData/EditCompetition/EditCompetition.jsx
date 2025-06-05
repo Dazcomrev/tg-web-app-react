@@ -18,12 +18,11 @@ function AddCompetition({ refreshCompetitions }) {
     const [error, setError] = useState('');
 
     const validateText = (text) => {
-        // Проверяем, что название команды не содержит лишних символов
         return /^[A-Za-zА-Яа-яЁё0123456789\s]+$/.test(text);
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // предотвращаем перезагрузку страницы
+        e.preventDefault();
 
         if (NameCompetition == "") {
             setError('Необходимо ввести название соревнования');
@@ -35,16 +34,6 @@ function AddCompetition({ refreshCompetitions }) {
             return;
         }
 
-        // Валидация поля названия команды
-        /*if (!validateText(NameCompetition)) {
-            setError('Поле текста должно содержать только буквы, цифры и пробелы.');
-            return;
-        }*/
-
-        //console.log('Отправляем данные:', { NameCompetition, DateStart });
-        //console.log(`Добавлено соревнование "${NameCompetition}". Дата: ${DateStart}`);
-
-        // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('CompetitionName', NameCompetition);
         formData.append('DateStart', DateStart);
@@ -59,9 +48,6 @@ function AddCompetition({ refreshCompetitions }) {
                 throw new Error('Ошибка при загрузке');
             }
 
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
-
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -72,7 +58,6 @@ function AddCompetition({ refreshCompetitions }) {
 
             await refreshCompetitions();
 
-            // Очистка формы
             setError('');
             setNameCompetition('');
             setDateStart('');
@@ -117,7 +102,7 @@ function AddCompetition({ refreshCompetitions }) {
 }
 
 function Modal({ isOpen, onClose, children }) {
-    if (!isOpen) return null; // ничего не рендерим, если окно закрыто
+    if (!isOpen) return null;
 
     return (
         <div className="modal-overlay">
@@ -136,9 +121,6 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
     const [competitionToRemove, setCompetitionToRemove] = useState(null);
 
     const removeCompetition = async (competition) => {
-        //console.log(`Соревнование "${competition.CompetitionName}" (${competition.DateStart}) удалено`);
-
-        // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('CompetitionId', competition.CompetitionId);
 
@@ -152,9 +134,6 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
                 throw new Error('Ошибка при загрузке');
             }
 
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
-
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -165,7 +144,6 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
 
             await refreshCompetitions();
 
-            // Очистка формы
             setModalOpen(false);
             setCompetitionToRemove(null);
         } catch (err) {
@@ -232,10 +210,6 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
             return;
         }
 
-        // Выводим имя и возраст в консоль
-        //console.log(`Соревнование изменено с ${competitionToEdit.CompetitionId} (${competitionToEdit.DateStart}) на ${NameCompetition} (${DateStart})`);
-
-        // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('CompetitionId', competitionToEdit.CompetitionId);
         formData.append('CompetitionName', NameCompetition);
@@ -251,9 +225,6 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
                 throw new Error('Ошибка при загрузке');
             }
 
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
-
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -264,7 +235,6 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
 
             await refreshCompetitions();
 
-            // Очистка формы
             setCompetitionToEdit(null);
             setNameCompetition('');
             setDateStart('');
@@ -354,7 +324,6 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
     const [error, setError] = useState('');
 
     const validateNumber = (num) => {
-        // Проверяем, что введено число
         return /^\d+$/.test(num);
     };
 
@@ -362,10 +331,8 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
         setSelectedTeams(prev => {
             const newSelected = { ...prev };
             if (newSelected[teamId]) {
-                // Если уже выбран — снимаем выбор
                 delete newSelected[teamId];
             } else {
-                // Добавляем с пустым местом
                 newSelected[teamId] = { checked: true, place: '' };
             }
             return newSelected;
@@ -385,18 +352,12 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Проверка: хотя бы одна команда выбрана
         if (Object.keys(selectedTeams).length === 0) {
             setError('Выберите хотя бы одну команду');
             return;
         }
 
-        // Проверка: для каждой выбранной команды место заполнено
         for (const [teamId, data] of Object.entries(selectedTeams)) {
-            /*if (!data.place.trim()) {
-                setError('Введите место для всех выбранных команд');
-                return;
-            }*/
             if (data.place != '' && !validateNumber(data.place)) {
                 setError('Место должно быть числом');
                 return;
@@ -405,7 +366,6 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
 
         setError('');
 
-        // Формируем данные для отправки
         const result = Object.entries(selectedTeams).map(([teamId, data]) => ({
             TeamId: teamId,
             Place: data.place != '' ? data.place : '0',
@@ -417,9 +377,6 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
             return `"${teamsMap.get(entry.TeamId)}" – ${place}`;
         }).join(', ');
 
-        //console.log(`В соревнование "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) добавлены команды: ${addTeams}`);
-
-        // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('CompetitionId', selectedCompetition.CompetitionId);
         formData.append('entries', result);
@@ -432,16 +389,13 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
                 },
                 body: JSON.stringify({
                     CompetitionId: selectedCompetition.CompetitionId,
-                    entries: result // предполагается, что result — массив или объект
+                    entries: result
                 })
             });
 
             if (!response.ok) {
                 throw new Error('Ошибка при загрузке');
             }
-
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -453,7 +407,6 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
 
             await refreshCompetitions();
 
-            // Очистка формы
             setModalOpen(false);
             e.target.reset();
         } catch (err) {
@@ -555,7 +508,6 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
     const [error, setError] = useState('');
 
     const validateNumber = (num) => {
-        // Проверяем, что введено число
         return /^\d+$/.test(num);
     };
 
@@ -563,10 +515,8 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
         setSelectedTeams(prev => {
             const newSelected = { ...prev };
             if (newSelected[teamId]) {
-                // Если уже выбран — снимаем выбор
                 delete newSelected[teamId];
             } else {
-                // Добавляем с пустым местом
                 newSelected[teamId] = { checked: true, place: '' };
             }
             return newSelected;
@@ -576,7 +526,6 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Проверка: хотя бы одна команда выбрана
         if (Object.keys(selectedTeams).length === 0) {
             setError('Выберите хотя бы одну команду');
             return;
@@ -584,7 +533,6 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
 
         setError('');
 
-        // Формируем данные для отправки
         const result = Object.entries(selectedTeams).map(([teamId, data]) => ({
             TeamId: teamId
         }));
@@ -594,8 +542,6 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
             return `"${teamsMap.get(entry.TeamId)}"`;
         }).join(', ');
 
-        //console.log(`В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) удалены команды: ${removeTeams}`);
-
         try {
             const response = await fetch(`${urlServer}api/edit/competition/removeTeamFromCompetition`, {
                 method: 'POST',
@@ -604,16 +550,13 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
                 },
                 body: JSON.stringify({
                     CompetitionId: selectedCompetition.CompetitionId,
-                    entries: result // предполагается, что result — массив или объект
+                    entries: result
                 })
             });
 
             if (!response.ok) {
                 throw new Error('Ошибка при загрузке');
             }
-
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -625,7 +568,6 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
 
             await refreshCompetitions();
 
-            // Очистка формы
             setModalOpen(false);
             e.target.reset();
         } catch (err) {
@@ -707,10 +649,9 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
 function EditTeamPlaces({ competitions, refreshCompetitions }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedCompetition, setSelectedCompetition] = useState(null);
-    const [teamPlaces, setTeamPlaces] = useState({}); // { teamId: place }
+    const [teamPlaces, setTeamPlaces] = useState({});
     const [error, setError] = useState('');
 
-    // Открываем модалку и загружаем команды с их текущими местами
     const openModal = (competition) => {
         setSelectedCompetition(competition);
         const places = {};
@@ -731,14 +672,12 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
     };
 
     const validateNumber = (num) => {
-        // Проверяем, что введено число
         return /^\d+$/.test(num);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Валидация: все места должны быть заполнены
         for (const [teamId, place] of Object.entries(teamPlaces)) {
             if (place != '' && !validateNumber(place)) {
                 setError('Место должно быть числом');
@@ -760,9 +699,6 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
             return `"${teamsMap.get(entry.TeamId)}": ${oldPlace} изменено на ${newPlace}`;
         }).join(', ');
 
-        // Здесь можно отправить данные на сервер
-        //console.log(`В соревновании "${selectedCompetition.CompetitionName}" (CompetitionId = ${selectedCompetition.CompetitionId}) изменены места команд: ${removeTeams}`);
-
         try {
             const response = await fetch(`${urlServer}api/edit/competition/editTeamPlaces`, {
                 method: 'POST',
@@ -771,16 +707,13 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
                 },
                 body: JSON.stringify({
                     CompetitionId: selectedCompetition.CompetitionId,
-                    entries: result // предполагается, что result — массив или объект
+                    entries: result
                 })
             });
 
             if (!response.ok) {
                 throw new Error('Ошибка при загрузке');
             }
-
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -792,7 +725,6 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
 
             await refreshCompetitions();
 
-            // Очистка формы
             setModalOpen(false);
             e.target.reset();
         } catch (err) {
@@ -879,32 +811,6 @@ const EditCompetition = () => {
 
     }, []);
 
-    /*const teams = [
-        {
-            TeamId: 1,
-            TeamName: 'Navi',
-        },
-        {
-            TeamId: 2,
-            TeamName: 'DreamTeam',
-        },
-        {
-            TeamId: 3,
-            TeamName: 'Eteam',
-        }
-    ];*/
-
-    /*const competitions = [
-        { CompetitionId: 1, CompetitionName: 'Соревнование 1', DateStart: '17.05.2025', teams: [{ TeamId: 3, TeamName: 'Eteam', Place: 1 }] },
-        {
-            CompetitionId: 2, CompetitionName: 'Соревнование 2', DateStart: '20.05.2025', teams: [
-                { TeamId: 1, TeamName: 'Navi', Place: 1 },
-                { TeamId: 2, TeamName: 'DreamTeam', Place: 3 },
-                { TeamId: 3, TeamName: 'Eteam', Place: 2 }]
-        },
-        { CompetitionId: 3, CompetitionName: 'Соревнование 3', DateStart: '22.05.2025', teams: [] }
-    ];*/
-
     const handleClick = () => {
         navigate(`/ListTeams`);
     };
@@ -913,10 +819,8 @@ const EditCompetition = () => {
         navigate(`/EditData`);
     };
 
-    // Состояние, которое хранит текущий выбранный раздел
     const [activeSection, setActiveSection] = useState('home');
 
-    // Контент для разных разделов
     const renderContent = () => {
         switch (activeSection) {
             case 'addCompetition':
@@ -935,8 +839,6 @@ const EditCompetition = () => {
                 return <div>Выберите раздел</div>;
         }
     };
-
-    //if (!teams) return <div>Загрузка...</div>;
 
     return (
         <div className="edit-match-container">

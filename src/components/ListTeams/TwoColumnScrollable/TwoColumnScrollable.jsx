@@ -5,36 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useURL } from '../../../hooks/URLs';
 const { urlServer } = useURL();
 
-//TeamId: 3
-/*const { tg, queryId } = useTelegram();
-const onSendData = useCallback(() => {
-    const data = {
-        teamId: 12,
-        queryId
-    };
-    fetch('http://localhost:8000', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    })
-}, [])
-
-const onTeamCard = () => {
-    console.log('Что-то');
-    tg.sendData(JSON.stringify('Что-то'));
-}*/
-
 const TeamItem = ({ team }) => {
     const navigate = useNavigate();
     const { userId } = useTelegram();
-    /*
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    */
-
     const handleClick = () => {
         navigate(`/TeamCard/${team.TeamId}`);
         fetch(`${urlServer}api/log`, {

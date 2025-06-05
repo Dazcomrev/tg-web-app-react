@@ -25,30 +25,25 @@ function AddTeam({ refreshTeams }) {
     const [error, setError] = useState('');
 
     const validateText = (text) => {
-        // Проверяем, что название команды не содержит лишних символов
         return /^[A-Za-zА-Яа-яЁё0123456789\s]+$/.test(text);
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // предотвращаем перезагрузку страницы
+        e.preventDefault();
 
         if (NameTeam == "") {
             setError('Поле текста не должно быть пустым');
             return;
         }
 
-        // Валидация поля названия команды
         if (!validateText(NameTeam)) {
             setError('Поле текста должно содержать только буквы, цифры и пробелы.');
             return;
         }
 
-        // Здесь отправляем данные, например на сервер
-        //console.log('Отправляем данные:', { NameTeam });
         const formData = new FormData();
         formData.append('NameTeam', NameTeam);
 
-        //console.log('formData:', formData);
         try {
             const response = await fetch(`${urlServer}api/edit/team/addTeam`, {
                 method: 'POST',
@@ -59,8 +54,6 @@ function AddTeam({ refreshTeams }) {
                 throw new Error('Ошибка при загрузке');
 
             }
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -71,7 +64,7 @@ function AddTeam({ refreshTeams }) {
                 .catch(err => console.error(err));
 
             await refreshTeams();
-            // Можно очистить форму после отправки
+
             setNameTeam('');
             setError('');
         } catch (err) {
@@ -103,7 +96,7 @@ function AddTeam({ refreshTeams }) {
 }
 
 function Modal({ isOpen, onClose, children}) {
-    if (!isOpen) return null; // ничего не рендерим, если окно закрыто
+    if (!isOpen) return null;
 
     return (
         <div className="modal-overlay">
@@ -122,7 +115,6 @@ function RemoveTeam({ teams, refreshTeams }) {
     const [teamToRemove, setTeamToRemove] = useState(null);
 
     const removeTeam = async (team) => {
-        //console.log(`Команда ${team.TeamName} с id ${team.TeamId} удалена`);
 
         const formData = new FormData();
         formData.append('TeamId', team.TeamId);
@@ -137,8 +129,6 @@ function RemoveTeam({ teams, refreshTeams }) {
                 throw new Error('Ошибка при загрузке');
 
             }
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -149,7 +139,7 @@ function RemoveTeam({ teams, refreshTeams }) {
                 .catch(err => console.error(err));
 
             await refreshTeams();
-            // Можно очистить форму после отправки
+
             setModalOpen(false);
             setTeamToRemove(null);
 
@@ -213,14 +203,13 @@ function EditNameTeam({ teams, refreshTeams }) {
 
     const openModal = (team) => {
         setTeamToEdit(team);
-        setNameTeam(team.TeamName); // инициализируем поле ввода текущим именем
+        setNameTeam(team.TeamName);
         setError('');
         setModalOpen(true);
     };
 
     const editNameTeam = async (team, newName) => {
-        //console.log(`Команда ${team.TeamName} теперь называется ${newName}`);
-        // TODO: здесь отправьте запрос на сервер для обновления имени команды
+
         const formData = new FormData();
         formData.append('TeamId', team.TeamId);
         formData.append('NewTeamName', newName);
@@ -235,8 +224,7 @@ function EditNameTeam({ teams, refreshTeams }) {
                 throw new Error('Ошибка при загрузке');
 
             }
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
+
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -247,7 +235,6 @@ function EditNameTeam({ teams, refreshTeams }) {
                 .catch(err => console.error(err));
 
             await refreshTeams();
-            // Можно очистить форму после отправки
             setModalOpen(false);
             setTeamToEdit(null);
             setNameTeam('');
@@ -294,7 +281,6 @@ function EditNameTeam({ teams, refreshTeams }) {
                 ))}
             </div>
 
-            {/* Модальное окно рендерится один раз */}
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -344,10 +330,6 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
         let year = now.getFullYear();
         let dateStr = `${year}-${month}-${day}`;
         setDateAdd(dateStr);
-        /*const playersInTeamIds = new Set(team.players.map(player => player.PlayerId));
-        const playersNotInTeam = allPlayers
-            .filter(player => !playersInTeamIds.has(player.PlayerId))
-            .map(player => ({ PlayerId: player.PlayerId, FIO: player.FIO || '' }));*/
 
         const playersInTeams = new Set();
         teams.forEach(team => {
@@ -356,7 +338,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
             });
         });
         const playersWithoutTeam = allPlayers.filter(player => !playersInTeams.has(player.PlayerId));
-        setPlayers(playersWithoutTeam);//playersNotInTeam
+        setPlayers(playersWithoutTeam);
         setModalOpen(true);
     };
 
@@ -368,7 +350,6 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
                 return;
             }
         });
-        //console.log(`В команду ${team.TeamName} (${team.TeamId}) добавлен игрок ${FIO} с PlayerId ${PlayerId}. Дата: ${DateAdd}`);
 
         const formData = new FormData();
         formData.append('TeamId', team.TeamId);
@@ -384,8 +365,6 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
                 throw new Error('Ошибка при загрузке');
 
             }
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -397,7 +376,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
 
             await refreshTeams();
             await refreshPlayers();
-            // Можно очистить форму после отправки
+
             setModalOpen(false);
             setTeamToEdit(null);
             setPlayerId('');
@@ -414,8 +393,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
     };
 
     function isDateAvailable(selectedDateStr) {
-        // Преобразуем выбранную дату из строки в Date
-        const selectedDate = new Date(selectedDateStr.split('.').reverse().join('-')); // 'DD.MM.YYYY' → 'YYYY-MM-DD'
+        const selectedDate = new Date(selectedDateStr.split('.').reverse().join('-'));
 
         let periods = [];
         allPlayers.forEach(player => {
@@ -429,13 +407,12 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
             const startDate = new Date(period.DateAdd.split('.').reverse().join('-'));
             const endDate = new Date(period.DateLeft.split('.').reverse().join('-'));
 
-            // Проверяем, входит ли selectedDate в интервал [startDate, endDate]
             if (selectedDate >= startDate && selectedDate <= endDate) {
-                return false; // Дата занята, не доступна
+                return false;
             }
         }
 
-        return true; // Дата не попадает ни в один из интервалов
+        return true;
     }
 
     function datesInTeams() {
@@ -496,7 +473,6 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
                 ))}
             </div>
 
-            {/* Модальное окно рендерится один раз */}
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -575,7 +551,6 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
         });
 
         const activePeriod = periods.length === 0 ? null : periods.find(period => period.DateLeft === null);
-        //console.log(`Из команды ${team.TeamName} (${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId ${PlayerId}`);
 
         const formData = new FormData();
         formData.append('TeamId', team.TeamId);
@@ -592,8 +567,6 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
                 throw new Error('Ошибка при загрузке');
 
             }
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -605,7 +578,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
 
             await refreshTeams();
             await refreshPlayers();
-            // Можно очистить форму после отправки
+
             setModalOpen(false);
             setTeamToEdit(null);
             setPlayerId('');
@@ -652,25 +625,19 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
 
         const activePeriod = periods.find(period => period.DateLeft === null);
         const currentDateAddStr = activePeriod.DateAdd;
-        // Преобразуем выбранную дату DateLeft и текущий DateAdd в Date
         const selectedDateLeft = new Date(selectedDateLeftStr.split('.').reverse().join('-'));
         const currentDateAdd = new Date(currentDateAddStr.split('.').reverse().join('-'));
 
-        // Проверка 1: DateLeft должна быть позже DateAdd
         if (selectedDateLeft < currentDateAdd) {
             return { valid: false, message: `Дата выхода должна быть не позже даты добавления – ${getActivePeriod()}` };
         }
 
-        // Проверка 2: DateLeft не должна пересекаться с другими периодами
         for (const period of periods) {
-            // Пропускаем текущий период (сравниваем по DateAdd)
             if (period.DateAdd === currentDateAddStr) continue;
 
             const periodStart = new Date(period.DateAdd.split('.').reverse().join('-'));
             const periodEnd = period.DateLeft ? new Date(period.DateLeft.split('.').reverse().join('-')) : null;
 
-            // Проверяем, что selectedDateLeft не попадает внутрь другого периода
-            // Если selectedDateLeft >= periodStart и selectedDateLeft <= periodEnd — пересечение
             if (selectedDateLeft >= periodStart && selectedDateLeft <= periodEnd) {
                 return { valid: false, message: `Дата выхода пересекается с другим периодом. Периоды, которые есть: ${datesInTeams()}` };
             }
@@ -679,8 +646,6 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
                 return { valid: false, message: `При этой дате выхода новый период пересекается с другим периодом. Периоды, которые есть: ${datesInTeams()}` };
             }
         }
-
-        // Все проверки пройдены
         return { valid: true };
     }
 
@@ -746,7 +711,6 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
                 ))}
             </div>
 
-            {/* Модальное окно рендерится один раз */}
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -813,14 +777,6 @@ const EditTeam = () => {
         fetchTeams();
     }, []);
 
-    /*useEffect(() => {
-        fetch(`${urlServer}api/edit/team/getTeams`)
-            .then(res => res.json())
-            .then(data => setTeams(data))
-            .catch(err => console.error('Ошибка загрузки данных:', err));
- 
-    }, []);*/
-
     const [allPlayers, setAllPlayers] = useState(null);
 
     const fetchPlayers = () => {
@@ -834,29 +790,8 @@ const EditTeam = () => {
         fetchPlayers();
     }, []);
 
-    /*const teams = [
-        { TeamId: 1, TeamName: 'Navi', players: [
-                { PlayerId: 1, FIO: 'Иванов2 Иван2 Иванович2'},
-                { PlayerId: 5, FIO: 'Иванов5 Иван5 Иванович5' }]
-        },
-        { TeamId: 2, TeamName: 'DreamTeam', players: [
-                { PlayerId: 3, FIO: 'Иванов23 Иван23 Иванович23' }]
-        },
-        { TeamId: 3, TeamName: 'Eteam', players: []
-        }
-    ];*/
-
-    /*const allPlayers = [
-        { PlayerId: 1, FIO: 'Иванов2 Иван2 Иванович2' },
-        { PlayerId: 3, FIO: 'Иванов23 Иван23 Иванович23' },
-        { PlayerId: 5, FIO: 'Иванов5 Иван5 Иванович5' }
-        { PlayerId: 7, FIO: 'Иванов7 Иван7 Иванович7' }
-    ];*/
-
-    // Состояние, которое хранит текущий выбранный раздел
     const [activeSection, setActiveSection] = useState('home');
 
-    // Контент для разных разделов
     const renderContent = () => {
         switch (activeSection) {
             case 'addTeam':

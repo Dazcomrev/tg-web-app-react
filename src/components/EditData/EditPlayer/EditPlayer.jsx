@@ -15,7 +15,6 @@ function AddPlayer({ refreshPlayers }) {
     const [error, setError] = useState('');
 
     const validateText = (text) => {
-        // Проверяем, что название команды не содержит лишних символов
         return /^[A-Za-zА-Яа-яЁё\s]+$/.test(text);
     };
 
@@ -54,7 +53,6 @@ function AddPlayer({ refreshPlayers }) {
     };
 
     const handleFileChange = (e) => {
-        //console.log(e.target.files);
         setPhoto(e.target.files[0]);
     };
 
@@ -62,10 +60,6 @@ function AddPlayer({ refreshPlayers }) {
         e.preventDefault();
         if (!validate()) return;
 
-        // Выводим имя и возраст в консоль
-        //console.log(`Добавлен игрок ${SecondName} ${FirstName} ${ThirdName}. Возраст ${Age}. Название изображения: (Надо барать из Ответа сервера)`);
-
-        // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('Photo', Photo);
         formData.append('FirstName', FirstName);
@@ -84,7 +78,6 @@ function AddPlayer({ refreshPlayers }) {
             }
 
             const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -96,7 +89,6 @@ function AddPlayer({ refreshPlayers }) {
 
             await refreshPlayers();
 
-            // Очистка формы
             setFirstName('');
             setSecondName('');
             setThirdName('');
@@ -170,7 +162,7 @@ function AddPlayer({ refreshPlayers }) {
 }
 
 function Modal({ isOpen, onClose, children }) {
-    if (!isOpen) return null; // ничего не рендерим, если окно закрыто
+    if (!isOpen) return null;
 
     return (
         <div className="modal-overlay">
@@ -189,9 +181,6 @@ function RemovePlayer({ players, refreshPlayers }) {
     const [playerToRemove, setPlayerToRemove] = useState(null);
 
     const removePlayer = async (player) => {
-        //console.log(`Игрок ${player.FIO} с PlayerId ${player.PlayerId} удален. Возраст: ${player.Age}.Название изображения: ${player.Photo}`);
-
-        // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('OldPhoto', player.Photo);
         formData.append('PlayerId', player.PlayerId);
@@ -207,7 +196,6 @@ function RemovePlayer({ players, refreshPlayers }) {
             }
 
             const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -219,7 +207,6 @@ function RemovePlayer({ players, refreshPlayers }) {
 
             await refreshPlayers();
 
-            // Очистка формы
             setModalOpen(false);
             setPlayerToRemove(null);
         } catch (err) {
@@ -279,7 +266,6 @@ function EditInfoPlayer({ players, refreshPlayers }) {
     const [error, setError] = useState('');
 
     const validateText = (text) => {
-        // Проверяем, что название команды не содержит лишних символов
         return /^[A-Za-zА-Яа-яЁё\s]+$/.test(text);
     };
 
@@ -325,15 +311,11 @@ function EditInfoPlayer({ players, refreshPlayers }) {
         e.preventDefault();
         if (!validate()) return;
 
-        // Выводим имя и возраст в консоль
         const FIO = playerToEdit.FIO.split(" ");
         const OldFirstName = FIO[0];
         const OldSecondName = FIO[1];
         const OldThirdName = FIO[2] ? FIO[2] : '';
-        //console.log('Отправляем данные для изменения:', { Photo, FirstName, SecondName, ThirdName, Age, OldPhoto });
-        //console.log(`Изменение данных игрока с PlayerId = ${playerToEdit.PlayerId} в формате Старые–Новые. Имя: ${OldFirstName}–${FirstName}. Фамилия: ${OldSecondName}–${SecondName}. Отчество: ${OldThirdName}–${ThirdName}. Возраст: ${playerToEdit.Age}–${Age}. Название изображения: ${playerToEdit.Photo}–{data.data.Photo}.`);
-
-        // Формируем FormData для отправки файла
+        
         const formData = new FormData();
         formData.append('Photo', Photo);
         formData.append('PlayerId', playerToEdit.PlayerId);
@@ -353,9 +335,6 @@ function EditInfoPlayer({ players, refreshPlayers }) {
                 throw new Error('Ошибка при загрузке');
             }
 
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
-
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -366,7 +345,6 @@ function EditInfoPlayer({ players, refreshPlayers }) {
 
             await refreshPlayers();
 
-            // Очистка формы
             setFirstName('');
             setSecondName('');
             setThirdName('');
@@ -393,8 +371,6 @@ function EditInfoPlayer({ players, refreshPlayers }) {
     };
 
     const PlayerItem = ({ player }) => {
-        //console.log('split FIO:', player.FIO.split(" "));
-        //setFIO(player.FIO.split(" "));
         return (
             <div>
                 <button className="player-item" onClick={() => openModal(player)}>
@@ -498,13 +474,6 @@ const EditPlayer = () => {
         fetchPlayers();
     }, []);
 
-    /*const players = [
-        { PlayerId: 1, FIO: 'Иванов Иван2 Иванович2', Photo: 'Дед.jpg', Age: 18 },
-        { PlayerId: 2, FIO: 'Иванов1 Иван1 Иванович1', Photo: 'Яблоко.jpg', Age: 21 },
-        { PlayerId: 3, FIO: 'Иванов3 Иван3 Иванович3', Photo: '1747892911129-806430307.jpg', Age: 19 }
-    ];*/
-    //console.log("Иванов2 Иван2 Иванович2".split(" "));
-    //console.log("Иванов2 Иван2".split(" ")[2]);
     const handleClick = () => {
         navigate(`/ListTeams`);
     };
@@ -513,10 +482,8 @@ const EditPlayer = () => {
         navigate(`/EditData`);
     };
 
-    // Состояние, которое хранит текущий выбранный раздел
     const [activeSection, setActiveSection] = useState('home');
 
-    // Контент для разных разделов
     const renderContent = () => {
         switch (activeSection) {
             case 'addPlayer':
@@ -529,13 +496,6 @@ const EditPlayer = () => {
                 return <div>Выберите раздел</div>;
         }
     };
-
-    //if (!Players) return <div>Загрузка...</div>;
-
-    /*
-    removerPlayer
-    editPlayer
-    */
 
     return (
         <div className="edit-player-container">

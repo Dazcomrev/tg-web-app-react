@@ -7,7 +7,7 @@ const { urlServer } = useURL();
 const { userId } = useTelegram();
 
 function Modal({ isOpen, onClose, children }) {
-    if (!isOpen) return null; // ничего не рендерим, если окно закрыто
+    if (!isOpen) return null;
 
     return (
         <div className="modal-overlay">
@@ -52,7 +52,6 @@ function AddMatch({ competitions, refreshCompetitions }) {
     };
 
     const validateNumber = (num) => {
-        // Проверяем, что введено число
         return /^\d+$/.test(num);
     };
     const validate = () => {
@@ -78,26 +77,14 @@ function AddMatch({ competitions, refreshCompetitions }) {
             setError('Матч между этими командами уже есть');
             return false;
         }
-        /*if (winner === '0' || winner === '') {
-            setError('Выберите команду победителя');
-            return false;
-        }*/
         if (dateMatch == "") {
             setError('Выберите дату матча');
             return false;
         }
-        /*if (firstScore == '') {
-            setError('Не введен счет 1 комнады');
-            return false;
-        }*/
         if (firstScore != '' && !validateNumber(firstScore)) {
             setError('Счет 1 должен содержать только цифры');
             return false;
         }
-        /*if (secondScore == '') {
-            setError('Не введен счет 2 комнады');
-            return false;
-        }*/
         if (secondScore != '' && !validateNumber(secondScore)) {
             setError('Счет 2 должен содержать только цифры');
             return false;
@@ -115,10 +102,7 @@ function AddMatch({ competitions, refreshCompetitions }) {
         const winnerName = haveWinner ? winner == 1 ? `"${String(teamsMap.get(firstTeam))}"` : `"${String(teamsMap.get(secondTeam))}"` : 'не указан';
         const score1 = firstScore != '' ? String(firstScore) : 'не указан';
         const score2 = secondScore != '' ? String(secondScore) : 'не указан';
-        // Выводим имя и возраст в консоль
-        //console.log('Отправляем данные:', { firstTeam, secondTeam, winner, dateMatch, firstScore, secondScore, selectedCompetition });
 
-        // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('CompetitionId', selectedCompetition.CompetitionId);
         formData.append('TeamId1', firstTeam);
@@ -128,9 +112,6 @@ function AddMatch({ competitions, refreshCompetitions }) {
         formData.append('Score1', firstScore != '' ? firstScore : -1);
         formData.append('Score2', secondScore != '' ? secondScore : -1);
 
-        //console.log(`Добавлен матч "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${pointFromDifis(dateMatch)}.`);
-        //setError('');
-        //setModalOpen(false);
         try {
             const response = await fetch(`${urlServer}api/edit/match/addMatch`, {
                 method: 'POST',
@@ -140,9 +121,6 @@ function AddMatch({ competitions, refreshCompetitions }) {
             if (!response.ok) {
                 throw new Error('Ошибка при загрузке');
             }
-
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -154,7 +132,6 @@ function AddMatch({ competitions, refreshCompetitions }) {
 
             await refreshCompetitions();
 
-            // Очистка формы
             setError('');
             setModalOpen(false);
         } catch (err) {
@@ -292,7 +269,6 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
     };
 
     const validateNumber = (num) => {
-        // Проверяем, что введено число
         return /^\d+$/.test(num);
     };
     const validate = () => {
@@ -308,8 +284,6 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
         e.preventDefault();
         if (!validate()) return;
 
-        //console.log('Отправляем данные:', { selectedMatch, selectedCompetition });
-
         const teamsMap = new Map(selectedCompetition.teams.map(team => [String(team.TeamId), team.TeamName]));
         const matchsMap = new Map(selectedCompetition.matchs.map(match => [String(match.MatchId),
         {
@@ -322,14 +296,11 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
         }]));
         const Match = matchsMap.get(selectedMatch);
         const winnerName = selectedMatch.HaveWinner ? winner == 1 ? `"${String(teamsMap.get(firstTeam))}"` : `"${String(teamsMap.get(secondTeam))}"` : 'не указан';
-        //const winnerName = Match.Winner == 1 ? `"${teamsMap.get(Match.Team1)}"` : Match.Winner == 2 ? `"${teamsMap.get(Match.Team2)}"` : 'не указан';
         const score1 = Match.Score1 != -1 ? String(Match.Score1) : 'не указан';
         const score2 = Match.Score2 != -1 ? String(Match.Score2) : 'не указан';
-        // Формируем FormData для отправки файла
+        
         const formData = new FormData();
         formData.append('MatchId', selectedMatch);
-
-        //console.log(`Удален матч "${teamsMap.get(Match.Team1)}" – "${teamsMap.get(Match.Team2)}" (Счет: ${score1}:${score2}. Победитель: ${winnerName}). Дата: ${Match.DateMatch}.`);
 
         try {
             const response = await fetch(`${urlServer}api/edit/match/removeMatch`, {
@@ -341,9 +312,6 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
                 throw new Error('Ошибка при загрузке');
             }
 
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
-
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -354,7 +322,6 @@ function RemoveMatch({ competitions, refreshCompetitions }) {
 
             await refreshCompetitions();
 
-            // Очистка формы
             setError('');
             setModalOpen(false);
         } catch (err) {
@@ -434,9 +401,6 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
     const [error, setError] = useState('');
     const [isModalOpen, setModalOpen] = useState(false);
 
-    /*
-    Добавить проверку на формат даты
-    */
     const difisFromPoint = (datePoint) => {
         const d = datePoint.split(".")[0];
         const m = datePoint.split(".")[1];
@@ -459,7 +423,6 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
     };
 
     const validateNumber = (num) => {
-        // Проверяем, что введено число
         return /^\d+$/.test(num);
     };
     const validate = () => {
@@ -499,9 +462,6 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
         e.preventDefault();
         if (!validate()) return;
 
-        // Выводим имя и возраст в консоль
-        //console.log('Отправляем данные:', { firstTeam, secondTeam, winner, dateMatch, firstScore, secondScore, selectedMatch, selectedCompetition });
-
         const haveWinner = winner != '0' ? true : false;
         const teamsMap = new Map(selectedCompetition.teams.map(team => [String(team.TeamId), team.TeamName]));
         const winnerName = haveWinner ? winner == 1 ? `"${String(teamsMap.get(firstTeam))}"` : `"${String(teamsMap.get(secondTeam))}"` : 'не указан';
@@ -510,9 +470,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
         const score2 = secondScore != '' ? String(secondScore) : 'не указан';
         const oldScore1 = selectedMatch.Score1 != -1 ? String(selectedMatch.Score1) : 'не указан';
         const oldScore2 = selectedMatch.Score2 != -1 ? String(selectedMatch.Score2) : 'не указан';
-        // Выводим имя и возраст в консоль
 
-        // Формируем FormData для отправки файла
         const formData = new FormData();
         formData.append('MatchId', selectedMatch.MatchId);
         formData.append('TeamId1', firstTeam);
@@ -522,7 +480,6 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
         formData.append('Score1', firstScore != '' ? firstScore : -1);
         formData.append('Score2', secondScore != '' ? secondScore : -1);
 
-        //console.log(`Изменены данные матча "${teamsMap.get(firstTeam)}" – "${teamsMap.get(secondTeam)}". Счет: Был – ${oldScore1}:${oldScore2}; Стал – ${score1}:${score2}. Победитель: Был – ${oldWinnerName}; Стал – ${winnerName}. Дата: Была – ${selectedMatch.DateMatch}; Стала – ${pointFromDifis(dateMatch)}`);
         try {
             const response = await fetch(`${urlServer}api/edit/match/editDataMatch`, {
                 method: 'POST',
@@ -532,9 +489,6 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
             if (!response.ok) {
                 throw new Error('Ошибка при загрузке');
             }
-
-            //const data = await response.json();
-            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
@@ -546,7 +500,6 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
 
             await refreshCompetitions();
 
-            // Очистка формы
             setError('');
             setModalOpen(false);
         } catch (err) {
@@ -690,26 +643,8 @@ const EditMatch = () => {
         navigate(`/EditData`);
     };
 
-    /*const competitions = [
-        {
-            CompetitionId: 1, CompetitionName: 'Соревнование 1', DateStart: '17.05.2025', teams: [
-                { TeamId: 1, TeamName: 'Navi', Place: 1 },
-                { TeamId: 2, TeamName: 'DreamTeam', Place: 2 }],
-            matchs: []
-        },
-        {
-            CompetitionId: 2, CompetitionName: 'Соревнование 2', DateStart: '20.05.2025', teams: [
-                { TeamId: 1, TeamName: 'Navi', Place: 1 },
-                { TeamId: 2, TeamName: 'DreamTeam', Place: 3 },
-                { TeamId: 3, TeamName: 'Eteam', Place: 2 }],
-            matchs: [{ MatchId: 1, Team1: 1, Team2: 3, Winner: 1, DateMatch: '20.05.2025', Score1: 3, Score2: 2 }]
-        },
-        { CompetitionId: 3, CompetitionName: 'Соревнование 3', DateStart: '22.05.2025', teams: [], matchs:[] }
-    ];*/
-
     const [activeSection, setActiveSection] = useState('home');
 
-    // Контент для разных разделов
     const renderContent = () => {
         switch (activeSection) {
             case 'addMatch':
@@ -722,8 +657,6 @@ const EditMatch = () => {
                 return <div>Выберите раздел</div>;
         }
     };
-
-    //if (!teams) return <div>Загрузка...</div>;
 
     return (
         <div className="edit-match-container">

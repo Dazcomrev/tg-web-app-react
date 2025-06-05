@@ -68,29 +68,6 @@ const PlayerCard = () => {
             .catch(err => console.error(err));
     };
 
-    /*const playerCard1 = {
-        FIO: 'Иванов Иван Иванович',
-        Age: 18,
-        pathPhoto: 'Яблоко.jpg',
-        history: [
-            {
-                TeamName: 'Kaka',
-                DateAdd: '15.04.2024',
-                DateLeft: '28.04.2025'
-            },
-            {
-                TeamName: 'Navi',
-                DateAdd: '10.05.2025',
-                DateLeft: null
-            },
-        ]
-    }*/
-
-    /*const playerCards = {
-        1: { FIO: 'Иванов Иван Иванович', Age: 18, pathPhoto: 'Яблоко.jpg', history: [{ TeamName: 'Navi', DateAdd: '10.05.2025', DateLeft: null }] },
-        3: { FIO: 'Косяк Павел Александрович', Age: 250, pathPhoto: '1747892911129-806430307.jpg', history: [{ TeamName: 'Navi', DateAdd: '20.05.2025', DateLeft: null }] }
-};
-    const playerCard = playerCards[playerId];*/
     const [playerCard, setPlayerCard] = useState(null);
 
     useEffect(() => {
@@ -99,7 +76,6 @@ const PlayerCard = () => {
             .then(data => setPlayerCard(data))
             .catch(err => console.error(err));
     }, [playerId]);
-    //console.log('playerCard.playerCard:', playerCard);
 
     if (!playerCard) return <div className="loading">Загрузка...</div>;
 

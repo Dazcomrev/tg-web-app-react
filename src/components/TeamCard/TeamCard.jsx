@@ -31,11 +31,6 @@ function ImageTooltip({ children, imgSrc, imgAlt }) {
 
 const PlayerItem = ({ player, teamId }) => {
     const navigate = useNavigate();
-    /*
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    ДОБАВИТЬ СЧИТЫВАНИЕ TG USER ID В ЛОГИ
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    */
 
     const handleClick = () => {
         navigate(`/TeamCard/${teamId}/PlayerCard/${player.PlayerId}`);
@@ -47,11 +42,6 @@ const PlayerItem = ({ player, teamId }) => {
             .then(res => res.json())
             .catch(err => console.error(err));
     };
-    //<img src={`${urlServer}images/${player.Photo}`} height='150px' alt="photo"></img>
-    /*const imgSrc = `${urlServer}images/${player.Photo}`;
-    <ImageTooltip imgSrc={imgSrc} imgAlt="photo">
-        <p>{player.FIO}</p>
-    </ImageTooltip>*/
     return (
 
         <button className="player-item" onClick={handleClick}>
@@ -70,7 +60,6 @@ const NoPlayerItem = ({ players }) => {
 };
 
 const HistoryItem = ({ history, teams }) => {
-    /*<hr className='hr-matchs' />*/
     return (
         <div className="history-item">
             <hr className='hr-competitions' />
@@ -116,91 +105,6 @@ const PlayerCard = () => {
         navigate(`/ListTeams`);
     };
 
-    /*const teamCard = {
-        name: 'Navi',
-        players: [
-            { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' },
-            { PlayerId: 2, FIO: 'Иванов1 Иван1 Иванович1', Photo: 'Дед.jpg' }
-        ],
-        history: [
-            {
-                CompetitionName: 'Тестовое соревнование',
-                DateStart: '14.05.2025',
-                Place: 1
-            },
-            {
-                CompetitionName: 'Тестовое соревнование 1',
-                DateStart: '14.06.2025',
-                Place: 1
-            }
-        ],
-        frequency: '1.00'
-    };*/
-    /*const teamCard = {
-        name: "Navi",
-        players: [
-            { PlayerId: 1, FIO: 'Иванов Иван Иванович', Photo: 'Яблоко.jpg' },
-            { PlayerId: 3, FIO: 'Косяк Павел Александрович', Photo: '1747892911129-806430307.jpg' }
-        ],
-        history: [{
-            CompetitionId: 7, CompetitionName: 'AAD', DateStart: '24.05.2025', Place: 1, matchs: [
-                {
-                    DateMatch: "22.05.2025",
-                    HaveWinner: true,
-                    MatchId: 30,
-                    Score1: 3,
-                    Score2: 1,
-                    Team1: 1,
-                    Team2: 2,
-                    WinnerId: 1,
-                },
-                {
-                    DateMatch: "25.05.2025",
-                    HaveWinner: true,
-                    MatchId: 31,
-                    Score1: 3,
-                    Score2: 0,
-                    Team1: 1,
-                    Team2: 3,
-                    WinnerId: 1,
-                }
-            ]
-        },
-        {
-            CompetitionId: 6, CompetitionName: 'Соревнование', DateStart: '24.05.2025', Place: 1, matchs: [
-                {
-                    DateMatch: "28.05.2025",
-                    HaveWinner: false,
-                    MatchId: 32,
-                    Score1: -1,
-                    Score2: -1,
-                    Team1: 1,
-                    Team2: 3,
-                    WinnerId: 1,
-                }
-            ]
-        },
-        {
-            CompetitionId: 1, CompetitionName: 'Тестовое соревнование', DateStart: '14.05.2025', Place: 1, matchs: [
-                {
-                    DateMatch: "15.05.2025",
-                    HaveWinner: true,
-                    MatchId: 1,
-                    Score1: 3,
-                    Score2: 0,
-                    Team1: 1,
-                    Team2: 2,
-                    WinnerId: 1,
-                }
-            ]
-        }],
-        frequency: "1.0000",
-    };*/
-    /*const teams = [
-        { TeamId: 1, TeamName: 'Navi', NumberWins: 4, NumberDefeats: 0, FrequencyWins: '1.0000' },
-        { TeamId: 2, TeamName: 'DreamTeam', NumberWins: 0, NumberDefeats: 1, FrequencyWins: '0.0000' },
-        { TeamId: 3, TeamName: 'Eteam', NumberWins: 0, NumberDefeats: 0, FrequencyWins: '0' }];*/
-
     const [teamCard, setTeamCard] = useState(null);
 
     useEffect(() => {
@@ -209,7 +113,6 @@ const PlayerCard = () => {
             .then(data => setTeamCard(data))
             .catch(err => console.error(err));
     }, [teamId]);
-    console.log('TeamCard:', teamCard);
 
     const [teams, setTeams] = useState(null);
 
