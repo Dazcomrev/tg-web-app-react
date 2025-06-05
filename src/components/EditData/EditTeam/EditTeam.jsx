@@ -598,7 +598,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Из команды ${team.TeamName} (TeamId = ${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId = ${PlayerId}` }),
+                body: JSON.stringify({ userId: `${userId}`, actionType: 'Редактирование данных', actionDetails: `Из команды ${team.TeamName} (TeamId = ${team.TeamId}) ${DateLeft} вышел игрок ${FIO} с PlayerId = ${PlayerId}` }),
             })
                 .then(res => res.json())
                 .catch(err => console.error(err));
