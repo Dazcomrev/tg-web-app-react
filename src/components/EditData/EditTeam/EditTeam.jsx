@@ -468,7 +468,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
         }
 
         if (!isDateAvailable(DateAdd)) {
-            setError('Необходимо выбрать дату, когда игрок не находился в команде');
+            setError(`Необходимо выбрать дату, когда игрок не находился в команде, периоды, когда игрок был в командах: ${datesInTeams}`);
             return;
         }
 
@@ -507,7 +507,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
                                 onChange={(e) => setPlayerId(e.target.value)}>
                                 <option className="form-input" key={0} value={0}>---------</option>
                                 {players.map((player) => (
-                                    <option key={player.PlayerId} value={player.PlayerId} title={datesInTeams}>
+                                    <option key={player.PlayerId} value={player.PlayerId}>
                                         {player.FIO}
                                     </option>
                                 ))}
