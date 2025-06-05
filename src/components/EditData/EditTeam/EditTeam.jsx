@@ -581,7 +581,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
         formData.append('TeamId', team.TeamId);
         formData.append('PlayerId', PlayerId);
         formData.append('DateLeft', DateLeft);
-        formData.append('DateAdd', activePeriod.DateAdd);
+        formData.append('DateAdd', difisFromPoint(activePeriod.DateAdd));
         try {
             const response = await fetch(`${urlServer}api/edit/team/removePlayerFromTeam`, {
                 method: 'POST',
