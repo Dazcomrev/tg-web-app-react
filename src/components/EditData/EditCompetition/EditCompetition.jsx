@@ -512,9 +512,9 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
                                                 className="form-input"
                                             />
                                         </label>
-                                        <label>{team.TeamName}</label>
+                                        <label>{team.TeamName}</label><br />
                                         <label>
-                                            {isChecked && (<br />) && (<p>Место:</p>)}
+                                            {isChecked && (<p>Место:</p>)}
                                             {isChecked && (
                                                 <input
                                                     type="text"
