@@ -416,12 +416,15 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
         const selectedDate = new Date(selectedDateStr.split('.').reverse().join('-')); // 'DD.MM.YYYY' → 'YYYY-MM-DD'
 
         const periods = [];
+        console.log('allPlayers:', allPlayers);
         allPlayers.forEach(player => {
             if (player.PlayerId == PlayerId) {
+                console.log('player.Dates:', player.Dates);
                 periods = player.Dates;
                 return;
             }
         });
+        console.log('datesInTeams:', datesInTeams());
 
         for (const period of periods) {
             const startDate = new Date(period.DateAdd.split('.').reverse().join('-'));
