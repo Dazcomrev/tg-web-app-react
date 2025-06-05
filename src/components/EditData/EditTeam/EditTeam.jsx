@@ -565,18 +565,23 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
 
     const removePlayerFromTeam = async (team, PlayerId) => {
         let FIO = '';
+        let periods = [];
         allPlayers.forEach(player => {
             if (player.PlayerId == PlayerId) {
                 FIO = player.FIO;
+                periods = player.Dates;
                 return;
             }
         });
+
+        const activePeriod = periods.find(period => period.DateLeft === null);
         //console.log(`Из команды ${team.TeamName} (${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId ${PlayerId}`);
 
         const formData = new FormData();
         formData.append('TeamId', team.TeamId);
         formData.append('PlayerId', PlayerId);
         formData.append('DateLeft', DateLeft);
+        formData.append('DateAdd', activePeriod.DateAdd);
         try {
             const response = await fetch(`${urlServer}api/edit/team/removePlayerFromTeam`, {
                 method: 'POST',
