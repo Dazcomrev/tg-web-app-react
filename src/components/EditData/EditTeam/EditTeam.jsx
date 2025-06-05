@@ -325,7 +325,7 @@ function EditNameTeam({ teams, refreshTeams }) {
     );
 }
 
-function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
+function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
 
     const [error, setError] = React.useState('');
     const [isModalOpen, setModalOpen] = React.useState(false);
@@ -396,12 +396,14 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
                 .catch(err => console.error(err));
 
             await refreshTeams();
+            await refreshPlayers();
             // Можно очистить форму после отправки
             setModalOpen(false);
             setTeamToEdit(null);
             setPlayerId('');
             setDateAdd('');
             setError('');
+
         } catch (err) {
             setError(err.message);
         }
@@ -416,15 +418,12 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
         const selectedDate = new Date(selectedDateStr.split('.').reverse().join('-')); // 'DD.MM.YYYY' → 'YYYY-MM-DD'
 
         let periods = [];
-        console.log('allPlayers:', allPlayers);
         allPlayers.forEach(player => {
             if (player.PlayerId == PlayerId) {
-                console.log('player.Dates:', player.Dates);
                 periods = player.Dates;
                 return;
             }
         });
-        console.log('datesInTeams:', datesInTeams());
 
         for (const period of periods) {
             const startDate = new Date(period.DateAdd.split('.').reverse().join('-'));
@@ -468,7 +467,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
         }
 
         if (!isDateAvailable(DateAdd)) {
-            setError(`Необходимо выбрать дату, когда игрок не находился в команде, периоды, когда игрок был в командах: ${datesInTeams}`);
+            setError(`Необходимо выбрать дату, когда игрок не находился в команде, периоды, когда игрок был в командах: ${datesInTeams()}`);
             return;
         }
 
@@ -539,7 +538,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
     );
 }
 
-function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
+function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
     const [error, setError] = React.useState('');
     const [isModalOpen, setModalOpen] = React.useState(false);
     const [teamToEdit, setTeamToEdit] = React.useState(null);
@@ -599,6 +598,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
                 .catch(err => console.error(err));
 
             await refreshTeams();
+            await refreshPlayers();
             // Можно очистить форму после отправки
             setModalOpen(false);
             setTeamToEdit(null);
@@ -614,6 +614,44 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
         setPlayerId(e.target.value);
     };
 
+    function isDateDeleteAfterDateAdd(selectedDateStr) {
+        let periods = [];
+        allPlayers.forEach(player => {
+            if (player.PlayerId == PlayerId) {
+                periods = player.Dates;
+                return;
+            }
+        });
+        // Найти период с DateLeft === null
+        const activePeriod = periods.find(period => period.DateLeft === null);
+
+        if (!activePeriod) {
+            // Если нет активного периода, можно считать, что проверка пройдена
+            return true;
+        }
+
+        // Преобразуем даты из формата DD.MM.YYYY в Date
+        const selectedDate = new Date(selectedDateStr.split('.').reverse().join('-'));
+        const lastDateAdd = new Date(activePeriod.DateAdd.split('.').reverse().join('-'));
+
+        // Проверяем, что выбранная дата позже lastDateAdd
+        return selectedDate >= lastDateAdd;
+    }
+
+    function getActivePeriod() {
+        let periods = [];
+        allPlayers.forEach(player => {
+            if (player.PlayerId == PlayerId) {
+                periods = player.Dates;
+                return;
+            }
+        });
+        if (!periods || periods.length === 0) return '';
+        const activePeriod = periods.find(period => period.DateLeft === null);
+
+        return `${activePeriod.DateAdd}`;
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -624,6 +662,11 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams }) {
 
         if (DateLeft === '') {
             setError('Необходимо выбрать дату');
+            return;
+        }
+
+        if (!isDateDeleteAfterDateAdd(DateLeft)) {
+            setError(`Необходимо выбрать дату не раньше ${getActivePeriod()}`);
             return;
         }
 
@@ -734,12 +777,15 @@ const EditTeam = () => {
 
     const [allPlayers, setAllPlayers] = useState(null);
 
-    useEffect(() => {
+    const fetchPlayers = () => {
         fetch(`${urlServer}api/getAllPlayers`)
             .then(res => res.json())
-            .then(data => setAllPlayers(data))
+            .then(data => setPlayers(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
+    };
 
+    useEffect(() => {
+        fetchPlayers();
     }, []);
 
     /*const teams = [
@@ -774,9 +820,9 @@ const EditTeam = () => {
             case 'editNameTeam':
                 return <EditNameTeam teams={teams} refreshTeams={fetchTeams} />;
             case 'addPlayerInTeam':
-                return <AddPlayerInTeam teams={teams} allPlayers={allPlayers} refreshTeams={fetchTeams} />;
+                return <AddPlayerInTeam teams={teams} allPlayers={allPlayers} refreshTeams={fetchTeams} refreshPlayers={fetchPlayers} />;
             case 'removePlayerFromTeam':
-                return <RemovePlayerInTeam teams={teams} allPlayers={allPlayers} refreshTeams={fetchTeams} />;
+                return <RemovePlayerInTeam teams={teams} allPlayers={allPlayers} refreshTeams={fetchTeams} refreshPlayers={fetchPlayers} />;
             default:
                 return <div>Выберите раздел</div>;
         }
