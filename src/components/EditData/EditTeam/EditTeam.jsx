@@ -652,8 +652,8 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
         const currentDateAdd = new Date(currentDateAddStr.split('.').reverse().join('-'));
 
         // Проверка 1: DateLeft должна быть позже DateAdd
-        if (selectedDateLeft <= currentDateAdd) {
-            return { valid: false, message: `Дата выхода должна быть позже даты добавления ${getActivePeriod()}` };
+        if (selectedDateLeft < currentDateAdd) {
+            return { valid: false, message: `Дата выхода должна быть не позже даты добавления ${getActivePeriod()}` };
         }
 
         // Проверка 2: DateLeft не должна пересекаться с другими периодами
