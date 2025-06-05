@@ -415,7 +415,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
         // Преобразуем выбранную дату из строки в Date
         const selectedDate = new Date(selectedDateStr.split('.').reverse().join('-')); // 'DD.MM.YYYY' → 'YYYY-MM-DD'
 
-        const periods = [];
+        let periods = [];
         console.log('allPlayers:', allPlayers);
         allPlayers.forEach(player => {
             if (player.PlayerId == PlayerId) {
@@ -440,21 +440,18 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams }) {
     }
 
     function datesInTeams() {
-        const periods = [];
+        let periods = [];
         allPlayers.forEach(player => {
             if (player.PlayerId == PlayerId) {
                 periods = player.Dates;
                 return;
             }
         });
-        const periodsStr = '';
-        periods.forEach(period => {
-            if (period.DateLeft == null) {
-                return `${period.DateAdd} – сейчас.`;
-            }
-            return `${period.DateAdd} – ${period.DateLeft}.`;
-        });
-        return periodsStr;
+        if (!periods || periods.length === 0) return '';
+
+        return periods
+            .map(({ DateAdd, DateLeft }) => `${DateAdd} - ${DateLeft}`)
+            .join(', ');
     }
 
     const handleSubmit = (e) => {
