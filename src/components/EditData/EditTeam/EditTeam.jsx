@@ -780,7 +780,7 @@ const EditTeam = () => {
     const fetchPlayers = () => {
         fetch(`${urlServer}api/getAllPlayers`)
             .then(res => res.json())
-            .then(data => setPlayers(data))
+            .then(data => setAllPlayers(data))
             .catch(err => console.error('Ошибка загрузки данных:', err));
     };
 

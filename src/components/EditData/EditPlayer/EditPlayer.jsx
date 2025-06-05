@@ -189,7 +189,7 @@ function RemovePlayer({ players, refreshPlayers }) {
     const [playerToRemove, setPlayerToRemove] = useState(null);
 
     const removePlayer = async (player) => {
-        console.log(`Игрок ${player.FIO} с PlayerId ${player.PlayerId} удален. Возраст: ${player.Age}.Название изображения: ${player.Photo}`);
+        //console.log(`Игрок ${player.FIO} с PlayerId ${player.PlayerId} удален. Возраст: ${player.Age}.Название изображения: ${player.Photo}`);
 
         // Формируем FormData для отправки файла
         const formData = new FormData();
@@ -207,7 +207,7 @@ function RemovePlayer({ players, refreshPlayers }) {
             }
 
             const data = await response.json();
-            console.log('Ответ сервера:', data);
+            //console.log('Ответ сервера:', data);
 
             fetch(`${urlServer}api/log`, {
                 method: 'POST',
