@@ -574,7 +574,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
             }
         });
 
-        const activePeriod = periods.find(period => period.DateLeft === null);
+        const activePeriod = periods.length === 0 ? null : periods.find(period => period.DateLeft === null);
         //console.log(`Из команды ${team.TeamName} (${team.TeamId}) ${DateLeft} удален игрок ${FIO} с PlayerId ${PlayerId}`);
 
         const formData = new FormData();
