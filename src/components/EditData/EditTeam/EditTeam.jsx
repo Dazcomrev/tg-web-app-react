@@ -705,7 +705,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
             setError('Необходимо выбрать дату');
             return;
         }
-        const { valid, message } = isDateLeftAfterDateAdd(DateLeft)
+        const { valid, message } = isDateLeftValid(DateLeft)
         if (!valid) {
             setError(message);
             return;
