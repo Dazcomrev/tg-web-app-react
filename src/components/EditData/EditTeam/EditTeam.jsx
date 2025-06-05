@@ -658,7 +658,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
 
         // Проверка 1: DateLeft должна быть позже DateAdd
         if (selectedDateLeft < currentDateAdd) {
-            return { valid: false, message: `Дата выхода должна быть не позже даты добавления ${getActivePeriod()}` };
+            return { valid: false, message: `Дата выхода должна быть не позже даты добавления – ${getActivePeriod()}` };
         }
 
         // Проверка 2: DateLeft не должна пересекаться с другими периодами
@@ -672,11 +672,11 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
             // Проверяем, что selectedDateLeft не попадает внутрь другого периода
             // Если selectedDateLeft >= periodStart и selectedDateLeft <= periodEnd — пересечение
             if (selectedDateLeft >= periodStart && selectedDateLeft <= periodEnd) {
-                return { valid: false, message: `Дата выхода пересекается с другим периодом` };
+                return { valid: false, message: `Дата выхода пересекается с другим периодом. Периоды, которые есть: ${datesInTeams()}` };
             }
 
             if (currentDateAdd <= periodStart && currentDateAdd <= periodEnd && selectedDateLeft >= periodStart && selectedDateLeft >= periodEnd) {
-                return { valid: false, message: `При этой дате выхода новый период пересекается с другим периодом` };
+                return { valid: false, message: `При этой дате выхода новый период пересекается с другим периодом. Периоды, которые есть: ${datesInTeams()}` };
             }
         }
 
