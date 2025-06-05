@@ -514,7 +514,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
                                         </label>
                                         <label>{team.TeamName}</label>
                                         <label>
-                                            {isChecked && (<p>– Место:</p>)}
+                                            {isChecked && (<br />) && (<p>Место:</p>)}
                                             {isChecked && (
                                                 <input
                                                     type="text"
