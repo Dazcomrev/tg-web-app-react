@@ -502,19 +502,20 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
                             {availableTeams.map(team => {
                                 const isChecked = !!selectedTeams[team.TeamId];
                                 return (
-                                    <div key={team.TeamId} className="checkbox-wrapper">
-                                        <label>
+                                    <div key={team.TeamId}>
+                                        <div className="checkbox-wrapper">
+                                            <label>
 
-                                            <input
-                                                type="checkbox"
-                                                checked={isChecked}
-                                                onChange={() => handleCheckboxChange(team.TeamId)}
-                                                className="form-input"
-                                            />
-                                        </label>
-                                        <label>{team.TeamName}</label>
-                                        <div></div>
-                                        <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={isChecked}
+                                                    onChange={() => handleCheckboxChange(team.TeamId)}
+                                                    className="form-input"
+                                                />
+                                            </label>
+                                            <label>{team.TeamName}</label>
+                                        </div>
+                                        <label className="form-label">
                                             {isChecked && (<p>Место:</p>)}
                                             {isChecked && (
                                                 <input
