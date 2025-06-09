@@ -183,7 +183,8 @@ function RemoveTeam({ teams, refreshTeams }) {
                 <TwoColumnScrollable items={teams}></TwoColumnScrollable>
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                <p>Вы уверены что хотите удалить команду?</p>
+                <h3>Удаление команды</h3>
+                <p>Вы уверены что хотите удалить команду {teamToRemove?.TeamName} ?</p>
                 <div className="modal-buttons">
                     <button className="btn-confirm" onClick={() => removeTeam(teamToRemove)}>Подтвердить</button>
                     <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
@@ -284,7 +285,7 @@ function EditNameTeam({ teams, refreshTeams }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <h2>Изменение названия команды: {teamToEdit?.TeamName}</h2>
+                        <h3>Изменение названия команды: {teamToEdit?.TeamName}</h3>
                         <label className="form-label">
                             Новое название команды:
                             <input
