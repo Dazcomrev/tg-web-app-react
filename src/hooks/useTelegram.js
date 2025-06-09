@@ -2,7 +2,6 @@
 export function useTelegram() {
 
     const onTeamCard = (teamID) => {
-        //getTeamCard(teamId)
         window.location.href = '';
         tg.href 
     }
@@ -25,6 +24,5 @@ export function useTelegram() {
         tg,
         queryId: tg.initDataUnsafe?.query_id,
         userId: tg.initDataUnsafe?.user?.id || 'unknown_userId',
-        //first_name: tg.initDataUnsafe?.user.first_name,
     }
 }

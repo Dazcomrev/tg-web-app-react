@@ -284,7 +284,7 @@ function EditNameTeam({ teams, refreshTeams }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <p>Старое название команды: {teamToEdit?.TeamName}</p>
+                        <h2>Изменение названия команды: {teamToEdit?.TeamName}</h2>
                         <label className="form-label">
                             Новое название команды:
                             <input
@@ -476,6 +476,7 @@ function AddPlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
+                        <h3>Добавление игрока в команду</h3>
                         <p>Выберите участника для команды {teamToEdit?.TeamName}</p>
                         <label className="form-label">
                             Игрок:
@@ -714,6 +715,7 @@ function RemovePlayerInTeam({ teams, allPlayers, refreshTeams, refreshPlayers })
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
+                        <h3>Удаление игрока из команды</h3>
                         <p>Выберите участника для команды {teamToEdit?.TeamName}</p>
                         <label className="form-label">
                             Игрок:

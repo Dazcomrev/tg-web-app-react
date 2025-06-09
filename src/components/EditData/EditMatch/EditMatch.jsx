@@ -511,7 +511,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
         return (
             <div>
                 <div className="competition-with-match-item">
-                    <h2>{competition.CompetitionName}</h2>
+                    <h3>{competition.CompetitionName}</h3>
                     <p>Дата соревнования: {competition.DateStart}</p>
                     <div>
                         <label>Матчи: </label>

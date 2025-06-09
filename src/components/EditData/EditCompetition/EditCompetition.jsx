@@ -179,8 +179,8 @@ function RemoveCompetition({ competitions, refreshCompetitions }) {
                 </div>
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                <h2>Всплывающее окно</h2>
-                <p>Вы уверены что хотите удалить соревнование?</p>
+                <h3>Удаление соревнования</h3>
+                <p>Вы уверены что хотите удалить соревнование {competitionToRemove?.CompetitionName}?</p>
                 <div className="modal-buttons">
                     <button className="btn-confirm" onClick={() => removeCompetition(competitionToRemove)}>Подтвердить</button>
                     <button className="btn-cancel" onClick={() => setModalOpen(false)}>Отмена</button>
@@ -282,7 +282,7 @@ function EditDataCompetition({ competitions, refreshCompetitions }) {
                 </div>
 
                 <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                    <h2>Всплывающее окно</h2>
+                    <h3>Изменение соревнования</h3>
                     <div>
                         <label className="form-label">
                             Название соревнования:
@@ -448,7 +448,7 @@ function AddTeamInCompetition({ competitions, teams, refreshCompetitions }) {
                     ))}
                 </div>
                 <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                    <h2>Добавление команд в {selectedCompetition?.CompetitionName}</h2>
+                    <h3>Добавление команд в {selectedCompetition?.CompetitionName}</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="form-container">
                             {availableTeams.length === 0 && <p>Все команды уже добавлены в это соревнование.</p>}
@@ -609,7 +609,7 @@ function RemoveTeamFromCompetition({ competitions, teams, refreshCompetitions })
                     ))}
                 </div>
                 <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                    <h2>Удаление команд из {selectedCompetition?.CompetitionName}</h2>
+                    <h3>Удаление команд из {selectedCompetition?.CompetitionName}</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="form-container">
                             {availableTeams.length === 0 && <p>В соревновании нет команд.</p>}
@@ -755,7 +755,7 @@ function EditTeamPlaces({ competitions, refreshCompetitions }) {
             </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                <h2>Редактирование мест в {selectedCompetition?.CompetitionName}</h2>
+                <h3>Редактирование мест в {selectedCompetition?.CompetitionName}</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="form-container">
                         {selectedCompetition?.teams.length === 0 && <p>В соревновании нет команд.</p>}

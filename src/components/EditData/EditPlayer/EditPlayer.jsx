@@ -243,6 +243,7 @@ function RemovePlayer({ players, refreshPlayers }) {
                 </div>
             </form>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+                <h3>Удаление игрока</h3>
                 <p>Вы уверены что хотите удалить игрока {playerToRemove?.FIO}?</p>
                 <div className="modal-buttons">
                     <button className="btn-confirm" onClick={() => removePlayer(playerToRemove)}>Подтвердить</button>
@@ -396,6 +397,7 @@ function EditInfoPlayer({ players, refreshPlayers }) {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <div>
+                        <h3>Изменение данных игрока</h3>
                         <label className="form-label">
                             Имя игрока:
                             <input
