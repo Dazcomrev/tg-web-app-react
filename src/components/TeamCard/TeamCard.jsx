@@ -97,7 +97,7 @@ const NoHistoryItem = ({ history }) => {
     return <p></p>;
 };
 
-const PlayerCard = () => {
+const TeamCard = () => {
     const { teamId } = useParams();
     const navigate = useNavigate();
 
@@ -151,4 +151,4 @@ const PlayerCard = () => {
     )
 }
 
-export default PlayerCard
+export default TeamCard
