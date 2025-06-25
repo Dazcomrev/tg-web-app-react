@@ -475,7 +475,7 @@ function EditInfoMatch({ competitions, refreshCompetitions }) {
         formData.append('MatchId', selectedMatch.MatchId);
         formData.append('TeamId1', firstTeam);
         formData.append('TeamId2', secondTeam);
-        formData.append('WinnerId', winner);
+        formData.append('WinnerId', winner == '2' ? secondTeam : firstTeam);
         formData.append('DateMatch', dateMatch);
         formData.append('Score1', firstScore != '' ? firstScore : -1);
         formData.append('Score2', secondScore != '' ? secondScore : -1);
